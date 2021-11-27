@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { HomeService } from './home.service';
+import { ReservationEntitiesService } from '../service/reservation-entities.service';
 
 @Component({
   selector: 'app-home',
@@ -8,11 +8,23 @@ import { HomeService } from './home.service';
 })
 export class HomeComponent implements OnInit {
 
+  reservationEntities: any;
+
   constructor(
-    private homeService: HomeService
-  ) { }
+    private reservationEntitiesService: ReservationEntitiesService,
+    
+    ) { }
 
   ngOnInit(): void {
+    this.getAllReservationEntities();
+  }
+
+  getAllReservationEntities() {
+    this.reservationEntitiesService.getAllReservationEntities().subscribe(
+      (data)=>{
+        this.reservationEntities = data
+      }
+    )
   }
 
 }

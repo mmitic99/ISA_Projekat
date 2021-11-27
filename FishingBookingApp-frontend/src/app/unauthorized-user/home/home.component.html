@@ -62,4 +62,33 @@
         </div>
     </article>
 
+
+    <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntities">
+        <div class="message-header">
+            <p>{{reservationEntity.name}}</p>
+        </div>
+        <div class="message-body">
+            <div class="columns">
+                <div class="column is-one-quarter">
+                    <img height="100%" width="100%"
+                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
+                        alt="image not loaded">
+                </div>
+                <div class="column">
+                    <p>Adresa: asdsadadssdadsads</p>
+                    <p class="cut-text" style="height: 50%;">
+                        Opis: Lorem ipsum dolor sit amet, consectetur adipiscing elit. Suspendisse congue nulla vel urna
+                        fringilla, a dapibus ante imperdiet. Donec id sollicitudin libero. Sed malesuada ipsum sit amet
+                        lorem tristique, ut mattisasdasssadsadsem feugiat.asdaetur adipiscing elit. Suspendisse congue nulla vel urna
+                        fringilla, a dapibus ante imperdiet. Donec id sollicitudin libero. Sed malesuada ipsum sit amet
+                        lorem tristique, ut mattis sem feugiat.asdadasdasdassQuisque vel turpis dictum, condimentum elit ac, gravida
+                        mauris. Nullam at purus id libero ultricies suscipit scelerisque in ante. Suspendisse aliquam
+
+                    </p>
+                    <p>Vrsta: viasd</p>
+                    <span class="level-right">10/10</span>
+                </div>
+            </div>
+        </div>
+    </article>
 </div>
