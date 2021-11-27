@@ -9,7 +9,7 @@ public class ReservationEntities {
     @Id
     @SequenceGenerator(name = "reservationEntitiesGen", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationEntitiesGen")
-    @Column(name="id", unique = true, nullable = false)
+    @Column(name="reservation_id", unique = true, nullable = false)
     private Long id;
 
     @Column(name="name", nullable = false)

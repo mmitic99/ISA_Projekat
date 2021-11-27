@@ -20,40 +20,44 @@
 
 
         <div>
-        <label class="checkbox">
-            <input type="checkbox">
-            Brodovi / čamci
-        </label>
-    </div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Brodovi / čamci
+            </label>
+        </div>
 
-    <div>
-        <label class="checkbox">
-            <input type="checkbox">
-            Instruktori pecanja
-        </label>
-    </div>
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Instruktori pecanja
+            </label>
+        </div>
     </nav>
 
     <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntities">
-        <div class="message-header">
-            <p>{{reservationEntity.name}}</p>
-        </div>
-        <div class="message-body">
-            <div class="columns">
-                <div class="column is-one-quarter">
-                    <img height="100%" width="100%"
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
-                        alt="image not loaded">
-                </div>
-                <div class="column">
-                    <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}} {{reservationEntity.address.city}} {{reservationEntity.address.country}}</p>
-                    <p class="cut-text" style="height: 50%;">
-                        Opis: {{reservationEntity.promotionalDescription}}
-                    </p>
-                    <p>Vrsta: viasd</p>
-                    <span class="level-right">10/10</span>
+        <a routerLink="../reservationEntity/{{reservationEntity.id}}">
+            <div class="message-header">
+                <p>{{reservationEntity.name}}</p>
+            </div>
+            <div class="message-body">
+                <div class="columns">
+                    <div class="column is-one-quarter">
+                        <img height="100%" width="100%"
+                            src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
+                            alt="image not loaded">
+                    </div>
+                    <div class="column">
+                        <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}}
+                            {{reservationEntity.address.city}} {{reservationEntity.address.country}}</p>
+                        <p class="cut-text" style="height: 50%;">
+                            Opis: {{reservationEntity.promotionalDescription}}
+                        </p>
+                        <p>Vrsta: viasd</p>
+                        <span class="level-right">10/10</span>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
     </article>
+
 </div>
