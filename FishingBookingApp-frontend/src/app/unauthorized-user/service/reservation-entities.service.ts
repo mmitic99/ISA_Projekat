@@ -9,7 +9,7 @@ export class ReservationEntitiesService {
   constructor(private http: HttpClient) { }
 
   getAllReservationEntities() {
-    return this.http.get<any>("localhost:8080/api/reservationEntities/getAll")
+    return this.http.get<any>("http://localhost:8080/api/reservationEntities/getAll")
   }
 
   

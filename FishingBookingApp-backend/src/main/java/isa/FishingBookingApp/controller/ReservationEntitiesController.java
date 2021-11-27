@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import java.util.List;
 
 @RestController
-@CrossOrigin("http://localhost:4200")
-@RequestMapping(value = "/api/reservationEntities", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "api/reservationEntities")
 public class ReservationEntitiesController {
     private ReservationEntitiesService reservationEntitiesService;
 
@@ -22,8 +21,7 @@ public class ReservationEntitiesController {
         this.reservationEntitiesService=reservationEntitiesService;
     }
 
-    @CrossOrigin("http://localhost:4200")
-    @GetMapping("/getAll")
+    @GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationEntities> getAll() {
         return reservationEntitiesService.getAll();
     }
