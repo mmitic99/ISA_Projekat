@@ -1,10 +1,18 @@
 package isa.FishingBookingApp.model;
 
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
-public class User {
+@Table(name="USERS")
+public class User implements UserDetails {
+    private static final long serialVersionUID = 1L;
     @Id
     @SequenceGenerator(name = "userGen", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "userGen")
@@ -34,6 +42,11 @@ public class User {
     @JoinColumn(name = "user_role")
     private UserRole role;
 
+    private boolean enabled;
+
+    public User() {
+    }
+
     public Long getId() {
         return id;
     }
@@ -50,8 +63,40 @@ public class User {
         this.mailAddress = mailAddress;
     }
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        List<UserRole> authorities = new ArrayList<UserRole>();
+        authorities.add(this.role);
+        return authorities;
+    }
+
     public String getPassword() {
         return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return mailAddress;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return enabled;
     }
 
     public void setPassword(String password) {

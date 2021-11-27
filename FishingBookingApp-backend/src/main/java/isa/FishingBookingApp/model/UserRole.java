@@ -1,18 +1,24 @@
 package isa.FishingBookingApp.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import org.springframework.security.core.GrantedAuthority;
+
 import javax.persistence.*;
 
 @Entity
-public class UserRole {
+@Table(name="ROLE")
+public class UserRole implements GrantedAuthority {
+    private static final long serialVersionUID = 1L;
+
     @Id
-    @SequenceGenerator(name = "roleGen", initialValue = 1, allocationSize = 1)
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "roleGen")
-    @Column(name="role_id", unique = true, nullable = false)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name="role_id")
     private Long id;
 
     @Column(name="role_name", unique = true, nullable = false)
     private String name;
 
+    @JsonIgnore
     public Long getId() {
         return id;
     }
@@ -27,5 +33,11 @@ public class UserRole {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    @JsonIgnore
+    @Override
+    public String getAuthority() {
+        return name;
     }
 }
