@@ -49,6 +49,35 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		user.setPassword("asdsad");
 		user.setRole(role1);
 		uRepo.save(user);
+
+		// testiranje cuvanja konkretnog usera
+		CottageOwner co = new CottageOwner();
+		co.setMailAddress("mmmmm@gmail.com");
+		co.setName("Pera");
+		co.setSurname("Peric");
+		co.setPassword("123");
+
+		UserRole cottageOwnerRole = new UserRole();
+		cottageOwnerRole.setName("cottageOwner");
+		urRepo.save(cottageOwnerRole);
+
+		co.setRole(cottageOwnerRole);
+
+		uRepo.save(co);
+
+		BoatOwner bo = new BoatOwner();
+		bo.setMailAddress("ppppp@gmail.com");
+		bo.setName("Mika");
+		bo.setSurname("Mikic");
+		bo.setPassword("123");
+
+		UserRole boatOwnerRole = new UserRole();
+		boatOwnerRole.setName("boatOwner");
+		urRepo.save(boatOwnerRole);
+
+		bo.setRole(boatOwnerRole);
+
+		uRepo.save(bo);
 	}
 
 }
