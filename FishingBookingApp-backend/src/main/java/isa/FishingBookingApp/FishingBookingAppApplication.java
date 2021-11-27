@@ -42,8 +42,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		rFRepo.save(rf);
 
 		UserRole role1 = new UserRole();
-		role1.setName("admin");
-
+		role1.setName("USER");
 		urRepo.save(role1);
 
 		User user = new User();

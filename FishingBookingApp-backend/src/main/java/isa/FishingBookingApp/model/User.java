@@ -47,6 +47,10 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public void setEnabled(boolean enabled) {
+        this.enabled = enabled;
+    }
+
     public Long getId() {
         return id;
     }
