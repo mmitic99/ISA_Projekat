@@ -21,4 +21,9 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
     public List<ReservationEntities> getAll() {
         return reservationEntitiesRepository.findAll();
     }
+
+    @Override
+    public ReservationEntities get(Long id) {
+        return reservationEntitiesRepository.findById(id).orElseGet(null);
+    }
 }
