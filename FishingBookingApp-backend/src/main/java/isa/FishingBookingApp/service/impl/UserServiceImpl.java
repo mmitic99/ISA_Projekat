@@ -52,7 +52,8 @@ public class UserServiceImpl implements UserService {
         UserRole role = userRoleRepository.findByName("USER");
 
         User user = new User();
-        user.setEnabled(false);
+        user.setEnabled(true);
+        user.setVerified(false);
         user.setRole(role);
         user.setMailAddress(newUserDTO.getMailAddress());
         user.setName(newUserDTO.getName());
@@ -66,5 +67,16 @@ public class UserServiceImpl implements UserService {
             emailService.sendVerificationMail(user);
 
         return user;
+    }
+
+    @Override
+    public boolean verifyAccount(Long id) {
+        User user = userRepository.getById(id);
+        if(!user.isVerified()) {
+            user.setVerified(true);
+            userRepository.save(user);
+            return true;
+        }
+        return false;
     }
 }

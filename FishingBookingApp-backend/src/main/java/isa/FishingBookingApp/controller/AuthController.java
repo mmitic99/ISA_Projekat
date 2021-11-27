@@ -11,6 +11,7 @@ import isa.FishingBookingApp.service.UserRoleService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,13 +19,11 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.swing.text.html.HTML;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -76,4 +75,23 @@ public class AuthController {
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
     }
 
+    @GetMapping("/verify/{id}")
+    public ResponseEntity<String> verifyAccount(@PathVariable Long id) {
+        boolean verified = userService.verifyAccount(id);
+        String retVal = "<html> Pozdrav, <br>";
+        if(verified){
+            retVal+="Uspesno ste verifikovali nalog, sada se možete ulogovati na našoj aplikaciji:<br>" +
+                    "<a href=\"http://localhost:4200\">Aplikacija</a>";
+        }
+        else{
+            retVal+="Niste verifikovali nalog, možete se obratiti našem administratoru.<br>";
+        }
+
+        retVal+="</html>";
+
+        HttpHeaders responseHeaders = new HttpHeaders();
+        responseHeaders.setContentType(MediaType.TEXT_HTML);
+
+        return new ResponseEntity<String>(retVal, responseHeaders, HttpStatus.OK);
+    }
 }

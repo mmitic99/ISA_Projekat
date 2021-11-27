@@ -43,6 +43,7 @@ public class User implements UserDetails {
     private UserRole role;
 
     private boolean enabled;
+    private boolean verified;
 
     public User() {
     }
@@ -90,7 +91,7 @@ public class User implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return true;
+        return verified;
     }
 
     @Override
@@ -145,5 +146,13 @@ public class User implements UserDetails {
 
     public void setRole(UserRole role) {
         this.role = role;
+    }
+
+    public boolean isVerified() {
+        return verified;
+    }
+
+    public void setVerified(boolean verified) {
+        this.verified = verified;
     }
 }

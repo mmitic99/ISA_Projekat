@@ -9,4 +9,6 @@ public interface UserService {
     User findByMailAddress(String mailAddress);
 
     User saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException;
+
+    boolean verifyAccount(Long id);
 }
