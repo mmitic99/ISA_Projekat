@@ -1,6 +1,7 @@
 package isa.FishingBookingApp.model;
 
 import javax.persistence.*;
+import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -9,10 +10,10 @@ public class ReservationEntities {
     @Id
     @SequenceGenerator(name = "reservationEntitiesGen", initialValue = 1, allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "reservationEntitiesGen")
-    @Column(name="reservation_id", unique = true, nullable = false)
+    @Column(unique = true, nullable = false)
     private Long id;
 
-    @Column(name="name", nullable = false)
+    @Column(nullable = false)
     private String name;
 
     @ManyToOne(fetch = FetchType.EAGER)
@@ -21,7 +22,15 @@ public class ReservationEntities {
 
     private String promotionalDescription;
 
+    //private Set<String> pictures;
 
+    @OneToMany(mappedBy = "reservationEntity")
+    private Set<SpecialReservation> preDefinedReservations;
+
+    private String rulesOfConduct;
+
+    @OneToMany(mappedBy = "reservationEntity")
+    private Set<AdditionalService> additionalServices;
 
     public ReservationEntities() {
     }
