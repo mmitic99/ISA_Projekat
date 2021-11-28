@@ -25,9 +25,7 @@ public class ReservationEntitiesController {
     }
 
     @GetMapping(value="/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('ADMIN')")
     public ReservationEntities getOne(@PathVariable Long id) {
-        System.out.println(id);
         return reservationEntitiesService.get(id);
     }
 }

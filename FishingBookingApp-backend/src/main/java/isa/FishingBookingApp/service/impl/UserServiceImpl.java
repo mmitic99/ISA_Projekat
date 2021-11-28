@@ -39,7 +39,7 @@ public class UserServiceImpl implements UserService {
     public RegularUser saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException {
         Address address = saveUserAdress(newUserDTO);
         RegularUser user = new RegularUser(createUser(newUserDTO, address));
-        UserRole role = userRoleRepository.findByName("USER");
+        UserRole role = userRoleRepository.findByName("ROLE_USER");
         user.setRole(role);
 
         user = this.userRepository.save(user);
@@ -99,7 +99,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean verifyAccount(Long id) {
         User user = userRepository.getById(id);
-        if(!user.isVerified() && user.getRole().getName().equals("USER")) {
+        if(!user.isVerified() && user.getRole().getName().equals("ROLE_USER")) {
             user.setVerified(true);
             userRepository.save(user);
             return true;

@@ -19,12 +19,19 @@
     <div class="navbar-end">
       <div class="navbar-item">
         <div class="buttons">
-          <a class="button is-light" [routerLink]="['/login']">
-            Prijavi se
-          </a>
-          <a class="button is-primary" [routerLink]="['/registration']">
-            <strong>Registruj se</strong>
-          </a>
+          <span *ngIf="this.authService.getRole() == null">
+            <a class="button is-light" [routerLink]="['/login']">
+              Prijavi se
+            </a>
+            <a class="button is-primary" [routerLink]="['/registration']">
+              <strong>Registruj se</strong>
+            </a>
+          </span>
+          <span *ngIf="this.authService.getRole() != null">
+            <a class="button is-light" (click)="this.authService.logout()">
+              Odjavi se
+            </a>
+          </span>
         </div>
       </div>
     </div>
