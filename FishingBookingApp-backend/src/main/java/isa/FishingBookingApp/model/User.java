@@ -48,6 +48,19 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(User user) {
+        this.id = user.id;
+        this.mailAddress = user.mailAddress;
+        this.password = user.password;
+        this.name = user.name;
+        this.surname = user.surname;
+        this.mobileNumber = user.mobileNumber;
+        this.address = user.address;
+        this.role = user.role;
+        this.enabled = user.enabled;
+        this.verified = user.verified;
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

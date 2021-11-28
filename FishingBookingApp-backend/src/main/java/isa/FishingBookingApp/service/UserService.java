@@ -11,5 +11,7 @@ public interface UserService {
 
     RegularUser saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException;
 
+    User saveSpecificUser(UserFromRequestDTO newUserDTO);
+
     boolean verifyAccount(Long id);
 }

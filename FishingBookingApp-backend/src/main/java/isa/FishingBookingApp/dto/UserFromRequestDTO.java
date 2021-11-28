@@ -19,6 +19,16 @@ public class UserFromRequestDTO {
     private String city;
     private String postalCode;
     private String country;
+    private String userRole;
+    private String explanationOfReg;
+
+    public String getUserRole() {
+        return userRole;
+    }
+
+    public void setUserRole(String userRole) {
+        this.userRole = userRole;
+    }
 
     public String getMailAddress() {
         return mailAddress;
@@ -106,5 +116,13 @@ public class UserFromRequestDTO {
 
     public void setCountry(String country) {
         this.country = country;
+    }
+
+    public String getExplanationOfReg() {
+        return explanationOfReg;
+    }
+
+    public void setExplanationOfReg(String explanationOfReg) {
+        this.explanationOfReg = explanationOfReg;
     }
 }
