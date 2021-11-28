@@ -5,6 +5,7 @@ import isa.FishingBookingApp.dto.UserFromRequestDTO;
 import isa.FishingBookingApp.dto.UserTokenState;
 import isa.FishingBookingApp.exception.ResourceConflictException;
 import isa.FishingBookingApp.model.Address;
+import isa.FishingBookingApp.model.RegularUser;
 import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.model.UserRole;
 import isa.FishingBookingApp.service.UserRoleService;

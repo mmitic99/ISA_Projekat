@@ -2,6 +2,7 @@ package isa.FishingBookingApp.service.impl;
 
 import isa.FishingBookingApp.dto.UserFromRequestDTO;
 import isa.FishingBookingApp.model.Address;
+import isa.FishingBookingApp.model.RegularUser;
 import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.model.UserRole;
 import isa.FishingBookingApp.repository.AddressRepository;
@@ -38,7 +39,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException {
+    public RegularUser saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException {
 
         Address address = new Address();
         address.setCountry(newUserDTO.getCountry());
@@ -51,7 +52,7 @@ public class UserServiceImpl implements UserService {
 
         UserRole role = userRoleRepository.findByName("USER");
 
-        User user = new User();
+        RegularUser user = new RegularUser();
         user.setEnabled(true);
         user.setVerified(false);
         user.setRole(role);

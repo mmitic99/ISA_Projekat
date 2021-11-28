@@ -1,9 +1,6 @@
 package isa.FishingBookingApp;
 
-import isa.FishingBookingApp.model.ReservationEntities;
-import isa.FishingBookingApp.model.Address;
-import isa.FishingBookingApp.model.User;
-import isa.FishingBookingApp.model.UserRole;
+import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.AddressRepository;
 import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
 import isa.FishingBookingApp.repository.UserRepository;
@@ -45,7 +42,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		role1.setName("USER");
 		urRepo.save(role1);
 
-		User user = new User();
+		RegularUser user = new RegularUser();
 		user.setMailAddress("asdsad");
 		user.setName("asdsad");
 		user.setSurname("asdsad");
