@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
 
 import { UnauthorizedUserRoutingModule } from './unauthorized-user-routing.module';
 import { HomeComponent } from './home/home.component';
@@ -17,6 +18,7 @@ import { RegistrationComponent } from './registration/registration.component';
   ],
   imports: [
     CommonModule,
+    FormsModule,
     UnauthorizedUserRoutingModule
   ]
 })
