@@ -1,10 +1,7 @@
 package isa.FishingBookingApp;
 
 import isa.FishingBookingApp.model.*;
-import isa.FishingBookingApp.repository.AddressRepository;
-import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
-import isa.FishingBookingApp.repository.UserRepository;
-import isa.FishingBookingApp.repository.UserRoleRepository;
+import isa.FishingBookingApp.repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
@@ -21,6 +18,8 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 	private UserRepository uRepo;
 	@Autowired
 	private UserRoleRepository urRepo;
+	@Autowired
+	private CottageRepository cottageRepo;
 
 	public static void main(String[] args) {
 		SpringApplication.run(FishingBookingAppApplication.class, args);
@@ -78,6 +77,24 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		bo.setRole(boatOwnerRole);
 
 		uRepo.save(bo);
+
+		// pravljenje vikendice
+		Address cottageAdress = new Address();
+		cottageAdress.setCountry("Srbija");
+		cottageAdress.setCity("Nis");
+		cottageAdress.setNumber("15a");
+		cottageAdress.setStreet("Dobra ulica");
+		aRepo.save(cottageAdress);
+
+		Cottage cottage = new Cottage();
+		cottage.setPromotionalDescription("Veoma opsiran promotivni opis");
+		cottage.setName("Sunce");
+		cottage.setCottageOwner(co);
+		cottage.setPrice(2000);
+		cottage.setAddress(cottageAdress);
+		cottage.setBedsPerRoom(3);
+		cottage.setNumberOfRooms(4);
+		cottageRepo.save(cottage);
 	}
 
 }

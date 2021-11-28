@@ -2,7 +2,6 @@ package isa.FishingBookingApp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -14,9 +13,9 @@ public class Cottage extends ReservationEntities {
     @ManyToOne(fetch = FetchType.LAZY)
     private CottageOwner cottageOwner;
 
-    private int roomNumber;
+    private int numberOfRooms;
 
-    private int bedNumber;
+    private int bedsPerRoom;
 
     private double price;
 
@@ -28,20 +27,20 @@ public class Cottage extends ReservationEntities {
         this.cottageOwner = cottageOwner;
     }
 
-    public int getRoomNumber() {
-        return roomNumber;
+    public int getNumberOfRooms() {
+        return numberOfRooms;
     }
 
-    public void setRoomNumber(int roomNumber) {
-        this.roomNumber = roomNumber;
+    public void setNumberOfRooms(int numberOfRooms) {
+        this.numberOfRooms = numberOfRooms;
     }
 
-    public int getBedNumber() {
-        return bedNumber;
+    public int getBedsPerRoom() {
+        return bedsPerRoom;
     }
 
-    public void setBedNumber(int bedNumber) {
-        this.bedNumber = bedNumber;
+    public void setBedsPerRoom(int bedsPerRoom) {
+        this.bedsPerRoom = bedsPerRoom;
     }
 
     public double getPrice() {

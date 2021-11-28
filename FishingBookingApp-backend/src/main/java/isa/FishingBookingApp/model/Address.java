@@ -23,6 +23,16 @@ public class Address {
     public Address() {
     }
 
+    public Address(double latitude, double longitude, String street, String number, String city, String postalCode, String country) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+        this.street = street;
+        this.number = number;
+        this.city = city;
+        this.postalCode = postalCode;
+        this.country = country;
+    }
+
     public Long getAddress_id() {
         return address_id;
     }
