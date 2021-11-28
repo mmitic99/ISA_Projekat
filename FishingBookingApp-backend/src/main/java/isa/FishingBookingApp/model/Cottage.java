@@ -10,7 +10,7 @@ public class Cottage extends ReservationEntities {
     public Cottage() {
     }
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private CottageOwner cottageOwner;
 
     private int numberOfRooms;

@@ -10,9 +10,6 @@ import java.util.Set;
 @Table(name = "cottage_owner_user")
 public class CottageOwner extends User {
 
-    @OneToMany(mappedBy = "cottageOwner", fetch = FetchType.LAZY)
-    private Set<Cottage> ownedCottages;
-
     private String explanationOfReg;
 
     public CottageOwner() {
@@ -21,14 +18,6 @@ public class CottageOwner extends User {
 
     public CottageOwner(User user) {
         super(user);
-    }
-
-    public Set<Cottage> getOwnedCottages() {
-        return ownedCottages;
-    }
-
-    public void setOwnedCottages(Set<Cottage> ownedCottages) {
-        this.ownedCottages = ownedCottages;
     }
 
     public String getExplanationOfReg() {
