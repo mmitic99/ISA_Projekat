@@ -1,1 +1,27 @@
-<p>login works!</p>
+<section class="hero is-medium">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-4 is-offset-4">
+                <h3 class="title has-text-grey">Prijavljivanje</h3>
+                <p class="subtitle has-text-grey">Molimo Vas da se prijavite, kako biste pristupili našem sistemu.</p>
+                <div class="box">
+                    <form ngNativeValidate>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" type="email" placeholder="Vaša email adresa" autofocus="" name="mailAddress" [(ngModel)]="loginUser.mailAddress" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <div class="control">
+                                <input class="input is-large" type="password" placeholder="Vaša lozinka" name="password" [(ngModel)]="loginUser.password" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <button class="button is-block is-info is-large is-fullwidth" (click)="login()">Prijavi se</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -36,29 +36,35 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenState> createToken(@RequestBody LoginUser loginUser, HttpServletResponse response) {
+    public ResponseEntity<Object> createToken(@RequestBody LoginUser loginUser, HttpServletResponse response) {
 
-        Authentication authentication = authenificationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getMailAddress(), loginUser.getPassword()));
+        try {
+            Authentication authentication = authenificationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getMailAddress(), loginUser.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            User user = (User) authentication.getPrincipal();
+            String jwt = tokenUtils.generateToken(user.getUsername());
+            int expiresIn = tokenUtils.getExpiredIn();
 
-        User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
-        int expiresIn = tokenUtils.getExpiredIn();
+            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody UserFromRequestDTO userFromRequestDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Object> signUp(@RequestBody UserFromRequestDTO userFromRequestDTO, UriComponentsBuilder ucBuilder) {
 
         User existUser = this.userService.findByMailAddress(userFromRequestDTO.getMailAddress());
         if (existUser != null) {
-            throw new ResourceConflictException(userFromRequestDTO.getMailAddress(), "Email address already exists");
+            return new ResponseEntity<>("Email address already exists", HttpStatus.BAD_REQUEST);
         }
 
         if (!userFromRequestDTO.getPassword1().equals(userFromRequestDTO.getPassword2())) {
-            throw new ResourceConflictException("", "Passwords not match");
+            return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
         }
 
         User newUser = null;
@@ -71,7 +77,7 @@ public class AuthController {
                 newUser = userService.saveNewUser(userFromRequestDTO);
             }
         } catch (Exception e) {
-            throw new ResourceConflictException("", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
