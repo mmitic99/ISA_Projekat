@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Renderer2 } from '@angular/core';
+import { AuthService } from '../unauthorized-user/service/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -8,7 +9,7 @@ import { Renderer2 } from '@angular/core';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private renderer:Renderer2) { }
+  constructor(public authService: AuthService) { }
 
   ngOnInit(): void {
   }

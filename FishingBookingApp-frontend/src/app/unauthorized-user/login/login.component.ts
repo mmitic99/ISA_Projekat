@@ -16,16 +16,20 @@ export class LoginComponent implements OnInit {
   loginUser = new LoginUser("", "")
 
   ngOnInit(): void {
+    this.loginUser = new LoginUser("", "")
   }
 
   login(): void{
     this.authService.login(this.loginUser).subscribe(
       (data) =>{
           this.loginData = data;
+          console.log(data)
           localStorage.setItem('accessToken', this.loginData.accessToken)
+          localStorage.setItem('role', this.loginData.role)
       },
       (error) => {
         this.toastr.error(error.error)
+        console.log(error)
       }
     )
   }
