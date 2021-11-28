@@ -4,11 +4,7 @@ import isa.FishingBookingApp.dto.LoginUser;
 import isa.FishingBookingApp.dto.UserFromRequestDTO;
 import isa.FishingBookingApp.dto.UserTokenState;
 import isa.FishingBookingApp.exception.ResourceConflictException;
-import isa.FishingBookingApp.model.Address;
-import isa.FishingBookingApp.model.RegularUser;
 import isa.FishingBookingApp.model.User;
-import isa.FishingBookingApp.model.UserRole;
-import isa.FishingBookingApp.service.UserRoleService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.HTML;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -68,7 +63,13 @@ public class AuthController {
 
         User newUser = null;
         try {
-            newUser = userService.saveNewUser(userFromRequestDTO);
+            if (userFromRequestDTO.getUserRole() != null &&
+                    (userFromRequestDTO.getUserRole().equals("cottageOwner") || userFromRequestDTO.getUserRole().equals("boatOwner"))) {
+                newUser = userService.saveSpecificUser(userFromRequestDTO);
+            }
+            else {
+                newUser = userService.saveNewUser(userFromRequestDTO);
+            }
         } catch (Exception e) {
             throw new ResourceConflictException("", e.getMessage());
         }
@@ -80,15 +81,14 @@ public class AuthController {
     public ResponseEntity<String> verifyAccount(@PathVariable Long id) {
         boolean verified = userService.verifyAccount(id);
         String retVal = "<html> Pozdrav, <br>";
-        if(verified){
-            retVal+="Uspesno ste verifikovali nalog, sada se možete ulogovati na našoj aplikaciji:<br>" +
+        if (verified) {
+            retVal += "Uspesno ste verifikovali nalog, sada se možete ulogovati na našoj aplikaciji:<br>" +
                     "<a href=\"http://localhost:4200\">Aplikacija</a>";
-        }
-        else{
-            retVal+="Niste verifikovali nalog, možete se obratiti našem administratoru.<br>";
+        } else {
+            retVal += "Niste verifikovali nalog, možete se obratiti našem administratoru.<br>";
         }
 
-        retVal+="</html>";
+        retVal += "</html>";
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_HTML);

@@ -1,10 +1,7 @@
 package isa.FishingBookingApp.service.impl;
 
 import isa.FishingBookingApp.dto.UserFromRequestDTO;
-import isa.FishingBookingApp.model.Address;
-import isa.FishingBookingApp.model.RegularUser;
-import isa.FishingBookingApp.model.User;
-import isa.FishingBookingApp.model.UserRole;
+import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.AddressRepository;
 import isa.FishingBookingApp.repository.UserRepository;
 import isa.FishingBookingApp.repository.UserRoleRepository;
@@ -40,22 +37,43 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public RegularUser saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException {
-
-        Address address = new Address();
-        address.setCountry(newUserDTO.getCountry());
-        address.setCity(newUserDTO.getCity());
-        address.setNumber(newUserDTO.getNumber());
-        address.setStreet(newUserDTO.getStreet());
-        address.setPostalCode(newUserDTO.getPostalCode());
-
-        addressRepository.save(address);
-
+        Address address = saveUserAdress(newUserDTO);
+        RegularUser user = new RegularUser(createUser(newUserDTO, address));
         UserRole role = userRoleRepository.findByName("USER");
+        user.setRole(role);
 
-        RegularUser user = new RegularUser();
+        user = this.userRepository.save(user);
+        if(user!= null)
+            emailService.sendVerificationMail(user);
+
+        return user;
+    }
+
+    public User saveSpecificUser(UserFromRequestDTO newUserDTO) {
+        Address address = saveUserAdress(newUserDTO);
+        UserRole role = userRoleRepository.findByName(newUserDTO.getUserRole());
+        if (role == null) return null;
+
+        User user = createUser(newUserDTO, address);
+        user.setRole(role);
+        if (role.getName().equals("cottageOwner")){
+            CottageOwner cottageOwner = new CottageOwner(user);
+            cottageOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
+            return this.userRepository.save(cottageOwner);
+        }
+        else if (role.getName().equals("boatOwner")){
+            BoatOwner boatOwner = new BoatOwner(user);
+            boatOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
+            return this.userRepository.save(boatOwner);
+        }
+
+        return null;
+    }
+
+    public User createUser(UserFromRequestDTO newUserDTO, Address address) {
+        User user = new User();
         user.setEnabled(true);
         user.setVerified(false);
-        user.setRole(role);
         user.setMailAddress(newUserDTO.getMailAddress());
         user.setName(newUserDTO.getName());
         user.setSurname(newUserDTO.getSurname());
@@ -63,11 +81,19 @@ public class UserServiceImpl implements UserService {
         user.setMobileNumber(newUserDTO.getMobileNumber());
         user.setAddress(address);
 
-        user = this.userRepository.save(user);
-        if(user!= null)
-            emailService.sendVerificationMail(user);
-
         return user;
+    }
+
+    private Address saveUserAdress(UserFromRequestDTO newUserDTO){
+        Address address = new Address();
+        address.setCountry(newUserDTO.getCountry());
+        address.setCity(newUserDTO.getCity());
+        address.setNumber(newUserDTO.getNumber());
+        address.setStreet(newUserDTO.getStreet());
+        address.setPostalCode(newUserDTO.getPostalCode());
+        addressRepository.save(address);
+
+        return address;
     }
 
     @Override
