@@ -1,9 +1,8 @@
 package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.LoginUser;
-import isa.FishingBookingApp.dto.UserFromRequestDTO;
+import isa.FishingBookingApp.dto.UserDTO;
 import isa.FishingBookingApp.dto.UserTokenState;
-import isa.FishingBookingApp.exception.ResourceConflictException;
 import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
@@ -12,7 +11,6 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -57,25 +55,25 @@ public class AuthController {
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<Object> signUp(@RequestBody UserFromRequestDTO userFromRequestDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Object> signUp(@RequestBody UserDTO userDTO, UriComponentsBuilder ucBuilder) {
 
-        User existUser = this.userService.findByMailAddress(userFromRequestDTO.getMailAddress());
+        User existUser = this.userService.findByMailAddress(userDTO.getMailAddress());
         if (existUser != null) {
             return new ResponseEntity<>("Email address already exists", HttpStatus.BAD_REQUEST);
         }
 
-        if (!userFromRequestDTO.getPassword1().equals(userFromRequestDTO.getPassword2())) {
+        if (!userDTO.getPassword1().equals(userDTO.getPassword2())) {
             return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
         }
 
         User newUser = null;
         try {
-            if (userFromRequestDTO.getUserRole() != null &&
-                    (userFromRequestDTO.getUserRole().equals("cottageOwner") || userFromRequestDTO.getUserRole().equals("boatOwner"))) {
-                newUser = userService.saveSpecificUser(userFromRequestDTO);
+            if (userDTO.getUserRole() != null &&
+                    (userDTO.getUserRole().equals("cottageOwner") || userDTO.getUserRole().equals("boatOwner"))) {
+                newUser = userService.saveSpecificUser(userDTO);
             }
             else {
-                newUser = userService.saveNewUser(userFromRequestDTO);
+                newUser = userService.saveNewUser(userDTO);
             }
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);

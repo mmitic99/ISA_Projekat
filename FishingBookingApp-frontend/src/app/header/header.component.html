@@ -8,9 +8,13 @@
   </div>
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <a class="navbar-item" [routerLink]="['']">
-        Početna
-      </a>
+      <span *ngIf="this.authService.getRole() == null">
+        <a class="navbar-item" [routerLink]="['']">
+          Početna
+        </a>
+      </span>
+
+
 
       <!--  za ostale elemente koristiti: https://bulma.io/documentation/components/navbar/#basic-navbar  -->
 
@@ -27,8 +31,13 @@
               <strong>Registruj se</strong>
             </a>
           </span>
+          <span *ngIf="this.authService.getRole() == 'ROLE_USER'">
+            <a class="button is-info is-light" [routerLink]="['/user_profile']">
+              Profil
+            </a>
+          </span>
           <span *ngIf="this.authService.getRole() != null">
-            <a class="button is-light" (click)="this.authService.logout()">
+            <a class="button is-danger is-light" (click)="this.authService.logout()">
               Odjavi se
             </a>
           </span>

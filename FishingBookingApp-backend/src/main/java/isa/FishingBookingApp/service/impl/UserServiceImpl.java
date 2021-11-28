@@ -1,6 +1,6 @@
 package isa.FishingBookingApp.service.impl;
 
-import isa.FishingBookingApp.dto.UserFromRequestDTO;
+import isa.FishingBookingApp.dto.UserDTO;
 import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.AddressRepository;
 import isa.FishingBookingApp.repository.UserRepository;
@@ -36,7 +36,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public RegularUser saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException {
+    public RegularUser saveNewUser(UserDTO newUserDTO) throws InterruptedException, MessagingException {
         Address address = saveUserAdress(newUserDTO);
         RegularUser user = new RegularUser(createUser(newUserDTO, address));
         UserRole role = userRoleRepository.findByName("ROLE_USER");
@@ -49,7 +49,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    public User saveSpecificUser(UserFromRequestDTO newUserDTO) {
+    public User saveSpecificUser(UserDTO newUserDTO) {
         Address address = saveUserAdress(newUserDTO);
         UserRole role = userRoleRepository.findByName(newUserDTO.getUserRole());
         if (role == null) return null;
@@ -70,7 +70,7 @@ public class UserServiceImpl implements UserService {
         return null;
     }
 
-    public User createUser(UserFromRequestDTO newUserDTO, Address address) {
+    public User createUser(UserDTO newUserDTO, Address address) {
         User user = new User();
         user.setEnabled(true);
         user.setVerified(false);
@@ -84,7 +84,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private Address saveUserAdress(UserFromRequestDTO newUserDTO){
+    private Address saveUserAdress(UserDTO newUserDTO){
         Address address = new Address();
         address.setCountry(newUserDTO.getCountry());
         address.setCity(newUserDTO.getCity());
@@ -108,7 +108,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User editUser(UserFromRequestDTO userDTO) {
+    public User editUser(UserDTO userDTO) {
         User user = findByMailAddress(userDTO.getMailAddress());
         user.setName(userDTO.getName());
         user.setSurname(userDTO.getSurname());
@@ -118,7 +118,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private void updateAddress(UserFromRequestDTO userDTO, User user) {
+    private void updateAddress(UserDTO userDTO, User user) {
         Address address = addressRepository.getById(user.getAddress().getAddress_id());
         if(address == null){
             address = new Address();

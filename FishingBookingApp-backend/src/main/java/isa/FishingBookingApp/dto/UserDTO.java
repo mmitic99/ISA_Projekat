@@ -1,13 +1,14 @@
 package isa.FishingBookingApp.dto;
 
 import isa.FishingBookingApp.model.Address;
+import isa.FishingBookingApp.model.User;
 
 import javax.persistence.Column;
 import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-public class UserFromRequestDTO {
+public class UserDTO {
     private String mailAddress;
     private String password1;
     private String password2;
@@ -21,6 +22,22 @@ public class UserFromRequestDTO {
     private String country;
     private String userRole;
     private String explanationOfReg;
+
+    public UserDTO() {
+    }
+
+    public UserDTO(User user) {
+        this.mailAddress = user.getMailAddress();
+        this.name = user.getName();
+        this.surname = user.getSurname();
+        this.mobileNumber = user.getMobileNumber();
+        this.street = user.getAddress().getStreet();
+        this.number = user.getAddress().getNumber();
+        this.city = user.getAddress().getCity();
+        this.postalCode = user.getAddress().getPostalCode();
+        this.country = user.getAddress().getCountry();
+        this.userRole = user.getRole().getName();
+    }
 
     public String getUserRole() {
         return userRole;
