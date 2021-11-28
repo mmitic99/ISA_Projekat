@@ -14,4 +14,6 @@ public interface UserService {
     User saveSpecificUser(UserFromRequestDTO newUserDTO);
 
     boolean verifyAccount(Long id);
+
+    User editUser(UserFromRequestDTO userDTO);
 }

@@ -106,4 +106,28 @@ public class UserServiceImpl implements UserService {
         }
         return false;
     }
+
+    @Override
+    public User editUser(UserFromRequestDTO userDTO) {
+        User user = findByMailAddress(userDTO.getMailAddress());
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setMobileNumber(userDTO.getMobileNumber());
+        userRepository.save(user);
+        updateAddress(userDTO, user);
+        return user;
+    }
+
+    private void updateAddress(UserFromRequestDTO userDTO, User user) {
+        Address address = addressRepository.getById(user.getAddress().getAddress_id());
+        if(address == null){
+            address = new Address();
+        }
+        address.setStreet(userDTO.getStreet());
+        address.setNumber(userDTO.getNumber());
+        address.setCity(userDTO.getCity());
+        address.setPostalCode(userDTO.getPostalCode());
+        address.setCountry(userDTO.getCountry());
+        addressRepository.save(address);
+    }
 }
