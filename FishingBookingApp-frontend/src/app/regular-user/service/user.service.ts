@@ -22,6 +22,6 @@ export class UserService {
       headers: new HttpHeaders()
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
     }
-    return this.http.put<any>(serverPortApi + 'users/editUser',editUser);
+    return this.http.post(serverPortApi + 'users/editUser',editUser, header);
   }
 }

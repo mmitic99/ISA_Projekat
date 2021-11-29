@@ -24,7 +24,7 @@ public class UserController {
         this.tokenUtils = tokenUtils;
     }
 
-    @GetMapping("getUser")
+    @GetMapping(value="getUser")
     @PreAuthorize("hasRole('USER')")
     public UserDTO getUser(HttpServletRequest request){
         String token = tokenUtils.getAuthHeaderFromHeader(request);
@@ -32,7 +32,8 @@ public class UserController {
         return new UserDTO(userService.findByMailAddress(mailAddress));
     }
 
-    @PutMapping("editUser")
+    // treba put, ali angular ne zeli da posalje put zahtev
+    @PostMapping(value="editUser")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> editUser(@RequestBody UserDTO user, HttpServletRequest request){
         String token = tokenUtils.getAuthHeaderFromHeader(request);
