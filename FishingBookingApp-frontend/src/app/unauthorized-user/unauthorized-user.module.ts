@@ -7,6 +7,7 @@ import { HomeComponent } from './home/home.component';
 import { ReservationEntityComponent } from './reservation-entity/reservation-entity.component';
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
+import { SpecialRegistrationComponent } from './special-registration/special-registration.component';
 
 
 @NgModule({
@@ -14,7 +15,8 @@ import { RegistrationComponent } from './registration/registration.component';
     HomeComponent,
     ReservationEntityComponent,
     LoginComponent,
-    RegistrationComponent
+    RegistrationComponent,
+    SpecialRegistrationComponent
   ],
   imports: [
     CommonModule,
