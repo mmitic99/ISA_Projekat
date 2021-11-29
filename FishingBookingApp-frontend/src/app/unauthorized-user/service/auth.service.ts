@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { serverPortApi, serverPortAuth } from 'src/app/app.consts';
 import { LoginUser } from '../login/loginUser';
 import { RegistrationUser } from '../registration/registrationUser';
+import { SpecialRegistrationUser } from '../special-registration/specialRegistrationUser';
 
 @Injectable({
   providedIn: 'root'
@@ -23,6 +24,10 @@ export class AuthService {
   }
 
   register(registrationUser: RegistrationUser) {
+    return this.http.post(serverPortAuth + 'signup', registrationUser);
+  }
+
+  specialRegister(registrationUser: SpecialRegistrationUser) {
     return this.http.post(serverPortAuth + 'signup', registrationUser);
   }
 

@@ -69,7 +69,7 @@ public class AuthController {
         User newUser = null;
         try {
             if (userDTO.getUserRole() != null &&
-                    (userDTO.getUserRole().equals("cottageOwner") || userDTO.getUserRole().equals("boatOwner"))) {
+                    (userDTO.getUserRole().equals("ROLE_cottageOwner") || userDTO.getUserRole().equals("ROLE_boatOwner"))) {
                 newUser = userService.saveSpecificUser(userDTO);
             }
             else {
