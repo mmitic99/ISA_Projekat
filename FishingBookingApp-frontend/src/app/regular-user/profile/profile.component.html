@@ -4,7 +4,7 @@
             <div class="column is-6 is-offset-3">
                 <h3 class="title has-text-grey">Izmena profila</h3>
                 <div class="box">
-                    <form ngNativeValidate>
+                    <form ngNativeValidate novalidate #form="ngForm">
                         <div class="field">
                             <label class="label">Email adresa</label>
                             <div class="control">
@@ -50,7 +50,9 @@
                         <div class="field">
                             <label class="label">Broj telefona</label>
                             <div class="control">
-                                <input class="input" type="tel" placeholder="Broj telefona" name="mobileNumber"
+                                <input class="input" type="tel" placeholder="+123456789" name="mobileNumber" pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
+                                2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
+                                4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}"
                                     oninvalid="setCustomValidity('Molimo Vas unesite broj u formatu: +123456789')"
                                     [(ngModel)]="editUser.mobileNumber" required>
                             </div>
@@ -83,7 +85,7 @@
                         <div class="field">
                             <label class="label">Poštanski broj</label>
                             <div class="control">
-                                <input class="input" type="text" placeholder="Poštanski broj" name="postalCode"
+                                <input class="input" type="text" placeholder="12345" name="postalCode"
                                 oninvalid="setCustomValidity('Molimo Vas unesite poštanski broj u formatu: 00000')"
                                     [(ngModel)]="editUser.postalCode" required>
                             </div>
@@ -100,7 +102,7 @@
 
 
                         <br>
-                        <button class="button is-block is-info is-large is-fullwidth" (click)="edit()">Registruj se</button>
+                        <button class="button is-block is-info is-large is-fullwidth" (click)="edit()" [disabled]="form.invalid">Izmeni profila</button>
                     </form>
                 </div>
             </div>
