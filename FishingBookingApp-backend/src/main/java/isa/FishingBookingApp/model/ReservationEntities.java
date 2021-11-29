@@ -35,6 +35,15 @@ public class ReservationEntities {
     public ReservationEntities() {
     }
 
+    public ReservationEntities(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices) {
+        this.name = name;
+        this.address = address;
+        this.promotionalDescription = promotionalDescription;
+        this.preDefinedReservations = preDefinedReservations;
+        this.rulesOfConduct = rulesOfConduct;
+        this.additionalServices = additionalServices;
+    }
+
     public Long getId() {
         return id;
     }

@@ -3,11 +3,20 @@ package isa.FishingBookingApp.model;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import java.util.Set;
 
 @Entity
 public class Cottage extends ReservationEntities {
 
     public Cottage() {
+    }
+
+    public Cottage(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, CottageOwner cottageOwner, int numberOfRooms, int bedsPerRoom, double price) {
+        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices);
+        this.cottageOwner = cottageOwner;
+        this.numberOfRooms = numberOfRooms;
+        this.bedsPerRoom = bedsPerRoom;
+        this.price = price;
     }
 
     @ManyToOne

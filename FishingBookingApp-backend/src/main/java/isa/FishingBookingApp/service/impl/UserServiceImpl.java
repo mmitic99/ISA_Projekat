@@ -56,12 +56,12 @@ public class UserServiceImpl implements UserService {
 
         User user = createUser(newUserDTO, address);
         user.setRole(role);
-        if (role.getName().equals("cottageOwner")){
+        if (role.getName().equals("ROLE_cottageOwner")){
             CottageOwner cottageOwner = new CottageOwner(user);
             cottageOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
             return this.userRepository.save(cottageOwner);
         }
-        else if (role.getName().equals("boatOwner")){
+        else if (role.getName().equals("ROLE_boatOwner")){
             BoatOwner boatOwner = new BoatOwner(user);
             boatOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
             return this.userRepository.save(boatOwner);
