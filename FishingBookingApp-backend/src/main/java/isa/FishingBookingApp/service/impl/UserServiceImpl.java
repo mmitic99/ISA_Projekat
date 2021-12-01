@@ -1,9 +1,7 @@
 package isa.FishingBookingApp.service.impl;
 
-import isa.FishingBookingApp.dto.UserFromRequestDTO;
-import isa.FishingBookingApp.model.Address;
-import isa.FishingBookingApp.model.User;
-import isa.FishingBookingApp.model.UserRole;
+import isa.FishingBookingApp.dto.UserDTO;
+import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.AddressRepository;
 import isa.FishingBookingApp.repository.UserRepository;
 import isa.FishingBookingApp.repository.UserRoleRepository;
@@ -38,29 +36,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User saveNewUser(UserFromRequestDTO newUserDTO) throws InterruptedException, MessagingException {
-
-        Address address = new Address();
-        address.setCountry(newUserDTO.getCountry());
-        address.setCity(newUserDTO.getCity());
-        address.setNumber(newUserDTO.getNumber());
-        address.setStreet(newUserDTO.getStreet());
-        address.setPostalCode(newUserDTO.getPostalCode());
-
-        addressRepository.save(address);
-
-        UserRole role = userRoleRepository.findByName("USER");
-
-        User user = new User();
-        user.setEnabled(true);
-        user.setVerified(false);
+    public RegularUser saveNewUser(UserDTO newUserDTO) throws InterruptedException, MessagingException {
+        Address address = saveUserAdress(newUserDTO);
+        RegularUser user = new RegularUser(createUser(newUserDTO, address));
+        UserRole role = userRoleRepository.findByName("ROLE_USER");
         user.setRole(role);
-        user.setMailAddress(newUserDTO.getMailAddress());
-        user.setName(newUserDTO.getName());
-        user.setSurname(newUserDTO.getSurname());
-        user.setPassword(passwordEncoder.encode(newUserDTO.getPassword1()));
-        user.setMobileNumber(newUserDTO.getMobileNumber());
-        user.setAddress(address);
 
         user = this.userRepository.save(user);
         if(user!= null)
@@ -69,14 +49,85 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    public User saveSpecificUser(UserDTO newUserDTO) {
+        Address address = saveUserAdress(newUserDTO);
+        UserRole role = userRoleRepository.findByName(newUserDTO.getUserRole());
+        if (role == null) return null;
+
+        User user = createUser(newUserDTO, address);
+        user.setRole(role);
+        if (role.getName().equals("ROLE_cottageOwner")){
+            CottageOwner cottageOwner = new CottageOwner(user);
+            cottageOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
+            return this.userRepository.save(cottageOwner);
+        }
+        else if (role.getName().equals("ROLE_boatOwner")){
+            BoatOwner boatOwner = new BoatOwner(user);
+            boatOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
+            return this.userRepository.save(boatOwner);
+        }
+
+        return null;
+    }
+
+    public User createUser(UserDTO newUserDTO, Address address) {
+        User user = new User();
+        user.setEnabled(true);
+        user.setVerified(false);
+        user.setMailAddress(newUserDTO.getMailAddress());
+        user.setName(newUserDTO.getName());
+        user.setSurname(newUserDTO.getSurname());
+        user.setPassword(passwordEncoder.encode(newUserDTO.getPassword1()));
+        user.setMobileNumber(newUserDTO.getMobileNumber());
+        user.setAddress(address);
+
+        return user;
+    }
+
+    private Address saveUserAdress(UserDTO newUserDTO){
+        Address address = new Address();
+        address.setCountry(newUserDTO.getCountry());
+        address.setCity(newUserDTO.getCity());
+        address.setNumber(newUserDTO.getNumber());
+        address.setStreet(newUserDTO.getStreet());
+        address.setPostalCode(newUserDTO.getPostalCode());
+        addressRepository.save(address);
+
+        return address;
+    }
+
     @Override
     public boolean verifyAccount(Long id) {
         User user = userRepository.getById(id);
-        if(!user.isVerified()) {
+        if(!user.isVerified() && user.getRole().getName().equals("ROLE_USER")) {
             user.setVerified(true);
             userRepository.save(user);
             return true;
         }
         return false;
+    }
+
+    @Override
+    public User editUser(UserDTO userDTO) {
+        User user = findByMailAddress(userDTO.getMailAddress());
+        user.setName(userDTO.getName());
+        user.setSurname(userDTO.getSurname());
+        user.setMobileNumber(userDTO.getMobileNumber());
+        userRepository.save(user);
+        updateAddress(userDTO, user);
+        return user;
+    }
+
+    private void updateAddress(UserDTO userDTO, User user) {
+        Address address = addressRepository.getById(user.getAddress().getAddress_id());
+        if(address == null){
+            address = new Address();
+        }
+        address.setStreet(userDTO.getStreet());
+        address.setNumber(userDTO.getNumber());
+        address.setCity(userDTO.getCity());
+        address.setPostalCode(userDTO.getPostalCode());
+        address.setCountry(userDTO.getCountry());
+        addressRepository.save(address);
     }
 }

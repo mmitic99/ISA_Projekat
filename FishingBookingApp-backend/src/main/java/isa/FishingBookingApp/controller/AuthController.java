@@ -1,13 +1,9 @@
 package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.LoginUser;
-import isa.FishingBookingApp.dto.UserFromRequestDTO;
+import isa.FishingBookingApp.dto.UserDTO;
 import isa.FishingBookingApp.dto.UserTokenState;
-import isa.FishingBookingApp.exception.ResourceConflictException;
-import isa.FishingBookingApp.model.Address;
 import isa.FishingBookingApp.model.User;
-import isa.FishingBookingApp.model.UserRole;
-import isa.FishingBookingApp.service.UserRoleService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +19,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.servlet.http.HttpServletResponse;
-import javax.swing.text.html.HTML;
 
 @RestController
 @RequestMapping(value = "/auth", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -40,36 +35,48 @@ public class AuthController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<UserTokenState> createToken(@RequestBody LoginUser loginUser, HttpServletResponse response) {
+    public ResponseEntity<Object> createToken(@RequestBody LoginUser loginUser, HttpServletResponse response) {
 
-        Authentication authentication = authenificationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getMailAddress(), loginUser.getPassword()));
+        try {
+            Authentication authentication = authenificationManager.authenticate(new UsernamePasswordAuthenticationToken(loginUser.getMailAddress(), loginUser.getPassword()));
+            SecurityContextHolder.getContext().setAuthentication(authentication);
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+            User user = (User) authentication.getPrincipal();
+            String jwt = tokenUtils.generateToken(user.getUsername());
+            int expiresIn = tokenUtils.getExpiredIn();
 
-        User user = (User) authentication.getPrincipal();
-        String jwt = tokenUtils.generateToken(user.getUsername());
-        int expiresIn = tokenUtils.getExpiredIn();
+            return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getRole().getName()));
+        }
+        catch (Exception e){
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
 
-        return ResponseEntity.ok(new UserTokenState(jwt, expiresIn));
+
     }
 
     @PostMapping("/signup")
-    public ResponseEntity<User> signUp(@RequestBody UserFromRequestDTO userFromRequestDTO, UriComponentsBuilder ucBuilder) {
+    public ResponseEntity<Object> signUp(@RequestBody UserDTO userDTO, UriComponentsBuilder ucBuilder) {
 
-        User existUser = this.userService.findByMailAddress(userFromRequestDTO.getMailAddress());
+        User existUser = this.userService.findByMailAddress(userDTO.getMailAddress());
         if (existUser != null) {
-            throw new ResourceConflictException(userFromRequestDTO.getMailAddress(), "Email address already exists");
+            return new ResponseEntity<>("Email address already exists", HttpStatus.BAD_REQUEST);
         }
 
-        if (!userFromRequestDTO.getPassword1().equals(userFromRequestDTO.getPassword2())) {
-            throw new ResourceConflictException("", "Passwords not match");
+        if (!userDTO.getPassword1().equals(userDTO.getPassword2())) {
+            return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
         }
 
         User newUser = null;
         try {
-            newUser = userService.saveNewUser(userFromRequestDTO);
+            if (userDTO.getUserRole() != null &&
+                    (userDTO.getUserRole().equals("ROLE_cottageOwner") || userDTO.getUserRole().equals("ROLE_boatOwner"))) {
+                newUser = userService.saveSpecificUser(userDTO);
+            }
+            else {
+                newUser = userService.saveNewUser(userDTO);
+            }
         } catch (Exception e) {
-            throw new ResourceConflictException("", e.getMessage());
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
         return new ResponseEntity<>(newUser, HttpStatus.CREATED);
@@ -79,15 +86,14 @@ public class AuthController {
     public ResponseEntity<String> verifyAccount(@PathVariable Long id) {
         boolean verified = userService.verifyAccount(id);
         String retVal = "<html> Pozdrav, <br>";
-        if(verified){
-            retVal+="Uspesno ste verifikovali nalog, sada se možete ulogovati na našoj aplikaciji:<br>" +
+        if (verified) {
+            retVal += "Uspesno ste verifikovali nalog, sada se možete ulogovati na našoj aplikaciji:<br>" +
                     "<a href=\"http://localhost:4200\">Aplikacija</a>";
-        }
-        else{
-            retVal+="Niste verifikovali nalog, možete se obratiti našem administratoru.<br>";
+        } else {
+            retVal += "Niste verifikovali nalog, možete se obratiti našem administratoru.<br>";
         }
 
-        retVal+="</html>";
+        retVal += "</html>";
 
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_HTML);

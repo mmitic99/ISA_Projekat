@@ -1,0 +1,144 @@
+<section class="hero is-medium">
+    <div class="container has-text-centered">
+        <a routerLink="../registration"><button class="button is-link is-light">Registrujte se kao običan
+                korisnik</button></a>
+    </div>
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-6 is-offset-3">
+                <h3 class="title has-text-grey">Registracija specijalnog korisnika</h3>
+                <p class="subtitle has-text-grey">Molimo Vas da se registrujete, kako biste pristupili našem sistemu i
+                    dobili mogućnost oglašavanja.
+                </p>
+                <div class="box">
+                    <form>
+                        <div class="field">
+                            <label class="label">Odaberite tip profila</label>
+                            <div class="control">
+                                <div class="select is-fullwidth">
+                                    <select name="userRole" [(ngModel)]="specialRegistrationUser.userRole">
+                                        <option value="ROLE_cottageOwner" selected>Vlasnik vikendice</option>
+                                        <option value="ROLE_boatOwner">Vlasnik broda/čamca</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Email adresa</label>
+                            <div class="control">
+                                <input class="input" type="email" placeholder="Email adresa"
+                                    (focusout)="onFocusOutMail()" name="mailAddress"
+                                    [(ngModel)]="specialRegistrationUser.mailAddress">
+                            </div>
+                            <p class="is-danger help" *ngIf="isMailValid == false">Molimo Vas unesite email adresu u
+                                formatu: abc@abc.com</p>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Lozinka</label>
+                            <div class="control">
+                                <input class="input" type="password" placeholder="Lozinka" name="password1"
+                                    (focusout)="onFocusOutPassword()" [(ngModel)]="specialRegistrationUser.password1">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Potvrda lozinke</label>
+                            <div class="control">
+                                <input class="input" type="password" placeholder="Potvrda" name="password2"
+                                    (focusout)="onFocusOutPassword()" [(ngModel)]="specialRegistrationUser.password2">
+                            </div>
+                            <p class="is-danger help" *ngIf="isPasswordMatches == false">Lozinke se ne podudaraju</p>
+                        </div>
+
+                        <hr>
+
+                        <div class="field">
+                            <label class="label">Ime</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Ime" name="name"
+                                    [(ngModel)]="specialRegistrationUser.name">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Prezime</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Prezime" name="surname"
+                                    [(ngModel)]="specialRegistrationUser.surname">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Broj telefona</label>
+                            <div class="control">
+                                <input class="input" type="tel" placeholder="+123456789" name="mobileNumber"
+                                    (focusout)="onFocusOutPhoneNumber()"
+                                    [(ngModel)]="specialRegistrationUser.mobileNumber">
+                            </div>
+                            <p class="is-danger help" *ngIf="isPhoneNumberValid == false">Molimo Vas unesite broj u
+                                formatu: +123456789</p>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Ulica</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Ulica" name="street"
+                                    [(ngModel)]="specialRegistrationUser.street">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Broj</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Broj" name="number"
+                                    [(ngModel)]="specialRegistrationUser.number">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Grad</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Grad" name="city"
+                                    [(ngModel)]="specialRegistrationUser.city">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Poštanski broj</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="12345" name="postalCode"
+                                    (focusout)="onFocusOutPostalCode()"
+                                    [(ngModel)]="specialRegistrationUser.postalCode">
+                            </div>
+                            <p class="is-danger help" *ngIf="isPostalCodeValid == false">Poštanski broj mora sadržati 5
+                                cifara</p>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Država</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Država" name="country"
+                                    [(ngModel)]="specialRegistrationUser.country">
+                            </div>
+                        </div>
+
+                        <div class="field">
+                            <label class="label">Obrazloženje registracije</label>
+                            <div class="control">
+                                <textarea class="textarea" placeholder="Vaše obrazloženje" name="explanationOfReg"
+                                    [(ngModel)]="specialRegistrationUser.explanationOfReg"></textarea>
+                            </div>
+                        </div>
+
+
+                        <br>
+                        <button class="button is-block is-info is-large is-fullwidth" (click)="register()">Registruj
+                            se</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

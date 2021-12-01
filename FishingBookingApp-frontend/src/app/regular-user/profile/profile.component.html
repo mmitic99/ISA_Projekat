@@ -1,0 +1,111 @@
+<section class="hero is-medium">
+    <div class="hero-body">
+        <div class="container has-text-centered">
+            <div class="column is-6 is-offset-3">
+                <h3 class="title has-text-grey">Izmena profila</h3>
+                <div class="box">
+                    <form ngNativeValidate novalidate #form="ngForm">
+                        <div class="field">
+                            <label class="label">Email adresa</label>
+                            <div class="control">
+                                <input class="input" type="email" placeholder="Email adresa" autofocus=""
+                                    oninvalid="setCustomValidity('Molimo Vas unesite email adresu u formatu: abc@abc.com')"
+                                    name="mailAddress" [(ngModel)]="editUser.mailAddress" disabled required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <!--<div class="field">
+                            <label class="label">Lozinka</label>
+                            <div class="control">
+                                <input class="input" type="password" placeholder="Lozinka" name="password1"
+                                    [(ngModel)]="editUser.password1" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Potvrda lozinke</label>
+                            <div class="control">
+                                <input class="input" type="password" placeholder="Potvrda" name="password2"
+                                    [(ngModel)]="editUser.password2" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>-->
+                        <hr>
+                        <div class="field">
+                            <label class="label">Ime</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Ime" name="name"
+                                    [(ngModel)]="editUser.name" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Prezime</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Prezime" name="surname"
+                                    [(ngModel)]="editUser.surname" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Broj telefona</label>
+                            <div class="control">
+                                <input class="input" type="tel" placeholder="+123456789" name="mobileNumber" pattern="\+(9[976]\d|8[987530]\d|6[987]\d|5[90]\d|42\d|3[875]\d|
+                                2[98654321]\d|9[8543210]|8[6421]|6[6543210]|5[87654321]|
+                                4[987654310]|3[9643210]|2[70]|7|1)\d{1,14}"
+                                    oninvalid="setCustomValidity('Molimo Vas unesite broj u formatu: +123456789')"
+                                    [(ngModel)]="editUser.mobileNumber" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Ulica</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Ulica" name="street"
+                                    [(ngModel)]="editUser.street" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Broj</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Broj" name="number"
+                                    [(ngModel)]="editUser.number" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Grad</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Grad" name="city"
+                                    [(ngModel)]="editUser.city" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Poštanski broj</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="12345" name="postalCode"
+                                oninvalid="setCustomValidity('Molimo Vas unesite poštanski broj u formatu: 00000')"
+                                    [(ngModel)]="editUser.postalCode" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+                        <div class="field">
+                            <label class="label">Država</label>
+                            <div class="control">
+                                <input class="input" type="text" placeholder="Država" name="country"
+                                    [(ngModel)]="editUser.country" required>
+                            </div>
+                            <p class="is-danger help"></p>
+                        </div>
+
+
+                        <br>
+                        <button class="button is-block is-info is-large is-fullwidth" (click)="edit()" [disabled]="form.invalid">Izmeni profila</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -48,6 +48,31 @@ public class User implements UserDetails {
     public User() {
     }
 
+    public User(User user) {
+        this.id = user.id;
+        this.mailAddress = user.mailAddress;
+        this.password = user.password;
+        this.name = user.name;
+        this.surname = user.surname;
+        this.mobileNumber = user.mobileNumber;
+        this.address = user.address;
+        this.role = user.role;
+        this.enabled = user.enabled;
+        this.verified = user.verified;
+    }
+
+    public User(String mailAddress, String password, String name, String surname, String mobileNumber, Address address, UserRole role, boolean enabled, boolean verified) {
+        this.mailAddress = mailAddress;
+        this.password = password;
+        this.name = name;
+        this.surname = surname;
+        this.mobileNumber = mobileNumber;
+        this.address = address;
+        this.role = role;
+        this.enabled = enabled;
+        this.verified = verified;
+    }
+
     public void setEnabled(boolean enabled) {
         this.enabled = enabled;
     }

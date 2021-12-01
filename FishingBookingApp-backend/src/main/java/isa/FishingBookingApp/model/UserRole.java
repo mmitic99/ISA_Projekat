@@ -18,6 +18,14 @@ public class UserRole implements GrantedAuthority {
     @Column(name="role_name", unique = true, nullable = false)
     private String name;
 
+    public UserRole() {
+
+    }
+
+    public UserRole(String name){
+        this.name = name;
+    }
+
     @JsonIgnore
     public Long getId() {
         return id;
