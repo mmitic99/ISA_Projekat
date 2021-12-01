@@ -15,7 +15,7 @@ export class ReservationEntitiesService {
   }
   
   getEntity(id: any) {
-    return this.http.get<any>(serverPortApi+"reservationEntities/get/1")
+    return this.http.get<any>(serverPortApi+"reservationEntities/get/" + id)
   }
   
 }
