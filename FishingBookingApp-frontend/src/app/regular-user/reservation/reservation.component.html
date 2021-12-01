@@ -1,0 +1,99 @@
+<div class="container">
+    <br>
+    <nav class="panel">
+        <p>Vrsta: </p>
+
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Vikendice
+            </label>
+        </div>
+
+
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Brodovi / čamci
+            </label>
+        </div>
+
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Instruktori pecanja
+            </label>
+        </div>
+        <div>
+            <div class="select level-right">
+                <select [(ngModel)]="this.searchFilterSortModel.sort">
+                    <option value="">Sortiraj</option>
+                    <option value="da">Datum rastuće</option>
+                    <option value="dd">Datum opadajuće</option>
+                    <option value="pa">Cena rastuće</option>
+                    <option value="pd">Cena opadajuće</option>
+                    <option value="dua">Trajanje rastuće</option>
+                    <option value="dud">Trajanje opadajuće</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Vrsta</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Datum</th>
+                <th>Trajanje[u danima]</th>
+                <th>Cena[dinara]</th>
+            </tr>
+        </thead>
+
+        <!--dummy data-->
+        <tfoot>
+            <tr>
+                <td>Brod/Čamac</td>
+                <td>Mesec</td>
+                <td>885-3976 Eu Av.</td>
+                <td>12.01.2021</td>
+                <td>8</td>
+                <td>88 658</td>
+            </tr>
+            <tr>
+                <td>Instruktor pecanja</td>
+                <td>Fishing</td>
+                <td>Ap #599-5983 Donec St.</td>
+                <td>17.05.2021</td>
+                <td>3</td>
+                <td>37 727</td>
+            </tr>
+            <tr>
+                <td>Instruktor pecanja</td>
+                <td>Fishing</td>
+                <td>Ap #212-1151 Erat Rd.</td>
+                <td>25.10.2021</td>
+                <td>9</td>
+                <td>57 008</td>
+            </tr>
+            <tr>
+                <td>Vikendica</td>
+                <td>Mesec</td>
+                <td>P.O. Box 223, 9909 Per Rd.</td>
+                <td>26.09.2020</td>
+                <td>4</td>
+                <td>49 372</td>
+            </tr>
+            <tr>
+                <td>Vikendica</td>
+                <td>Mesec</td>
+                <td>Ap #123-4889 Dapibus Avenue</td>
+                <td>24.06.2021</td>
+                <td>2</td>
+                <td>1 902</td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+</div>
