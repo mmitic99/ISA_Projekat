@@ -89,8 +89,7 @@ export class RegistrationComponent implements OnInit {
   }
   private redirectUser() {
     // TODO: dopuniti navigaciju
-    if (localStorage.getItem('role') == "ROLE_USER") {
-      this.router.navigate(['home']);
+    if (localStorage.getItem('role') == "TODO") {
     }
     else {
       this.router.navigate(['']);
