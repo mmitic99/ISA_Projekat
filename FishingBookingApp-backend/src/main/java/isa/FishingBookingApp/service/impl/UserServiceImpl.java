@@ -43,7 +43,7 @@ public class UserServiceImpl implements UserService {
         user.setRole(role);
 
         user = this.userRepository.save(user);
-        if(user!= null)
+        if (user != null)
             emailService.sendVerificationMail(user);
 
         return user;
@@ -56,12 +56,11 @@ public class UserServiceImpl implements UserService {
 
         User user = createUser(newUserDTO, address);
         user.setRole(role);
-        if (role.getName().equals("ROLE_cottageOwner")){
+        if (role.getName().equals("ROLE_cottageOwner")) {
             CottageOwner cottageOwner = new CottageOwner(user);
             cottageOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
             return this.userRepository.save(cottageOwner);
-        }
-        else if (role.getName().equals("ROLE_boatOwner")){
+        } else if (role.getName().equals("ROLE_boatOwner")) {
             BoatOwner boatOwner = new BoatOwner(user);
             boatOwner.setExplanationOfReg(newUserDTO.getExplanationOfReg());
             return this.userRepository.save(boatOwner);
@@ -84,7 +83,7 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
-    private Address saveUserAdress(UserDTO newUserDTO){
+    private Address saveUserAdress(UserDTO newUserDTO) {
         Address address = new Address();
         address.setCountry(newUserDTO.getCountry());
         address.setCity(newUserDTO.getCity());
@@ -99,7 +98,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public boolean verifyAccount(Long id) {
         User user = userRepository.getById(id);
-        if(!user.isVerified() && user.getRole().getName().equals("ROLE_USER")) {
+        if (!user.isVerified() && user.getRole().getName().equals("ROLE_USER")) {
             user.setVerified(true);
             userRepository.save(user);
             return true;
@@ -119,15 +118,8 @@ public class UserServiceImpl implements UserService {
     }
 
     private void updateAddress(UserDTO userDTO, User user) {
-        Address address = addressRepository.getById(user.getAddress().getAddress_id());
-        if(address == null){
-            address = new Address();
-        }
-        address.setStreet(userDTO.getStreet());
-        address.setNumber(userDTO.getNumber());
-        address.setCity(userDTO.getCity());
-        address.setPostalCode(userDTO.getPostalCode());
-        address.setCountry(userDTO.getCountry());
+        Address address = new Address(0, 0, userDTO.getStreet(), userDTO.getNumber(), userDTO.getCity(), userDTO.getPostalCode(), userDTO.getCountry());
+        address.setAddress_id(user.getAddress().getAddress_id());
         addressRepository.save(address);
     }
 }

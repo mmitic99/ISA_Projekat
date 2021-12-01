@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit {
 
   ngOnInit(): void {
     if (localStorage.getItem('role') != null) {
-      this.router.navigate([''])
+        this.redirectUser();
     }
     this.loginUser = new LoginUser("", "")
   }
@@ -30,9 +30,8 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('accessToken', this.loginData.accessToken)
         localStorage.setItem('role', this.loginData.role)
         this.toastr.success('Uspešno ste se prijavili na naš sistem. Sada možete nastaviti da koristite aplikaciju.')
-        
-        // TODO: izmeni navigaciju u zavisnosti od tipa korisnika
-        this.router.navigate([''])
+
+        this.redirectUser();
       },
       (error) => {
         this.toastr.error(error.error)
@@ -40,4 +39,14 @@ export class LoginComponent implements OnInit {
     )
   }
 
+
+  private redirectUser() {
+    // TODO: dopuniti navigaciju
+    if (localStorage.getItem('role') == "ROLE_USER") {
+      this.router.navigate(['home']);
+    }
+    else {
+      this.router.navigate(['']);
+    }
+  }
 }
