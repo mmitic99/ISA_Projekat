@@ -51,13 +51,34 @@
               <strong>Registruj se</strong>
             </a>
           </span>
-          <span *ngIf="this.authService.getRole() == 'ROLE_USER'">
-            <a class="button is-info is-light" [routerLink]="['/user_profile']">
-              Profil
-            </a>
+
+          <span class="navbar-item" *ngIf="this.authService.getRole() == 'ROLE_USER'">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link" [routerLink]="['/user_profile']">
+                Profil
+              </a>
+
+              <div class="navbar-dropdown">
+                <a class="navbar-item" [routerLink]="['/penalties']">
+                  Uvid u penale
+                </a>
+                <a class="navbar-item" [routerLink]="['/subscribed']">
+                  Lista pretplaćenih
+                </a>
+                <a class="navbar-item" [routerLink]="['/complaint']">
+                  Napiši žalbu
+                </a>
+                <a class="navbar-item" [routerLink]="['/user_profile']">
+                  Profil
+                </a>
+              </div>
+            </div>
+
+
+
           </span>
           <span *ngIf="this.authService.getRole() != null">
-            <a class="button is-danger is-light" (click)="this.authService.logout()">
+            <a class="tag is-warning is-medium" (click)="this.authService.logout()">
               Odjavi se
             </a>
           </span>
