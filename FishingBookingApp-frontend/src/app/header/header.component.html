@@ -8,15 +8,30 @@
   </div>
   <div id="navbarBasicExample" class="navbar-menu">
     <div class="navbar-start">
-      <span *ngIf="this.authService.getRole() == null">
+      <span class="navbar-item" *ngIf="this.authService.getRole() == null">
         <a class="navbar-item" [routerLink]="['']">
           Početna
         </a>
       </span>
-      <span *ngIf="this.authService.getRole() == 'ROLE_USER'">
+      <span class="navbar-item" *ngIf="this.authService.getRole() == 'ROLE_USER'">
         <a class="navbar-item" [routerLink]="['']">
           Početna
         </a>
+
+        <div class="navbar-item has-dropdown is-hoverable">
+          <a class="navbar-link">
+            Moje rezervacije
+          </a>
+
+          <div class="navbar-dropdown">
+            <a class="navbar-item" [routerLink]="['/reservation']">
+              Istorija rezervacija
+            </a>
+            <a class="navbar-item" [routerLink]="['/curent_reservation']">
+              Trenutne rezervacije
+            </a>
+          </div>
+        </div>
       </span>
 
 

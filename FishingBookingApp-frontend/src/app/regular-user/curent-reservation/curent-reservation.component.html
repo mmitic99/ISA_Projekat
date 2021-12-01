@@ -1,0 +1,105 @@
+<div class="container">
+    <br>
+    <nav class="panel">
+        <p>Vrsta: </p>
+
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Vikendice
+            </label>
+        </div>
+
+
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Brodovi / čamci
+            </label>
+        </div>
+
+        <div>
+            <label class="checkbox">
+                <input type="checkbox">
+                Instruktori pecanja
+            </label>
+        </div>
+        <div>
+            <div class="select level-right">
+                <select [(ngModel)]="this.searchFilterSortModel.sort">
+                    <option value="">Sortiraj</option>
+                    <option value="da">Datum rastuće</option>
+                    <option value="dd">Datum opadajuće</option>
+                    <option value="pa">Cena rastuće</option>
+                    <option value="pd">Cena opadajuće</option>
+                    <option value="dua">Trajanje rastuće</option>
+                    <option value="dud">Trajanje opadajuće</option>
+                </select>
+            </div>
+        </div>
+    </nav>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Vrsta</th>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Datum</th>
+                <th>Trajanje[u danima]</th>
+                <th>Cena[dinara]</th>
+                <th></th>
+            </tr>
+        </thead>
+
+        <!--dummy data-->
+        <tfoot>
+            <tr>
+                <td>Vikendica</td>
+                <td>Mesec</td>
+                <td>Ap #119-5266 Luctus Rd.</td>
+                <td>29.12.2021</td>
+                <td>9</td>
+                <td>12 158</td>
+                <td><button class="button is-danger">Otkaži</button></td>
+            </tr>
+            <tr>
+                <td>Brod/Čamac</td>
+                <td>Fishing</td>
+                <td>P.O. Box 137, 5310 Orci Av.</td>
+                <td>19.12.2021</td>
+                <td>6</td>
+                <td>73 387</td>
+                <td><button class="button is-danger">Otkaži</button></td>
+            </tr>
+            <tr>
+                <td>Vikendica</td>
+                <td>Sunce</td>
+                <td>9625 Turpis. Avenue</td>
+                <td>11.12.2021</td>
+                <td>3</td>
+                <td>14 503</td>
+                <td></td>
+            </tr>
+            <tr>
+                <td>Instruktor pecanja</td>
+                <td>Sunce</td>
+                <td>644 Malesuada Road</td>
+                <td>23.12.2021</td>
+                <td>4</td>
+                <td>13 275</td>
+                <td><button class="button is-danger">Otkaži</button></td>
+            </tr>
+            <tr>
+                <td>Vikendica</td>
+                <td>Mesec</td>
+                <td>Ap #448-8196 Diam Street</td>
+                <td>10.12.2021</td>
+                <td>3</td>
+                <td>35 085</td>
+                <td></td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+</div>
