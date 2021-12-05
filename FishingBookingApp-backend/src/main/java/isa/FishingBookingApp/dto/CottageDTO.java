@@ -14,6 +14,7 @@ public class CottageDTO {
     private String promotionalDescription;
     private String rulesOfConduct;
     private Long cottageOwnerId;
+    private String cottageOwnerUsername;
     private int numberOfRooms;
     private int bedsPerRoom;
     private double price;
@@ -144,5 +145,13 @@ public class CottageDTO {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCottageOwnerUsername() {
+        return cottageOwnerUsername;
+    }
+
+    public void setCottageOwnerUsername(String cottageOwnerUsername) {
+        this.cottageOwnerUsername = cottageOwnerUsername;
     }
 }
