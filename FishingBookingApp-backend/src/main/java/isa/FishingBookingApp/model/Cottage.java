@@ -9,10 +9,11 @@ import java.util.Set;
 public class Cottage extends ReservationEntities {
 
     public Cottage() {
+        this.setType("cottage");
     }
 
     public Cottage(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, CottageOwner cottageOwner, int numberOfRooms, int bedsPerRoom, double price) {
-        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices);
+        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "cottage");
         this.cottageOwner = cottageOwner;
         this.numberOfRooms = numberOfRooms;
         this.bedsPerRoom = bedsPerRoom;
