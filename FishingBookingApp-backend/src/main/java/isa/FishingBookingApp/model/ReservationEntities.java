@@ -32,16 +32,19 @@ public class ReservationEntities {
     @OneToMany(mappedBy = "reservationEntity")
     private Set<AdditionalService> additionalServices;
 
+    private String type;
+
     public ReservationEntities() {
     }
 
-    public ReservationEntities(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices) {
+    public ReservationEntities(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, String type) {
         this.name = name;
         this.address = address;
         this.promotionalDescription = promotionalDescription;
         this.preDefinedReservations = preDefinedReservations;
         this.rulesOfConduct = rulesOfConduct;
         this.additionalServices = additionalServices;
+        this.type = type;
     }
 
     public Long getId() {
@@ -74,5 +77,13 @@ public class ReservationEntities {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 }
