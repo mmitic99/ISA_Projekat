@@ -45,6 +45,11 @@ public class CottageServiceImpl implements CottageService {
     }
 
     @Override
+    public List<Cottage> getAllOfUser(Long id) {
+        return cottageRepository.getAllCottagesOfUser(id);
+    }
+
+    @Override
     public Cottage saveOrUpdate(CottageDTO newCottageDTO) {
         Address address = saveOrUpdateAddress(newCottageDTO);
         Cottage cottage = new Cottage();

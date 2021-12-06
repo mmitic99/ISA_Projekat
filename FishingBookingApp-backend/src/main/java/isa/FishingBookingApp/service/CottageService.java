@@ -12,6 +12,8 @@ public interface CottageService {
 
     List<Cottage> getAll();
 
+    List<Cottage> getAllOfUser(Long id);
+
     Cottage saveOrUpdate(CottageDTO newCottageDTO);
 
 }
