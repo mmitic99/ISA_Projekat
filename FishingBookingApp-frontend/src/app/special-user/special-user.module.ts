@@ -5,12 +5,14 @@ import { FormsModule } from '@angular/forms';
 import { SpecialUserRoutingModule } from './special-user-routing.module';
 import { ProfileComponent } from './profile/profile.component';
 import { SuHomeComponent } from './su-home/su-home.component';
+import { NewEntityComponent } from './new-entity/new-entity.component';
 
 
 @NgModule({
   declarations: [
     ProfileComponent,
-    SuHomeComponent
+    SuHomeComponent,
+    NewEntityComponent
   ],
   imports: [
     CommonModule,

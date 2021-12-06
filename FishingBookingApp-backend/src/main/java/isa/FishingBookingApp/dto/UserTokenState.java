@@ -5,17 +5,19 @@ public class UserTokenState {
     private Long expiresIn;
     private String role;
     private String mailAddress;
+    private Long userId;
 
     public UserTokenState() {
         this.accessToken = null;
         this.expiresIn = null;
     }
 
-    public UserTokenState(String accessToken, long expiresIn, String role, String mailAddress) {
+    public UserTokenState(String accessToken, long expiresIn, String role, String mailAddress, Long userId) {
         this.accessToken = accessToken;
         this.expiresIn = expiresIn;
         this.role = role;
         this.mailAddress = mailAddress;
+        this.userId = userId;
     }
 
     public String getAccessToken() {
@@ -48,5 +50,13 @@ public class UserTokenState {
 
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
+    }
+
+    public Long getUserId() {
+        return userId;
+    }
+
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 }

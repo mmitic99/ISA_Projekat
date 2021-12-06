@@ -1,0 +1,128 @@
+<div class="columns">
+    <div class="column is-one-fifth">
+        <section class="hero is-medium">
+            <div class="hero-body ">
+
+            </div>
+        </section>
+    </div>
+    <div class="column ">
+        <section class="hero is-fullheight">
+            <div class="hero-body ">
+                <div class="container has-text-centered">
+                    <div class="column is-9 is-offset-0">
+                        <h2 class="title has-text-grey">Kreiranje vikendice</h2>
+                        <div class="box">
+                            <form>
+
+                                <div class="field">
+                                    <label class="label">Naziv</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Naziv" name="name"
+                                            [(ngModel)]="newReservationEntity.name">
+                                    </div>
+                                </div>
+
+                                <!-- POSEDUJE SAMO VIKENDICA -->
+                                <div class="field">
+                                    <label class="label">Broj soba</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Broj soba" name="numberOfRooms"
+                                            [(ngModel)]="newReservationEntity.numberOfRooms">
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Broj kreveta po sobi</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Broj kreveta po sobi"
+                                            name="bedsPerRoom" [(ngModel)]="newReservationEntity.bedsPerRoom">
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Cena noćenja</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Cena noćenja" name="price"
+                                            [(ngModel)]="newReservationEntity.price">
+                                    </div>
+                                </div>
+
+                                <!-- ----------------------- -->
+
+                                <div class="field">
+                                    <label class="label">Promotivni opis</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Promotivni opis"
+                                            name="promotionalDescription"
+                                            [(ngModel)]="newReservationEntity.promotionalDescription"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Pravila ponašanja</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Pravila ponašanja" name="rulesOfConduct"
+                                            [(ngModel)]="newReservationEntity.rulesOfConduct"></textarea>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="field">
+                                    <label class="label">Ulica</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Ulica" name="street"
+                                            [(ngModel)]="newReservationEntity.street">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Broj</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Broj" name="number"
+                                            [(ngModel)]="newReservationEntity.number">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Grad</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Grad" name="city"
+                                            [(ngModel)]="newReservationEntity.city">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Poštanski broj</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="12345" name="postalCode"
+                                            (focusout)="onFocusOutPostalCode()"
+                                            [(ngModel)]="newReservationEntity.postalCode">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isPostalCodeValid == false">Poštanski broj mora
+                                        sadržati 5
+                                        cifara</p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Država</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Država" name="country"
+                                            [(ngModel)]="newReservationEntity.country">
+                                    </div>
+                                </div>
+
+
+                                <br>
+                                <button class="button is-block is-info is-large is-fullwidth" (click)="createCottage()"
+                                    *ngIf="userRole == 'ROLE_cottageOwner'">Kreiraj
+                                    vikendicu</button>
+
+                                <button class="button is-block is-info is-large is-fullwidth" (click)="createBoat()"
+                                    *ngIf="userRole == 'ROLE_boatOwner'">Kreiraj
+                                    brod/čamac</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

@@ -30,6 +30,7 @@ export class LoginComponent implements OnInit {
         localStorage.setItem('accessToken', this.loginData.accessToken)
         localStorage.setItem('role', this.loginData.role)
         localStorage.setItem('mailAddress', this.loginData.mailAddress)
+        localStorage.setItem('userId', this.loginData.userId)
         this.toastr.success('Uspešno ste se prijavili na naš sistem. Sada možete nastaviti da koristite aplikaciju.')
 
         this.redirectUser();
