@@ -20,6 +20,7 @@ export class AuthService {
     localStorage.removeItem('role')
     localStorage.removeItem('accessToken')
     localStorage.removeItem('mailAddress')
+    localStorage.removeItem('userId')
     this.router.navigate([''])
     
   }

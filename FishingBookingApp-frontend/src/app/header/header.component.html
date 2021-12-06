@@ -34,6 +34,19 @@
         </div>
       </span>
 
+      <!-- Za vlasnike i instruktora -->
+      <span class="navbar-item" *ngIf="this.authService.getRole() == 'ROLE_cottageOwner' || this.authService.getRole() == 'ROLE_boatOwner'">
+        <a class="navbar-item" [routerLink]="['/specialUser']">
+          Početna
+        </a>
+
+        <a class="navbar-item" [routerLink]="['/specialUser/createEntity']" *ngIf="this.authService.getRole() == 'ROLE_cottageOwner'">
+          Kreiraj vikendicu
+        </a>
+        <a class="navbar-item" [routerLink]="['/specialUser/createEntity']" *ngIf="this.authService.getRole() == 'ROLE_boatOwner'">
+          Kreiraj brod/čamac
+        </a>
+      </span>
 
 
       <!--  za ostale elemente koristiti: https://bulma.io/documentation/components/navbar/#basic-navbar  -->
