@@ -2,7 +2,9 @@ package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.Cottage;
+import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.service.CottageService;
+import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -12,24 +14,27 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
-@RequestMapping(value = "api/cottageController")
+@RequestMapping(value = "api/cottage")
 public class CottageController {
 
     private CottageService cottageService;
+    private UserService userService;
     private TokenUtils tokenUtils;
 
     @Autowired
-    public CottageController(CottageService cottageService, TokenUtils tokenUtils) {
+    public CottageController(CottageService cottageService, TokenUtils tokenUtils, UserService userService) {
         this.cottageService = cottageService;
         this.tokenUtils = tokenUtils;
+        this.userService = userService;
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<Cottage> createCottage(@RequestBody CottageDTO newCottageDTO, HttpServletRequest request) {
-        if (!authorizedUser(newCottageDTO, request)){
+        if (!authorizedUser(newCottageDTO.getCottageOwnerUsername(), request)){
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
@@ -44,7 +49,7 @@ public class CottageController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<Cottage> updateCottage(@RequestBody CottageDTO cottageDTO, HttpServletRequest request) {
-        if (!authorizedUser(cottageDTO, request)){
+        if (!authorizedUser(cottageDTO.getCottageOwnerUsername(), request)){
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
@@ -55,9 +60,19 @@ public class CottageController {
         return new ResponseEntity<>(updatedCottage, HttpStatus.OK);
     }
 
-    private boolean authorizedUser(CottageDTO cottageDTO, HttpServletRequest request) {
+    @GetMapping(value = "/{username}/allCottages", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<Cottage>> getCottagesOfUser(@PathVariable String username, HttpServletRequest request) {
+        if (!authorizedUser(username, request)){
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+        User user = userService.findByMailAddress(username);
+        List<Cottage> allCottagesOfUser = cottageService.getAllOfUser(user.getId());
+        return new ResponseEntity<>(allCottagesOfUser, HttpStatus.OK);
+    }
+
+    private boolean authorizedUser(String cottageOwnerUsername, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String username = tokenUtils.getUsernameFromToken(token.substring(7));
-        return username.equals(cottageDTO.getCottageOwnerUsername());
+        return username.equals(cottageOwnerUsername);
     }
 }

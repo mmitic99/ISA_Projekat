@@ -5,7 +5,7 @@ import { ToastrModule } from 'ngx-toastr';
 const routes: Routes = [
   { path: '', loadChildren: () => import('./unauthorized-user/unauthorized-user.module').then(mode => mode.UnauthorizedUserModule) },
   { path: '', loadChildren: () => import('./regular-user/regular-user.module').then(mode => mode.RegularUserModule) },
-  { path: '', loadChildren: () => import('./special-user/special-user.module').then(mode => mode.SpecialUserModule) },
+  { path: 'specialUser', loadChildren: () => import('./special-user/special-user.module').then(mode => mode.SpecialUserModule) },
 
 ];
 

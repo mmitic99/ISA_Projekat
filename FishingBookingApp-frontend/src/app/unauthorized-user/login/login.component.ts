@@ -29,6 +29,7 @@ export class LoginComponent implements OnInit {
         this.loginData = data;
         localStorage.setItem('accessToken', this.loginData.accessToken)
         localStorage.setItem('role', this.loginData.role)
+        localStorage.setItem('mailAddress', this.loginData.mailAddress)
         this.toastr.success('Uspešno ste se prijavili na naš sistem. Sada možete nastaviti da koristite aplikaciju.')
 
         this.redirectUser();
@@ -42,7 +43,10 @@ export class LoginComponent implements OnInit {
 
   private redirectUser() {
     // TODO: dopuniti navigaciju
-    if (localStorage.getItem('role') == "TODO") {
+    if (localStorage.getItem('role') == "ROLE_cottageOwner"){
+      this.router.navigate(['specialUser']);
+    }
+    else if (localStorage.getItem('role') == "TODO") {
     }
     else {
       this.router.navigate(['']);

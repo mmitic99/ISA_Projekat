@@ -78,12 +78,12 @@
           <!-- Meni u slucaju specijalnog korisnika -->
           <span class="navbar-item" *ngIf="this.authService.getRole() == 'ROLE_cottageOwner' || this.authService.getRole() == 'ROLE_boatOwner'">
             <div class="navbar-item has-dropdown is-hoverable">
-              <a class="navbar-link" [routerLink]="['/userProfile']">
+              <a class="navbar-link" [routerLink]="['specialUser/userProfile']">
                 Profil
               </a>
 
               <div class="navbar-dropdown">
-                <a class="navbar-item" [routerLink]="['/userProfile']">
+                <a class="navbar-item" [routerLink]="['specialUser/userProfile']">
                   Profil
                 </a>
               </div>
