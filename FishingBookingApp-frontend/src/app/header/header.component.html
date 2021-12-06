@@ -73,10 +73,23 @@
                 </a>
               </div>
             </div>
-
-
-
           </span>
+
+          <!-- Meni u slucaju specijalnog korisnika -->
+          <span class="navbar-item" *ngIf="this.authService.getRole() == 'ROLE_cottageOwner' || this.authService.getRole() == 'ROLE_boatOwner'">
+            <div class="navbar-item has-dropdown is-hoverable">
+              <a class="navbar-link" [routerLink]="['/user_profile']">
+                Profil
+              </a>
+
+              <div class="navbar-dropdown">
+                <a class="navbar-item" [routerLink]="['/user_profile']">
+                  Profil
+                </a>
+              </div>
+            </div>
+          </span>
+
           <span *ngIf="this.authService.getRole() != null">
             <a class="tag is-warning is-medium" (click)="this.authService.logout()">
               Odjavi se
