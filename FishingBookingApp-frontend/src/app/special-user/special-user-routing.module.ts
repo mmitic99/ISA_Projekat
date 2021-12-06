@@ -4,7 +4,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { ProfileComponent } from './profile/profile.component';
 
 const routes: Routes = [
-    { path: 'user_profile', component: ProfileComponent }
+    { path: 'userProfile', component: ProfileComponent }
   
 ];
 
