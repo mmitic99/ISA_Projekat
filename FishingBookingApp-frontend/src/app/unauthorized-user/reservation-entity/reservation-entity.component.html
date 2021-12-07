@@ -3,7 +3,9 @@
         <div class="container">
             <div class="column is-16 has-text-centered">
                 <h1 class="title">{{reservationEntity.name}}</h1>
-                <h5 class="subtitle">{{reservationEntity.type}}</h5>
+                <h5 class="subtitle" *ngIf="reservationEntity.type == 'cottage'">Vikendica</h5>
+                <h5 class="subtitle" *ngIf="reservationEntity.type == 'boat'">Brod</h5>
+                <h5 class="subtitle" *ngIf="reservationEntity.type == 'fishingInstructor'">Instruktor pecanja</h5>
             </div>
             <div class="box">
                 <div class="has-text-centered">

@@ -43,7 +43,8 @@
             </div>
         </div>
     </nav>
-    <h1 *ngIf="reservationEntities==null || reservationEntities.length == 0">Za izabrane kriterijume ne postoje vikendice / brodovi / instruktori pecanja</h1>
+    <h1 *ngIf="reservationEntities==null || reservationEntities.length == 0">Za izabrane kriterijume ne postoje
+        vikendice / brodovi / instruktori pecanja</h1>
     <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntities">
         <a routerLink="../reservationEntity/{{reservationEntity.id}}">
             <div class="message-header">
@@ -68,7 +69,9 @@
                             Pravila ponašanja: {{reservationEntity.rulesOfConduct}}
                         </p>
                         <br>
-                        <p>Vrsta: {{reservationEntity.type}}</p>
+                        <p *ngIf="reservationEntity.type == 'cottage'">Vrsta: vikendica</p>
+                        <p *ngIf="reservationEntity.type == 'boat'">Vrsta: brod</p>
+                        <p *ngIf="reservationEntity.type == 'fishingInstructor'">Vrsta: instruktor pecanja</p>
                         <p class="level-right">10/10</p>
                     </div>
                 </div>
