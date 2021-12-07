@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { serverPortApi, serverPortAuth } from 'src/app/app.consts';
+import { ChangePassword } from 'src/app/regular-user/change-password/ChangePassword';
 import { LoginUser } from '../login/loginUser';
 import { RegistrationUser } from '../registration/registrationUser';
 import { SpecialRegistrationUser } from '../special-registration/specialRegistrationUser';
@@ -36,4 +37,8 @@ export class AuthService {
   getRole(){
     return localStorage.getItem('role');
   }
+  
+  changePassword(changePasswordModel: ChangePassword){
+    return this.http.post(serverPortApi + 'changePassword', changePasswordModel)
+  };
 }

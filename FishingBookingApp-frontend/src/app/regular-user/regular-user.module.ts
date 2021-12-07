@@ -10,6 +10,7 @@ import { RequestForDeletingAccountComponent } from './request-for-deleting-accou
 import { ComplaintComponent } from './complaint/complaint.component';
 import { SubscribedComponent } from './subscribed/subscribed.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
+import { ChangePasswordComponent } from './change-password/change-password.component';
 
 
 @NgModule({
@@ -21,6 +22,7 @@ import { PenaltiesComponent } from './penalties/penalties.component';
     ComplaintComponent,
     SubscribedComponent,
     PenaltiesComponent,
+    ChangePasswordComponent,
   ],
   imports: [
     CommonModule,
