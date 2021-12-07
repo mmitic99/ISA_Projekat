@@ -42,6 +42,63 @@
                         </tr>
                     </tbody>
                 </table>
+                <br>
+                <table class="table is-fullwidth" *ngIf="reservationEntity.type=='cottage'">
+                    <tbody>
+                        <tr>
+                            <td>Ime vlasnika vikendice: {{reservationEntity.cottageOwner.name}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Prezime vlasnika vikendice: {{reservationEntity.cottageOwner.surname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Broj telefona vlasnika vikendice: {{reservationEntity.cottageOwner.mobileNumber}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Email adresa vlasnika vikendice: {{reservationEntity.cottageOwner.mailAddress}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table is-fullwidth" *ngIf="reservationEntity.type=='boat'">
+                    <tbody>
+                        <tr>
+                            <td>Ime vlasnika broda: {{reservationEntity.boatOwner.name}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Prezime vlasnika broda: {{reservationEntity.boatOwner.surname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Broj telefona vlasnika broda: {{reservationEntity.boatOwner.mobileNumber}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Email adresa vlasnika broda: {{reservationEntity.boatOwner.mailAddress}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <table class="table is-fullwidth" *ngIf="reservationEntity.type=='fishingInstructor'">
+                    <tbody>
+                        <tr>
+                            <td>Ime instruktora: {{reservationEntity.fishingInstructor.name}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Prezime instruktora: {{reservationEntity.fishingInstructor.surname}}</td>
+                        </tr>
+                        <tr>
+                            <td>Broj telefona instruktora: {{reservationEntity.fishingInstructor.mobileNumber}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Email adresa instruktora: {{reservationEntity.fishingInstructor.mailAddress}}</td>
+                        </tr>
+                    </tbody>
+                </table>
 
             </div>
         </div>
