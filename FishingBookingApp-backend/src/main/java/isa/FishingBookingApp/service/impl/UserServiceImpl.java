@@ -117,6 +117,14 @@ public class UserServiceImpl implements UserService {
         return user;
     }
 
+    @Override
+    public boolean changePassword(String mailAddress, String newPassword) {
+        User user = userRepository.findByMailAddress(mailAddress);
+        user.setPassword(passwordEncoder.encode(newPassword));
+        userRepository.save(user);
+        return true;
+    }
+
     private void updateAddress(UserDTO userDTO, User user) {
         Address address = new Address(0, 0, userDTO.getStreet(), userDTO.getNumber(), userDTO.getCity(), userDTO.getPostalCode(), userDTO.getCountry());
         address.setAddress_id(user.getAddress().getAddress_id());

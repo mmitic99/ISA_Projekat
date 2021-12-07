@@ -1,5 +1,6 @@
 package isa.FishingBookingApp.controller;
 
+import isa.FishingBookingApp.dto.ChangePasswordDTO;
 import isa.FishingBookingApp.dto.LoginUser;
 import isa.FishingBookingApp.dto.UserDTO;
 import isa.FishingBookingApp.dto.UserTokenState;
@@ -11,6 +12,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -18,6 +20,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @RestController
@@ -99,5 +102,18 @@ public class AuthController {
         responseHeaders.setContentType(MediaType.TEXT_HTML);
 
         return new ResponseEntity<String>(retVal, responseHeaders, HttpStatus.OK);
+    }
+    @PostMapping("/changePassword")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDTO changePasswordDto, HttpServletRequest request) {
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
+        if(!mailAddress.equals(changePasswordDto.getMailAddress())){
+            return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
+        }
+        if (!changePasswordDto.getNewPassword1().equals(changePasswordDto.getNewPassword2())) {
+            return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
+        }
+        return new ResponseEntity<>(userService.changePassword(mailAddress, changePasswordDto.getNewPassword1()), HttpStatus.OK);
     }
 }

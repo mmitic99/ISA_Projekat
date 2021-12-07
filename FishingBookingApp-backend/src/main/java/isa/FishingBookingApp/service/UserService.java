@@ -16,4 +16,6 @@ public interface UserService {
     boolean verifyAccount(Long id);
 
     User editUser(UserDTO userDTO);
+
+    boolean changePassword(String mailAddress, String newPassword1);
 }

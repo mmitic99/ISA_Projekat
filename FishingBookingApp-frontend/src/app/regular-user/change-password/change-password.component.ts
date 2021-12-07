@@ -9,7 +9,7 @@ import { ChangePassword } from './ChangePassword';
   styleUrls: ['./change-password.component.css']
 })
 export class ChangePasswordComponent implements OnInit {
-  changePasswordModel = new ChangePassword()
+  changePasswordModel = new ChangePassword("")
 
   constructor(private authService: AuthService, private toastr: ToastrService) { }
 
