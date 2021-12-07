@@ -1,5 +1,6 @@
 export class ReservationEntity {
     constructor(
+        public id: string,
         public name: string,
         public numberOfRooms: string,
         public bedsPerRoom: string,
@@ -12,6 +13,7 @@ export class ReservationEntity {
         public postalCode: string,
         public country: string,
         public userId: any,
-        public username: any
+        public username: any,
+        public addressId: any
     ) { }
 }

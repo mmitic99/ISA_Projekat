@@ -46,7 +46,7 @@ public class CottageController {
         return new ResponseEntity<>(newCottage, HttpStatus.CREATED);
     }
 
-    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<Cottage> updateCottage(@RequestBody CottageDTO cottageDTO, HttpServletRequest request) {
         if (!authorizedUser(cottageDTO.getCottageOwnerUsername(), request)){
