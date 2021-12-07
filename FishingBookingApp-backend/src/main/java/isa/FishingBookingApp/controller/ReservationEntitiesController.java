@@ -33,8 +33,8 @@ public class ReservationEntitiesController {
     }
 
     @GetMapping(value="/searchFilterSort", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<ReservationEntities> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types) {
-        SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types);
+    public List<ReservationEntities> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search) {
+        SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search);
         return reservationEntitiesService.searchFilterSort(searchFilterSort);
     }
 }
