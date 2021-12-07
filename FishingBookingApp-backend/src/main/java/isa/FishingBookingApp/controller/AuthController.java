@@ -114,6 +114,13 @@ public class AuthController {
         if (!changePasswordDto.getNewPassword1().equals(changePasswordDto.getNewPassword2())) {
             return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
         }
+
+        try {
+            authenificationManager.authenticate(new UsernamePasswordAuthenticationToken(mailAddress, changePasswordDto.getOldPassword()));
+        }
+        catch (Exception e){
+            return new ResponseEntity<>("Old password is not match", HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(userService.changePassword(mailAddress, changePasswordDto.getNewPassword1()), HttpStatus.OK);
     }
 }
