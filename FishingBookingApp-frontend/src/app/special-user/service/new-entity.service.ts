@@ -21,8 +21,8 @@ export class NewEntityService {
   }
 
   private createCottageObject(entity : ReservationEntity) : Cottage {
-    return new Cottage(entity.name, entity.numberOfRooms, entity.bedsPerRoom, entity.price, entity.promotionalDescription,
+    return new Cottage(null, entity.name, entity.numberOfRooms, entity.bedsPerRoom, entity.price, entity.promotionalDescription,
                        entity.rulesOfConduct, entity.street, entity.number, entity.city, entity.postalCode, entity.country,
-                       entity.userId, entity.username);
+                       entity.userId, entity.username, null);
   }
 }

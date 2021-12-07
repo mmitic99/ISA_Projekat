@@ -1,5 +1,6 @@
 export class Cottage {
     constructor(
+        public id: any,
         public name: string,
         public numberOfRooms: string,
         public bedsPerRoom: string,
@@ -12,6 +13,7 @@ export class Cottage {
         public postalCode: string,
         public country: string,
         public cottageOwnerId: string,
-        public cottageOwnerUsername: string
+        public cottageOwnerUsername: string,
+        public addressId: any
     ) { }
 }

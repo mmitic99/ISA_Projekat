@@ -65,6 +65,7 @@ public class CottageServiceImpl implements CottageService {
         cottage.setBedsPerRoom(newCottageDTO.getBedsPerRoom());
         cottage.setNumberOfRooms(newCottageDTO.getNumberOfRooms());
         cottage.setPromotionalDescription(newCottageDTO.getPromotionalDescription());
+        cottage.setRulesOfConduct(newCottageDTO.getRulesOfConduct());
         return cottageRepository.save(cottage);
     }
 

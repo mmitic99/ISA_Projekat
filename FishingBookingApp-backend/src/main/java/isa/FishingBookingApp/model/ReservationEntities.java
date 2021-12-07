@@ -86,4 +86,12 @@ public class ReservationEntities {
     public void setType(String type) {
         this.type = type;
     }
+
+    public String getRulesOfConduct() {
+        return rulesOfConduct;
+    }
+
+    public void setRulesOfConduct(String rulesOfConduct) {
+        this.rulesOfConduct = rulesOfConduct;
+    }
 }

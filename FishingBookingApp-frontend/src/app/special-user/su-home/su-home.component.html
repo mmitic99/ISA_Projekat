@@ -27,7 +27,7 @@
     </nav>
 
     <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntitiesToShow">
-        <a routerLink="../reservationEntity/{{reservationEntity.id}}">
+        <a routerLink="../specialUser/viewEntity/{{reservationEntity.id}}">
             <div class="message-header">
                 <p>{{reservationEntity.name}}</p>
             </div>

@@ -11,7 +11,7 @@ import { ReservationEntity } from './ReservationEntity';
 })
 export class NewEntityComponent implements OnInit {
 
-  newReservationEntity= new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "");
+  newReservationEntity= new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", null);
   isPostalCodeValid = true;
   userRole : any;
   constructor(private entityService: NewEntityService, private toastr: ToastrService, private router: Router) { }
