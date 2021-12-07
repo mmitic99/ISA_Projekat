@@ -1,4 +1,4 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { serverPortApi, serverPortAuth } from 'src/app/app.consts';
@@ -37,8 +37,13 @@ export class AuthService {
   getRole(){
     return localStorage.getItem('role');
   }
-  
+
   changePassword(changePasswordModel: ChangePassword){
-    return this.http.post(serverPortApi + 'changePassword', changePasswordModel)
+    changePasswordModel.mailAddress = localStorage.getItem('mailAddress')
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.post(serverPortAuth + 'changePassword', changePasswordModel, header)
   };
 }
