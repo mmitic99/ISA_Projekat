@@ -7,6 +7,7 @@ import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -32,9 +33,28 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
 
     @Override
     public List<ReservationEntities> searchFilterSort(SearchFilterSort searchFilterSort) {
-        List<ReservationEntities> reservationEntities = getAll();
+        List<ReservationEntities> reservationEntities = new ArrayList<ReservationEntities>();
+        if(searchFilterSort.getTypes().size() != 0){
+            reservationEntities = filter(searchFilterSort);
+        }
+        else{
+            reservationEntities = getAll();
+        }
         sort(searchFilterSort, reservationEntities);
         return reservationEntities;
+    }
+
+    private List<ReservationEntities> filter(SearchFilterSort searchFilterSort) {
+        List<ReservationEntities> retVal = new ArrayList<>();
+        for (ReservationEntities reservationEntities : getAll()) {
+
+            if (searchFilterSort.getTypes().size() == 0) {
+                retVal.add(reservationEntities);
+            } else if (searchFilterSort.getTypes().contains(reservationEntities.getType())) {
+                retVal.add(reservationEntities);
+            }
+        }
+        return retVal;
     }
 
     private void sort(SearchFilterSort searchFilterSort, List<ReservationEntities> reservationEntities) {
