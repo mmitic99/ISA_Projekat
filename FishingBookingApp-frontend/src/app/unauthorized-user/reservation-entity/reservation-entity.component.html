@@ -1,13 +1,14 @@
 <section class="hero is-fullheight">
     <div class="hero-body ">
         <div class="container">
-            <div class="column is-16 is-offset-0 has-text-centered">
+            <div class="column is-16 has-text-centered">
                 <h1 class="title">{{reservationEntity.name}}</h1>
                 <h5 class="subtitle">{{reservationEntity.type}}</h5>
             </div>
             <div class="box">
                 <div class="has-text-centered">
-                    <ng-image-slider [images]="imageObject" #nav></ng-image-slider>
+                    <ng-image-slider [images]="imageObject" 
+                    [imageSize]="{width: 300, height: 300}" #nav></ng-image-slider>
 
                     <!--
                     <img height="20%" width="20%"

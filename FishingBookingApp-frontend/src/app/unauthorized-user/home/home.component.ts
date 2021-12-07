@@ -11,7 +11,7 @@ import { SearchFilterSortModel } from './searchFilterSortModel';
 export class HomeComponent implements OnInit {
 
   reservationEntities: any;
-  searchFilterSortModel= new SearchFilterSortModel("");
+  searchFilterSortModel= new SearchFilterSortModel("", new Array<string>());
 
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   searchFilterSort(){
-    if(this.searchFilterSortModel.sort == ""){
+    if(this.searchFilterSortModel.sort == "" && this.searchFilterSortModel.types.length == 0){
       this.getAllReservationEntities();
     }
     else{
@@ -44,6 +44,15 @@ export class HomeComponent implements OnInit {
         }
       )
     }
+  }
+
+  selectType(type: string){
+    if (this.searchFilterSortModel.types.includes(type)) {
+      this.searchFilterSortModel.types = this.searchFilterSortModel.types.filter(item => item !== type)
+    } else {
+      this.searchFilterSortModel.types.push(type)
+    }
+    this.searchFilterSort()
   }
 
 }

@@ -13,23 +13,20 @@
 
         <div>
             <label class="checkbox">
-                <input type="checkbox">
-                Vikendice
+                <input type="checkbox" (click)="selectType('cottage')"> Vikendice
             </label>
         </div>
 
 
         <div>
             <label class="checkbox">
-                <input type="checkbox">
-                Brodovi / čamci
+                <input type="checkbox" (click)="selectType('boat')"> Brodovi / čamci
             </label>
         </div>
 
         <div>
             <label class="checkbox">
-                <input type="checkbox">
-                Instruktori pecanja
+                <input type="checkbox" (click)="selectType('fishingInstructor')"> Instruktori pecanja
             </label>
         </div>
         <div class="navbar-end" *ngIf="this.authService.getRole() == 'ROLE_USER'">
@@ -46,7 +43,7 @@
             </div>
         </div>
     </nav>
-
+    <h1 *ngIf="reservationEntities==null || reservationEntities.length == 0">Za izabrane kriterijume ne postoje vikendice / brodovi / instruktori pecanja</h1>
     <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntities">
         <a routerLink="../reservationEntity/{{reservationEntity.id}}">
             <div class="message-header">
@@ -62,15 +59,21 @@
                     <div class="column">
                         <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}}
                             {{reservationEntity.address.city}} {{reservationEntity.address.country}}</p>
-                        <p class="cut-text" style="height: 50%;">
+                        <br>
+                        <p class="cut-text2" style="height: 20%;">
                             Opis: {{reservationEntity.promotionalDescription}}
                         </p>
-                        <p>Vrsta: viasd</p>
-                        <span class="level-right">10/10</span>
+                        <br>
+                        <p class="cut-text1" style="height: 10%;">
+                            Pravila ponašanja: {{reservationEntity.rulesOfConduct}}
+                        </p>
+                        <br>
+                        <p>Vrsta: {{reservationEntity.type}}</p>
+                        <p class="level-right">10/10</p>
                     </div>
                 </div>
             </div>
         </a>
     </article>
-
 </div>
+<br>

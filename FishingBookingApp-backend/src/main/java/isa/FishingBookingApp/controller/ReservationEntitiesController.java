@@ -9,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @RestController
@@ -32,9 +33,8 @@ public class ReservationEntitiesController {
     }
 
     @GetMapping(value="/searchFilterSort", produces = MediaType.APPLICATION_JSON_VALUE)
-    @PreAuthorize("hasRole('USER')")
-    public List<ReservationEntities> searchFilterSort(@RequestParam String sort) {
-        SearchFilterSort searchFilterSort = new SearchFilterSort(sort);
+    public List<ReservationEntities> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types) {
+        SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types);
         return reservationEntitiesService.searchFilterSort(searchFilterSort);
     }
 }
