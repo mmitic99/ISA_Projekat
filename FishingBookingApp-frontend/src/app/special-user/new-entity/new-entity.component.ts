@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { NewEntityService } from '../service/new-entity.service';
+import { EntitiesService } from '../service/entities.service';
 import { ReservationEntity } from './ReservationEntity';
 
 @Component({
@@ -14,7 +14,7 @@ export class NewEntityComponent implements OnInit {
   newReservationEntity= new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", null);
   isPostalCodeValid = true;
   userRole : any;
-  constructor(private entityService: NewEntityService, private toastr: ToastrService, private router: Router) { }
+  constructor(private entityService: EntitiesService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
