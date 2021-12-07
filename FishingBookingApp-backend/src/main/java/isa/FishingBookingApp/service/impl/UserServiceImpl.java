@@ -97,7 +97,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public boolean verifyAccount(Long id) {
-        User user = userRepository.getById(id);
+        User user = userRepository.findUserById(id);
         if (!user.isVerified() && user.getRole().getName().equals("ROLE_USER")) {
             user.setVerified(true);
             userRepository.save(user);
