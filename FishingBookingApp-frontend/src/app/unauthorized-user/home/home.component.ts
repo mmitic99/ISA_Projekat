@@ -31,7 +31,7 @@ export class HomeComponent implements OnInit {
   }
 
   searchFilterSort(){
-    if(this.searchFilterSortModel.sort == "" && this.searchFilterSortModel.types.length == 0){
+    if(this.searchFilterSortModel.sort == "" && this.searchFilterSortModel.types.length == 0 && this.searchFilterSortModel.search == ""){
       this.getAllReservationEntities();
     }
     else{

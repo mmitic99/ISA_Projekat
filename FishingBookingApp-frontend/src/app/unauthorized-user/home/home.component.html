@@ -3,29 +3,29 @@
     <nav class="panel">
         <div class="panel-block">
             <p class="control has-icons-left">
-                <input class="input" type="text" placeholder="Pretraga">
+                <input class="input" type="text" placeholder="Pretraga" [(ngModel)]="this.searchFilterSortModel.search">
             </p>
-            <a class="button is-info">
+            <a class="button is-info" (click)="searchFilterSort()">
                 Pretraži
             </a>
         </div>
         <p>Vrsta: </p>
 
         <div>
-            <label class="checkbox">
+            <label class="checkbox ml-6">
                 <input type="checkbox" (click)="selectType('cottage')"> Vikendice
             </label>
         </div>
 
 
         <div>
-            <label class="checkbox">
+            <label class="checkbox ml-6">
                 <input type="checkbox" (click)="selectType('boat')"> Brodovi / čamci
             </label>
         </div>
 
         <div>
-            <label class="checkbox">
+            <label class="checkbox ml-6">
                 <input type="checkbox" (click)="selectType('fishingInstructor')"> Instruktori pecanja
             </label>
         </div>
@@ -58,8 +58,8 @@
                             alt="image not loaded">
                     </div>
                     <div class="column">
-                        <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}}
-                            {{reservationEntity.address.city}} {{reservationEntity.address.country}}</p>
+                        <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}},
+                            {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</p>
                         <br>
                         <p class="cut-text2" style="height: 20%;">
                             Opis: {{reservationEntity.promotionalDescription}}

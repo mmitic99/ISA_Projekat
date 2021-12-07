@@ -34,14 +34,34 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
     @Override
     public List<ReservationEntities> searchFilterSort(SearchFilterSort searchFilterSort) {
         List<ReservationEntities> reservationEntities = new ArrayList<ReservationEntities>();
-        if(searchFilterSort.getTypes().size() != 0){
+        if (searchFilterSort.getTypes().size() != 0) {
             reservationEntities = filter(searchFilterSort);
-        }
-        else{
+        } else {
             reservationEntities = getAll();
         }
         sort(searchFilterSort, reservationEntities);
-        return reservationEntities;
+        List<ReservationEntities> usersRetVal = search(searchFilterSort, reservationEntities);
+        return usersRetVal;
+    }
+
+    private List<ReservationEntities> search(SearchFilterSort searchFilterSort, List<ReservationEntities> reservationEntities) {
+        List<ReservationEntities> reservationEntitiesRetVal = new ArrayList<ReservationEntities>();
+
+        if (searchFilterSort.getSearch().equals("")) {
+            reservationEntitiesRetVal = reservationEntities;
+        } else {
+
+            for (ReservationEntities reservationEntity : reservationEntities) {
+                if (reservationEntity.getName().toLowerCase().contains(searchFilterSort.getSearch().toLowerCase())
+                        || reservationEntity.getAddress().getCity().toLowerCase().contains(searchFilterSort.getSearch().toLowerCase())
+                        || reservationEntity.getAddress().getStreet().toLowerCase().contains(searchFilterSort.getSearch().toLowerCase())
+                        || reservationEntity.getAddress().getCountry().toLowerCase().contains(searchFilterSort.getSearch().toLowerCase())) {
+                    reservationEntitiesRetVal.add(reservationEntity);
+                }
+            }
+        }
+
+        return reservationEntitiesRetVal;
     }
 
     private List<ReservationEntities> filter(SearchFilterSort searchFilterSort) {

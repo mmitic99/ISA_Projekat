@@ -32,6 +32,7 @@ export class ReservationEntitiesService {
     else {
       params = params.append('types', '');
     }
+    params = params.append('search', searchFilterSortModel.search);
 
     return this.http.get<any>(serverPortApi + "reservationEntities/searchFilterSort/", { params: params, headers: header })
   }
