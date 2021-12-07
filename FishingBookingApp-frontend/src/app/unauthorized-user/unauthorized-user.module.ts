@@ -8,6 +8,7 @@ import { ReservationEntityComponent } from './reservation-entity/reservation-ent
 import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { SpecialRegistrationComponent } from './special-registration/special-registration.component';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 
 @NgModule({
@@ -16,12 +17,13 @@ import { SpecialRegistrationComponent } from './special-registration/special-reg
     ReservationEntityComponent,
     LoginComponent,
     RegistrationComponent,
-    SpecialRegistrationComponent
+    SpecialRegistrationComponent,
   ],
   imports: [
     CommonModule,
     FormsModule,
-    UnauthorizedUserRoutingModule
+    UnauthorizedUserRoutingModule,
+    NgImageSliderModule,
   ]
 })
 export class UnauthorizedUserModule { }
