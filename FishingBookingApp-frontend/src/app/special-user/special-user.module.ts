@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
+import { NgImageSliderModule } from 'ng-image-slider';
 
 import { SpecialUserRoutingModule } from './special-user-routing.module';
 import { ProfileComponent } from './profile/profile.component';
@@ -21,7 +22,8 @@ import { EntityReservationComponent } from './entity-reservation/entity-reservat
   imports: [
     CommonModule,
     FormsModule,
-    SpecialUserRoutingModule
+    SpecialUserRoutingModule,
+    NgImageSliderModule
   ]
 })
 export class SpecialUserModule { }

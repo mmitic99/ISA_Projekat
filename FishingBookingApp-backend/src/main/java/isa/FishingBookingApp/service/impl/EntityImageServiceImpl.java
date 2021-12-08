@@ -6,6 +6,8 @@ import isa.FishingBookingApp.service.EntityImageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class EntityImageServiceImpl implements EntityImageService {
     private EntityImageRepository entityImageRepository;
@@ -18,5 +20,10 @@ public class EntityImageServiceImpl implements EntityImageService {
     @Override
     public EntityImage save(EntityImage entityImage) {
         return entityImageRepository.save(entityImage);
+    }
+
+    @Override
+    public List<EntityImage> getImagesOfReservationEntity(Long entityId) {
+        return entityImageRepository.getImagesOfReservationEntity(entityId);
     }
 }
