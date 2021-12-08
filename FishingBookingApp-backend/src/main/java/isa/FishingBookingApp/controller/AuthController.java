@@ -104,7 +104,7 @@ public class AuthController {
         return new ResponseEntity<String>(retVal, responseHeaders, HttpStatus.OK);
     }
     @PostMapping("/changePassword")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDTO changePasswordDto, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
