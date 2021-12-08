@@ -32,8 +32,7 @@ public class UserController {
         return new UserDTO(userService.findByMailAddress(mailAddress));
     }
 
-    // treba put, ali angular ne zeli da posalje put zahtev
-    @PostMapping(value="editUser")
+    @PutMapping(value="editUser")
     @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> editUser(@RequestBody UserDTO user, HttpServletRequest request){
         String token = tokenUtils.getAuthHeaderFromHeader(request);

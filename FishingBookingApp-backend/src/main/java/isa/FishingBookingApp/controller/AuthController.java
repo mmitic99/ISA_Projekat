@@ -103,7 +103,7 @@ public class AuthController {
 
         return new ResponseEntity<String>(retVal, responseHeaders, HttpStatus.OK);
     }
-    @PostMapping("/changePassword")
+    @PutMapping("/changePassword")
     @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDTO changePasswordDto, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
@@ -112,14 +112,14 @@ public class AuthController {
             return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
         }
         if (!changePasswordDto.getNewPassword1().equals(changePasswordDto.getNewPassword2())) {
-            return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Lozinke se ne poklapaju", HttpStatus.BAD_REQUEST);
         }
 
         try {
             authenificationManager.authenticate(new UsernamePasswordAuthenticationToken(mailAddress, changePasswordDto.getOldPassword()));
         }
         catch (Exception e){
-            return new ResponseEntity<>("Old password is not match", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Pogrešno uneta lozinka", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(userService.changePassword(mailAddress, changePasswordDto.getNewPassword1()), HttpStatus.OK);
     }

@@ -44,6 +44,6 @@ export class AuthService {
       headers: new HttpHeaders()
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
     }
-    return this.http.post(serverPortAuth + 'changePassword', changePasswordModel, header)
+    return this.http.put(serverPortAuth + 'changePassword', changePasswordModel, header)
   };
 }
