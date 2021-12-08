@@ -3,7 +3,20 @@
         <section class="hero is-medium">
             <div class="hero-body ">
                 <div class="container has-text-centered">
-                    <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_cottageOwner'" (click)="deleteCottage()">Brisanje vikendice</a>
+                    <a class="button is-info is-light"
+                        routerLink="../../entityReservations/{{reservationEntity.id}}">Uvid u rezervacije</a>
+                    <hr />
+                    <a class="button is-info is-light" (click)="freeAppointmentsForReservation()">Definisanje perioda
+                        dostupnosti</a>
+                    <hr />
+                    <a class="button is-info is-light" (click)="createNewAction()">Kreiranje akcija za
+                        brzu rezervaciju</a>
+                    <hr />
+                    <a class="button is-info is-light" (click)="createNewReservationForClient()">Kreirajte novu
+                        rezervaciju za klijenta</a>
+                    <hr />
+                    <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_cottageOwner'"
+                        (click)="deleteCottage()">Brisanje vikendice</a>
                     <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_boatOwner'">Brisanje broda/čamca</a>
                 </div>
             </div>
@@ -13,11 +26,11 @@
         <section class="hero is-fullheight">
             <div class="hero-body ">
                 <div class="container has-text-centered">
-                    <div class="column is-9 is-offset-0">
-                        <h2 class="title has-text-grey" *ngIf="userRole == 'ROLE_cottageOwner'">Vaša vikendica
+                    <div class="column is-10 is-offset-2">
+                        <h2 class="title" *ngIf="userRole == 'ROLE_cottageOwner'">Vaša vikendica
                             {{reservationEntity.name}}</h2>
-                            <h2 class="title has-text-grey" *ngIf="userRole == 'ROLE_boatOwner'">Vaš brod/čamac
-                                {{reservationEntity.name}}</h2>
+                        <h2 class="title" *ngIf="userRole == 'ROLE_boatOwner'">Vaš brod/čamac
+                            {{reservationEntity.name}}</h2>
                         <div class="box">
                             <form>
 
