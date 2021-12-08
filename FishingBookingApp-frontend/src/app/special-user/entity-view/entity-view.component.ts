@@ -13,9 +13,9 @@ export class EntityViewComponent implements OnInit {
 
   reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
   isPostalCodeValid = true;
-  userRole : any;
-  private id : any;
-  constructor(private route : ActivatedRoute, private entitiesService : EntitiesService, private toastr : ToastrService) { }
+  userRole: any;
+  private id: any;
+  constructor(private route: ActivatedRoute, private entitiesService: EntitiesService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.userRole = localStorage.getItem('role');
@@ -29,11 +29,11 @@ export class EntityViewComponent implements OnInit {
 
   getEntity() {
     this.entitiesService.getEntity(this.id).subscribe(
-      (data)=>{
+      (data) => {
         this.reservationEntity = new ReservationEntity(data.id, data.name, data.numberOfRooms, data.bedsPerRoom, data.price,
-                                                       data.promotionalDescription, data.rulesOfConduct, data.address.street, 
-                                                       data.address.number, data.address.city, data.address.postalCode, 
-                                                       data.address.country, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
+          data.promotionalDescription, data.rulesOfConduct, data.address.street,
+          data.address.number, data.address.city, data.address.postalCode,
+          data.address.country, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
       }
     )
   }
@@ -54,6 +54,17 @@ export class EntityViewComponent implements OnInit {
     }
   }
 
+  deleteCottage() {
+    this.entitiesService.deleteCottage(this.reservationEntity.id).subscribe(
+      () => {
+        this.toastr.success("Uspešno ste izbisali vikendicu.", "", { timeOut: 100000 })
+      },
+      () => {
+        this.toastr.error("Neuspešno brisanje vikendice")
+      }
+    )
+  }
+
   updateBoat() {
 
   }
@@ -70,14 +81,14 @@ export class EntityViewComponent implements OnInit {
   isAllFilled(): boolean {
     // Provera polja koja poseduju svi entiteti
     if (this.reservationEntity.name == "" || this.reservationEntity.promotionalDescription == ""
-      || this.reservationEntity.rulesOfConduct == "" || this.reservationEntity.street == "" 
+      || this.reservationEntity.rulesOfConduct == "" || this.reservationEntity.street == ""
       || this.reservationEntity.number == "" || this.reservationEntity.city == ""
       || this.reservationEntity.postalCode == "" || this.reservationEntity.country == "") {
       return false;
     }
 
     // Provera polja koja ima samo vikendica
-    if (localStorage.getItem('role') == "ROLE_cottageOwner"){
+    if (localStorage.getItem('role') == "ROLE_cottageOwner") {
       if (this.reservationEntity.numberOfRooms == "" || this.reservationEntity.bedsPerRoom == "" || this.reservationEntity.price == "") {
         return false;
       }

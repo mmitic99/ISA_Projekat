@@ -40,7 +40,15 @@ export class EntitiesService {
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
     }
     var updatedCottage = this.createCottageObjectForUpdate(cottageDTO);
-    return this.http.post<any>(serverPortApi + "cottage/update", updatedCottage, header);
+    return this.http.put<any>(serverPortApi + "cottage/update", updatedCottage, header);
+  }
+
+  deleteCottage(id : string) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.delete<any>(serverPortApi + "cottage/" + id, header)
   }
 
   private createCottageObjectForCreating(entity : ReservationEntity) : Cottage {

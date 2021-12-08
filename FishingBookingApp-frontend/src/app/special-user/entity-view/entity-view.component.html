@@ -2,7 +2,10 @@
     <div class="column is-one-fifth">
         <section class="hero is-medium">
             <div class="hero-body ">
-
+                <div class="container has-text-centered">
+                    <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_cottageOwner'" (click)="deleteCottage()">Brisanje vikendice</a>
+                    <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_boatOwner'">Brisanje broda/čamca</a>
+                </div>
             </div>
         </section>
     </div>

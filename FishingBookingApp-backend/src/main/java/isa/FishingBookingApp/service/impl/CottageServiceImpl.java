@@ -69,6 +69,12 @@ public class CottageServiceImpl implements CottageService {
         return cottageRepository.save(cottage);
     }
 
+    @Override
+    public boolean delete(Long id) {
+        cottageRepository.deleteById(id);
+        return !exists(id);
+    }
+
     private Address saveOrUpdateAddress(CottageDTO newCottageDTO) {
         Address address = new Address(newCottageDTO.getLatitude(), newCottageDTO.getLongitude(), newCottageDTO.getStreet(), newCottageDTO.getNumber(), newCottageDTO.getCity(), newCottageDTO.getPostalCode(), newCottageDTO.getCountry());
         address.setAddress_id(newCottageDTO.getAddressId());

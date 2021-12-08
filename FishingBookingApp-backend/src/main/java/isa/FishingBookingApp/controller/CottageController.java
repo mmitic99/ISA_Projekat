@@ -46,7 +46,7 @@ public class CottageController {
         return new ResponseEntity<>(newCottage, HttpStatus.CREATED);
     }
 
-    @PostMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<Cottage> updateCottage(@RequestBody CottageDTO cottageDTO, HttpServletRequest request) {
         if (!authorizedUser(cottageDTO.getCottageOwnerUsername(), request)){
@@ -56,11 +56,13 @@ public class CottageController {
         if (!cottageService.exists(cottageDTO.getId())){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
+        // TODO: uraditi proveru da li je moguce izmeniti vikendicu (ne sme biti rezervisana)
         Cottage updatedCottage = cottageService.saveOrUpdate(cottageDTO);
         return new ResponseEntity<>(updatedCottage, HttpStatus.OK);
     }
 
     @GetMapping(value = "/{username}/allCottages", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('cottageOwner')")
     public ResponseEntity<List<Cottage>> getCottagesOfUser(@PathVariable String username, HttpServletRequest request) {
         if (!authorizedUser(username, request)){
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
@@ -68,6 +70,26 @@ public class CottageController {
         User user = userService.findByMailAddress(username);
         List<Cottage> allCottagesOfUser = cottageService.getAllOfUser(user.getId());
         return new ResponseEntity<>(allCottagesOfUser, HttpStatus.OK);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    @PreAuthorize("hasRole('cottageOwner')")
+    public ResponseEntity<Cottage> deleteCottage(@PathVariable Long id, HttpServletRequest request) {
+        Cottage cottage = cottageService.get(id);
+        if (cottage == null) {
+            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        }
+
+        if (!authorizedUser(cottage.getCottageOwner().getUsername(), request)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
+
+        // TODO: uraditi proveru da li je moguce obrisati vikendicu (ne sme biti rezervisana)
+        if (cottageService.delete(id)){
+            return new ResponseEntity<>(null, HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
     }
 
     private boolean authorizedUser(String cottageOwnerUsername, HttpServletRequest request) {
