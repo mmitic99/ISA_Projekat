@@ -23,9 +23,12 @@ export class EntitiesService {
     let photo = new FormData();
     photo.append('multipartImage', file);
 
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
 
-
-    return this.http.post<any>(serverPortApi + 'reservationEntities/imageUpload/' + entityId, photo);
+    return this.http.post<any>(serverPortApi + 'reservationEntities/imageUpload/' + entityId, photo, header);
   }
 
   // DEO METODA VEZAN ZA VIKENDICE //////////////////////////

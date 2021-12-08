@@ -95,8 +95,10 @@ export class EntityViewComponent implements OnInit {
       return;
     }
     this.entitiesService.uploadImage(file, this.reservationEntity.id).subscribe(
-      () => {
+      (data) => {
         this.toastr.success("Uspešno ste postavili sliku.")
+        let img = 'data:image/jpg;base64,' + data.base64Image;
+        this.imageObject.unshift({image : img, thumbImage : img})
       },
       () => {
         this.toastr.error("Neuspešno postavljanje slike")
