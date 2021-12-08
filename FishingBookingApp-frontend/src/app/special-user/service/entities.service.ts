@@ -15,6 +15,15 @@ export class EntitiesService {
     return this.http.get<any>(serverPortApi+"reservationEntities/get/" + id)
   }
 
+  uploadImage(file: File, entityId: string) {
+    let photo = new FormData();
+    photo.append('multipartImage', file);
+
+
+
+    return this.http.post<any>(serverPortApi + 'reservationEntities/imageUpload/' + entityId, photo);
+  }
+
   // DEO METODA VEZAN ZA VIKENDICE //////////////////////////
 
   getAllUserCottages() {

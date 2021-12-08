@@ -11,9 +11,11 @@
             <div class="hero-body ">
                 <div class="container has-text-centered">
                     <div class="column is-9 is-offset-0">
-                        <h2 class="title has-text-grey">Kreiranje vikendice</h2>
+                        <h2 class="title has-text-grey" *ngIf="userRole == 'ROLE_cottageOwner'">Kreiranje vikendice</h2>
                         <div class="box">
                             <form>
+                                <p *ngIf="userRole == 'ROLE_cottageOwner'">Slike možete postaviti nakon kreiranja vikendice</p>
+                                <hr />
 
                                 <div class="field">
                                     <label class="label">Naziv</label>

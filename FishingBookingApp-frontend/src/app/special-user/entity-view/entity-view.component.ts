@@ -14,6 +14,7 @@ export class EntityViewComponent implements OnInit {
   reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
   isPostalCodeValid = true;
   userRole: any;
+  image: any;
   private id: any;
   constructor(private route: ActivatedRoute, private entitiesService: EntitiesService, private toastr: ToastrService) { }
 
@@ -67,6 +68,24 @@ export class EntityViewComponent implements OnInit {
 
   updateBoat() {
 
+  }
+
+  uploadImage(ev : Event) {
+    const target= ev.target as HTMLInputElement;
+    const file: File = (target.files as FileList)[0];
+    const size = file.size;
+    if (size >= 1048576) {
+      this.toastr.error("Veličina slike je prevelika, maksimalna velicina je 1MB");
+      return;
+    }
+    this.entitiesService.uploadImage(file, this.reservationEntity.id).subscribe(
+      () => {
+        this.toastr.success("Uspešno ste postavili sliku.")
+      },
+      () => {
+        this.toastr.error("Neuspešno postavljanje slike")
+      }
+    );
   }
 
   isAllValid(): boolean {

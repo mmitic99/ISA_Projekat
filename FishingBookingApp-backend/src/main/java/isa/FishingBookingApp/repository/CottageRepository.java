@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface CottageRepository extends JpaRepository<Cottage, Long> {
     @Query("select c from Cottage c where c.cottageOwner.id = ?1")
-    public List<Cottage> getAllCottagesOfUser(Long id);
+    List<Cottage> getAllCottagesOfUser(Long id);
 }
