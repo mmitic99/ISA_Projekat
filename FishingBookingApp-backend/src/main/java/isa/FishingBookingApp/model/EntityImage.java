@@ -8,16 +8,24 @@ import javax.persistence.*;
 public class EntityImage {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    Long id;
+    private Long id;
 
     @ManyToOne
     private ReservationEntities entity;
 
     @Lob
     @Type(type = "org.hibernate.type.ImageType")
-    byte[] content;
+    private byte[] content;
 
-    String name;
+    private String name;
+
+    public EntityImage() { }
+
+    public EntityImage(ReservationEntities entity, byte[] content, String name) {
+        this.entity = entity;
+        this.content = content;
+        this.name = name;
+    }
 
     public Long getId() {
         return id;
