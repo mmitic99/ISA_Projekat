@@ -1,5 +1,7 @@
 package isa.FishingBookingApp.model;
 
+import org.hibernate.annotations.Type;
+
 import javax.persistence.*;
 
 @Entity
@@ -12,6 +14,7 @@ public class EntityImage {
     private ReservationEntities entity;
 
     @Lob
+    @Type(type = "org.hibernate.type.ImageType")
     byte[] content;
 
     String name;

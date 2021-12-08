@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Base64;
 import java.util.List;
 
 @RestController
@@ -44,6 +45,22 @@ public class ReservationEntitiesController {
     public List<ReservationEntities> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search) {
         SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search);
         return reservationEntitiesService.searchFilterSort(searchFilterSort);
+    }
+
+    @GetMapping(value = "/images/{entityId}")
+    public ResponseEntity<List<String>> getEntityImages(@PathVariable Long entityId){
+        ReservationEntities entity = reservationEntitiesService.get(entityId);
+        if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        List<EntityImage> images = entityImageService.getImagesOfReservationEntity(entityId);
+        if (images == null) return new ResponseEntity<>(new ArrayList<String>(), HttpStatus.OK);
+
+        ArrayList<String> base64Images = new ArrayList<String>();
+        for (EntityImage image : images){
+            base64Images.add(Base64.getEncoder().encodeToString(image.getContent()));
+        }
+
+        return new ResponseEntity<>(base64Images, HttpStatus.OK);
     }
 
     @PostMapping(value = "/imageUpload/{entityId}")

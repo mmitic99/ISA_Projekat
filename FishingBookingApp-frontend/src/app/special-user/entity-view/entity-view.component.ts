@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DomSanitizer } from '@angular/platform-browser';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { ReservationEntity } from '../new-entity/ReservationEntity';
@@ -16,6 +17,7 @@ export class EntityViewComponent implements OnInit {
   userRole: any;
   image: any;
   private id: any;
+  imageObject: Array<object> = [];
   constructor(private route: ActivatedRoute, private entitiesService: EntitiesService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
@@ -25,7 +27,8 @@ export class EntityViewComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     })
-    this.getEntity();;
+    this.getEntity();
+    this.getEntityImages();
   }
 
   getEntity() {
@@ -35,6 +38,19 @@ export class EntityViewComponent implements OnInit {
           data.promotionalDescription, data.rulesOfConduct, data.address.street,
           data.address.number, data.address.city, data.address.postalCode,
           data.address.country, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
+      }
+    )
+  }
+
+  getEntityImages() {
+    this.entitiesService.getEntityImages(this.id).subscribe(
+      (data) => {
+        if (data.length > 0) {
+          for (let base64Image of data) {
+            let img = 'data:image/jpg;base64,' + base64Image;
+            this.imageObject.push({image : img, thumbImage : img});
+          }
+        }
       }
     )
   }
