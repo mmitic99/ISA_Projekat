@@ -32,19 +32,8 @@
                         <h2 class="title" *ngIf="userRole == 'ROLE_boatOwner'">Vaš brod/čamac
                             {{reservationEntity.name}}</h2>
                         <div class="box">
-
-                            <label class="label">Izaberite sliku za postavljanje</label>
-                            <nav class="level box">
-                                <div class="control">
-                                    <input type="file" name="picture"
-                                        accept=".jpg, .jpeg, .png" (change)="uploadImage($event)">
-                                </div>
-                            </nav>
-
-
-                            <br />
-
                             <form>
+
                                 <div class="field">
                                     <label class="label">Naziv</label>
                                     <div class="control">
