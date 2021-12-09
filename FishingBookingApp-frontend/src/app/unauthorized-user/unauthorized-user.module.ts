@@ -9,7 +9,6 @@ import { LoginComponent } from './login/login.component';
 import { RegistrationComponent } from './registration/registration.component';
 import { SpecialRegistrationComponent } from './special-registration/special-registration.component';
 import { NgImageSliderModule } from 'ng-image-slider';
-import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-view.component';
 
 
 @NgModule({
@@ -19,7 +18,6 @@ import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-vi
     LoginComponent,
     RegistrationComponent,
     SpecialRegistrationComponent,
-    BasicProfileViewComponent,
   ],
   imports: [
     CommonModule,

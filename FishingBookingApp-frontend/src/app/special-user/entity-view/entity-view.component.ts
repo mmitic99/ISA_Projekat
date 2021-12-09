@@ -102,15 +102,4 @@ export class EntityViewComponent implements OnInit {
     this.isPostalCodeValid = regexp.test(this.reservationEntity.postalCode);
   }
 
-
-  freeAppointmentsForReservation(): void {
-    this.toastr.show("Bice implementirano sa tackom 3.13");
-  }
-
-  createNewAction(): void {
-    this.toastr.show("Bice implementirano sa tackom 3.16");
-  }
-  createNewReservationForClient(): void {
-    this.toastr.show("Bice implementirano sa tackom 3.22");
-  }
 }

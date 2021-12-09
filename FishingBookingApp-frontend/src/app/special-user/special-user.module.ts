@@ -7,7 +7,6 @@ import { ProfileComponent } from './profile/profile.component';
 import { SuHomeComponent } from './su-home/su-home.component';
 import { NewEntityComponent } from './new-entity/new-entity.component';
 import { EntityViewComponent } from './entity-view/entity-view.component';
-import { EntityReservationComponent } from './entity-reservation/entity-reservation.component';
 
 
 @NgModule({
@@ -15,8 +14,7 @@ import { EntityReservationComponent } from './entity-reservation/entity-reservat
     ProfileComponent,
     SuHomeComponent,
     NewEntityComponent,
-    EntityViewComponent,
-    EntityReservationComponent
+    EntityViewComponent
   ],
   imports: [
     CommonModule,
