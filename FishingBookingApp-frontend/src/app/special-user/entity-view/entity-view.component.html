@@ -33,11 +33,6 @@
                             {{reservationEntity.name}}</h2>
                         <div class="box">
 
-                            <div class="has-text-centered" *ngIf="imageObject.length > 0">
-                                <ng-image-slider [images]="imageObject" 
-                                [imageSize]="{width: 200, height: 200}" #nav></ng-image-slider>
-                            </div>
-
                             <label class="label">Izaberite sliku za postavljanje</label>
                             <nav class="level box">
                                 <div class="control">
@@ -45,6 +40,7 @@
                                         accept=".jpg, .jpeg, .png" (change)="uploadImage($event)">
                                 </div>
                             </nav>
+
 
                             <br />
 

@@ -12,11 +12,7 @@ export class EntitiesService {
   constructor(private http: HttpClient) { }
 
   getEntity(id: any) {
-    return this.http.get<any>(serverPortApi + "reservationEntities/get/" + id)
-  }
-
-  getEntityImages(id: any) {
-    return this.http.get<any>(serverPortApi + "reservationEntities/images/" + id);
+    return this.http.get<any>(serverPortApi+"reservationEntities/get/" + id)
   }
 
   uploadImage(file: File, entityId: string) {
