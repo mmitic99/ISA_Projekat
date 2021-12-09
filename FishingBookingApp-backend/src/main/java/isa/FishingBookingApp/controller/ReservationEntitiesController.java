@@ -107,6 +107,19 @@ public class ReservationEntitiesController {
         return new ResponseEntity<>(imageDTO, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/oneImage/{entityId}")
+    public ResponseEntity<EntityImageDTO> getOneEntityImage(@PathVariable Long entityId) {
+        ReservationEntities entity = reservationEntitiesService.get(entityId);
+        if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        EntityImage image = entityImageService.getOneImageOfReservationEntity(entityId);
+        if (image == null) return new ResponseEntity<>(HttpStatus.OK);
+        EntityImageDTO imageDTO = new EntityImageDTO();
+        imageDTO.setBase64Image(Base64.getEncoder().encodeToString(image.getContent()));
+        
+        return new ResponseEntity<>(imageDTO, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/additionalServices")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<AdditionalService> createAdditionalService(@RequestBody AdditionalServiceDTO additionalServiceDTO, HttpServletRequest request) {

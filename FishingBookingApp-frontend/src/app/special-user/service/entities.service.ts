@@ -33,6 +33,10 @@ export class EntitiesService {
     return this.http.get<any>(serverPortApi + "reservationEntities/images/" + id);
   }
 
+  getOneEntityImage(id: any) {
+    return this.http.get<any>(serverPortApi + "reservationEntities/oneImage/" + id);
+  }
+
   uploadImage(file: File, entityId: string) {
     let photo = new FormData();
     photo.append('multipartImage', file);

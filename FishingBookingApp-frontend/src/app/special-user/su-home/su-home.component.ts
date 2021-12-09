@@ -22,16 +22,36 @@ export class SuHomeComponent implements OnInit {
     if (role == 'ROLE_cottageOwner') {
       this.entitiesService.getAllUserCottages().subscribe(
         (data) => {
-          this.reservationEntities = data;
-          this.reservationEntitiesToShow = data;
+          this.getOneImageForEveryEntity(data);
+          //this.reservationEntities = data;
+          //this.reservationEntitiesToShow = data;
         }
       )
     }
     else if (role == 'ROLE_boatOwner') {
       this.entitiesService.getAllUserBoats().subscribe(
         (data) => {
-          this.reservationEntities = data;
-          this.reservationEntitiesToShow = data;
+          this.getOneImageForEveryEntity(data);
+          //this.reservationEntities = data;
+          //this.reservationEntitiesToShow = data;
+        }
+      )
+    }
+  }
+
+  getOneImageForEveryEntity(entities : any) {
+    this.reservationEntities = [];
+    this.reservationEntitiesToShow = [];
+    for (let entity of entities) {
+      this.entitiesService.getOneEntityImage(entity.id).subscribe(
+        (data) => {
+          entity.base64Image = 'data:image/jpg;base64,' + data.base64Image;
+          this.reservationEntities.push(entity);
+          this.reservationEntitiesToShow.push(entity);
+        },
+        () => {
+          this.reservationEntities.push(entity);
+          this.reservationEntitiesToShow.push(entity);
         }
       )
     }
