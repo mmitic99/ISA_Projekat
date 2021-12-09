@@ -1,0 +1,9 @@
+<div class="has-text-centered">
+    <h1 class="title" *ngIf="role == 'ROLE_cottageOwner'">Zauzetost vaših vikendica</h1>
+    <h1 class="title" *ngIf="role == 'ROLE_boatOwner'">Zauzetost vaših brodova/čamaca</h1>
+    
+</div>
+
+<div class="column is-10 is-offset-1">
+    <full-calendar [options]="calendarOptions"></full-calendar>
+</div>

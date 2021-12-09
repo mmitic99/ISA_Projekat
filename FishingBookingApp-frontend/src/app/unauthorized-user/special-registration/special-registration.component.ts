@@ -23,7 +23,7 @@ export class SpecialRegistrationComponent implements OnInit {
   }
 
   register(): void {
-    if (this.isAllFilled()) {
+    if (this.isAllValid()) {
       this.authService.specialRegister(this.specialRegistrationUser).subscribe(
         (data) => {
           this.toastr.success("Uspešno ste se registrovali. Nakon što administrator odobri vašu registraciju dobićete obaveštenje putem mejla nakon čega se možete prijaviti.", "Uspešna registracija", { timeOut: 100000 })
@@ -35,7 +35,7 @@ export class SpecialRegistrationComponent implements OnInit {
       )
     }
     else {
-      this.toastr.error("Nisu popunjena sva polja.")
+      this.toastr.error("Nisu popunjena sva polja ili su neka nevalidno unesena.")
     }
   }
 
