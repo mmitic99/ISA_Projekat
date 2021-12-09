@@ -26,4 +26,12 @@ public class EntityImageServiceImpl implements EntityImageService {
     public List<EntityImage> getImagesOfReservationEntity(Long entityId) {
         return entityImageRepository.getImagesOfReservationEntity(entityId);
     }
+
+    @Override
+    public EntityImage getOneImageOfReservationEntity(Long entityId) {
+        List<EntityImage> images = getImagesOfReservationEntity(entityId);
+        if (images == null || images.size() == 0) return null;
+
+        return images.get(0);
+    }
 }
