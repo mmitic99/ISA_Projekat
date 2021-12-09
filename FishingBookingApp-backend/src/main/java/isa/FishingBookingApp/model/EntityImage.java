@@ -1,5 +1,7 @@
 package isa.FishingBookingApp.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 import org.hibernate.annotations.Type;
 
 import javax.persistence.*;
@@ -11,6 +13,7 @@ public class EntityImage {
     private Long id;
 
     @ManyToOne
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private ReservationEntities entity;
 
     @Lob
