@@ -45,7 +45,9 @@ export class SuHomeComponent implements OnInit {
     for (let entity of entities) {
       this.entitiesService.getOneEntityImage(entity.id).subscribe(
         (data) => {
-          entity.base64Image = 'data:image/jpg;base64,' + data.base64Image;
+          if (data != null) {
+            entity.base64Image = 'data:image/jpg;base64,' + data.base64Image;
+          }
           this.reservationEntities.push(entity);
           this.reservationEntitiesToShow.push(entity);
         },
