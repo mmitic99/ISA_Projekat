@@ -9,6 +9,7 @@ import { SuHomeComponent } from './su-home/su-home.component';
 import { NewEntityComponent } from './new-entity/new-entity.component';
 import { EntityViewComponent } from './entity-view/entity-view.component';
 import { EntityReservationComponent } from './entity-reservation/entity-reservation.component';
+import { AdditionalServicesComponent } from './additional-services/additional-services.component';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { EntityReservationComponent } from './entity-reservation/entity-reservat
     SuHomeComponent,
     NewEntityComponent,
     EntityViewComponent,
-    EntityReservationComponent
+    EntityReservationComponent,
+    AdditionalServicesComponent
   ],
   imports: [
     CommonModule,

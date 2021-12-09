@@ -1,7 +1,10 @@
 package isa.FishingBookingApp.service.impl;
 
+import isa.FishingBookingApp.dto.AdditionalServiceDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
+import isa.FishingBookingApp.model.AdditionalService;
 import isa.FishingBookingApp.model.ReservationEntities;
+import isa.FishingBookingApp.repository.AdditionalServiceRepository;
 import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +18,12 @@ import java.util.List;
 @Service
 public class ReservationEntitiesServiceImpl implements ReservationEntitiesService {
     private ReservationEntitiesRepository reservationEntitiesRepository;
+    private AdditionalServiceRepository additionalServiceRepository;
 
     @Autowired
-    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository) {
+    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository) {
         this.reservationEntitiesRepository = reservationEntitiesRepository;
+        this.additionalServiceRepository = additionalServiceRepository;
     }
 
     @Override
@@ -29,6 +34,19 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
     @Override
     public ReservationEntities get(Long id) {
         return reservationEntitiesRepository.findById(id).orElseGet(null);
+    }
+
+    @Override
+    public List<AdditionalService> getAdditionalServices(Long id) {
+        return additionalServiceRepository.getAllAdditionalServicesOfReservationEntity(id);
+    }
+
+    @Override
+    public AdditionalService createAdditionalService(AdditionalServiceDTO additionalServiceDTO) {
+        ReservationEntities reservationEntity = reservationEntitiesRepository.findById(additionalServiceDTO.getReservationEntityId()).orElse(null);
+        if (reservationEntity == null) return null;
+        AdditionalService additionalService = new AdditionalService(reservationEntity, additionalServiceDTO.getName(), additionalServiceDTO.getDescription(), additionalServiceDTO.getPrice());
+        return additionalServiceRepository.save(additionalService);
     }
 
     @Override

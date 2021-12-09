@@ -4,6 +4,9 @@
             <div class="hero-body ">
                 <div class="container has-text-centered">
                     <a class="button is-info is-light"
+                        routerLink="../../additionalServices/{{reservationEntity.id}}">Dodatne usluge</a>
+                    <hr />
+                    <a class="button is-info is-light"
                         routerLink="../../entityReservations/{{reservationEntity.id}}">Uvid u rezervacije</a>
                     <hr />
                     <a class="button is-info is-light" (click)="freeAppointmentsForReservation()">Definisanje perioda

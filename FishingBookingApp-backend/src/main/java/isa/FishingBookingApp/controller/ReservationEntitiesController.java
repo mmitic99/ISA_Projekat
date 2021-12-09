@@ -1,11 +1,17 @@
 package isa.FishingBookingApp.controller;
 
+import isa.FishingBookingApp.dto.AdditionalServiceDTO;
+import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.dto.EntityImageDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
+import isa.FishingBookingApp.model.AdditionalService;
+import isa.FishingBookingApp.model.Cottage;
 import isa.FishingBookingApp.model.EntityImage;
 import isa.FishingBookingApp.model.ReservationEntities;
+import isa.FishingBookingApp.service.CottageService;
 import isa.FishingBookingApp.service.EntityImageService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
+import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -14,6 +20,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -25,11 +32,15 @@ import java.util.List;
 public class ReservationEntitiesController {
     private ReservationEntitiesService reservationEntitiesService;
     private EntityImageService entityImageService;
+    private CottageService cottageService;
+    private TokenUtils tokenUtils;
 
     @Autowired
-    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService) {
+    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, TokenUtils tokenUtils) {
         this.reservationEntitiesService=reservationEntitiesService;
         this.entityImageService = entityImageService;
+        this.cottageService = cottageService;
+        this.tokenUtils = tokenUtils;
     }
 
     @GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -64,6 +75,15 @@ public class ReservationEntitiesController {
         return new ResponseEntity<>(base64Images, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/additionalServices/{entityId}")
+    public ResponseEntity<List<AdditionalService>> getAdditionalServices(@PathVariable Long entityId){
+        ArrayList<AdditionalService> additionalServices = (ArrayList<AdditionalService>) reservationEntitiesService.getAdditionalServices(entityId);
+
+        if (additionalServices == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(additionalServices, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/imageUpload/{entityId}")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<EntityImageDTO> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId) {
@@ -85,5 +105,37 @@ public class ReservationEntitiesController {
 
         if (image == null)  return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(imageDTO, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "/additionalServices")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<AdditionalService> createAdditionalService(@RequestBody AdditionalServiceDTO additionalServiceDTO, HttpServletRequest request) {
+        String userMailAddress = "";
+        ReservationEntities entity = reservationEntitiesService.get(additionalServiceDTO.getReservationEntityId());
+        if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        if (entity.getType().equals("cottage")) {
+            Cottage cottage = cottageService.get(entity.getId());
+            userMailAddress = cottage.getCottageOwner().getMailAddress();
+        }
+        else if (entity.getType().equals("boat")) {
+            // TODO: implementirati kada se budu implementirale stvari za brod
+        }
+        else {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
+        if (!authorizedUser(userMailAddress, request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+
+        AdditionalService additionalService = reservationEntitiesService.createAdditionalService(additionalServiceDTO);
+        if (additionalService == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(additionalService, HttpStatus.OK);
+    }
+
+    private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String username = tokenUtils.getUsernameFromToken(token.substring(7));
+        return username.equals(ownerUsername);
     }
 }

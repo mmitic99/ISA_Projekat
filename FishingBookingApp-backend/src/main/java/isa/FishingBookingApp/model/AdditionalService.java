@@ -9,11 +9,18 @@ public class AdditionalService {
         
     }
 
+    public AdditionalService(ReservationEntities reservationEntity, String name, String description, double price) {
+        this.reservationEntity = reservationEntity;
+        this.name = name;
+        this.description = description;
+        this.price = price;
+    }
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private ReservationEntities reservationEntity;
 
     @Column(nullable = false)

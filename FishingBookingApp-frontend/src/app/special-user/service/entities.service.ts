@@ -1,6 +1,7 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { serverPortApi } from 'src/app/app.consts';
+import { AdditionalService } from '../additional-services/AdditionalService';
 import { Cottage } from '../new-entity/Cottage';
 import { ReservationEntity } from '../new-entity/ReservationEntity';
 
@@ -13,6 +14,19 @@ export class EntitiesService {
 
   getEntity(id: any) {
     return this.http.get<any>(serverPortApi + "reservationEntities/get/" + id)
+  }
+
+  getAdditionalServices(id: any) {
+    return this.http.get<any>(serverPortApi + "reservationEntities/additionalServices/" + id);
+  }
+
+  createAdditionalService(additionalService: AdditionalService) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    
+    return this.http.post<any>(serverPortApi + "reservationEntities/additionalServices", additionalService, header);
   }
 
   getEntityImages(id: any) {

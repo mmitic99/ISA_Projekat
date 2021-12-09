@@ -20,14 +20,16 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 	private UserRepository userRepository;
 	private UserRoleRepository userRoleRepository;
 	private EntityImageRepository entityImageRepository;
+	private AdditionalServiceRepository additionalServiceRepository;
 
 	@Autowired
-	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository){
+	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository){
 		this.reservationEntitiesRepository = reservationEntitiesRepository;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.entityImageRepository = entityImageRepository;
+		this.additionalServiceRepository = additionalServiceRepository;
 	}
 
 	public static void main(String[] args) {
@@ -73,6 +75,16 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		Cottage cottage2 = new Cottage("Snezna dolina", address4, "Uzivajte u prelepom pogledu.", null, "Zabranjeno pusenje. Zabranjeno dovodjenje zivotinja.", null, cottageOwner1, 4, 2, 3000);
 		reservationEntitiesRepository.save(cottage1);
 		reservationEntitiesRepository.save(cottage2);
+
+		// Inicijalizacija dodatnih usluga
+		AdditionalService additionalService1 = new AdditionalService(cottage1, "Djakuzi u dvoristu vikendice", "Pristup djakuziju u bilo koje doba dana. Uživajte u vreloj kupki na otvorenom.", 5000);
+		AdditionalService additionalService2 = new AdditionalService(cottage1, "Pun pansion (cena na dan)", "Doručak, ručak i večera...uvek sveža hrana koju priprema najbolji kuvar iz okoline", 3000);
+		AdditionalService additionalService3 = new AdditionalService(cottage1, "Vožnja kvadovima", "Sat vremena vožnje kvadovima po prelepoj prirodi.", 6000);
+		AdditionalService additionalService4 = new AdditionalService(cottage2, "Djakuzi u dvoristu vikendice", "Pristup djakuziju u bilo koje doba dana. Uživajte u vreloj kupki na otvorenom.", 7000);
+		additionalServiceRepository.save(additionalService1);
+		additionalServiceRepository.save(additionalService2);
+		additionalServiceRepository.save(additionalService3);
+		additionalServiceRepository.save(additionalService4);
 
 		// Ucitavanje slika
 		String file1 ="src/main/resources/static/images/imgCottage1.jpg";
