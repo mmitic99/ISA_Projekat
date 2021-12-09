@@ -18,6 +18,8 @@
     "@angular/platform-browser": "~12.2.0",
     "@angular/platform-browser-dynamic": "~12.2.0",
     "@angular/router": "~12.2.0",
+    "@fullcalendar/angular": "^5.10.1",
+    "@fullcalendar/daygrid": "^5.10.1",
     "bulma": "^0.9.3",
     "ng-image-slider": "^2.8.0",
     "ngx-toastr": "^14.2.1",

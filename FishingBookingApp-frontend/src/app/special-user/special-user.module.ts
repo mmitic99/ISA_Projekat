@@ -2,6 +2,10 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule } from '@angular/forms';
 import { NgImageSliderModule } from 'ng-image-slider';
+import { FullCalendarModule } from '@fullcalendar/angular';
+import dayGridPlugin from '@fullcalendar/daygrid';
+// import interactionPlugin from '@fullcalendar/interaction'; Kada bude trebalo pise se u terminalu "npm i @fullcalendar/interaction"
+
 
 import { SpecialUserRoutingModule } from './special-user-routing.module';
 import { ProfileComponent } from './profile/profile.component';
@@ -10,7 +14,12 @@ import { NewEntityComponent } from './new-entity/new-entity.component';
 import { EntityViewComponent } from './entity-view/entity-view.component';
 import { EntityReservationComponent } from './entity-reservation/entity-reservation.component';
 import { AdditionalServicesComponent } from './additional-services/additional-services.component';
+import { EntityBusynessComponent } from './entity-busyness/entity-busyness.component';
 
+FullCalendarModule.registerPlugins([ // register FullCalendar plugins
+  dayGridPlugin,
+  //interactionPlugin
+]);
 
 @NgModule({
   declarations: [
@@ -19,13 +28,15 @@ import { AdditionalServicesComponent } from './additional-services/additional-se
     NewEntityComponent,
     EntityViewComponent,
     EntityReservationComponent,
-    AdditionalServicesComponent
+    AdditionalServicesComponent,
+    EntityBusynessComponent
   ],
   imports: [
     CommonModule,
     FormsModule,
     SpecialUserRoutingModule,
-    NgImageSliderModule
+    NgImageSliderModule,
+    FullCalendarModule
   ]
 })
 export class SpecialUserModule { }
