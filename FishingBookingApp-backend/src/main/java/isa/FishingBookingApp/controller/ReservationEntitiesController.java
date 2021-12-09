@@ -1,6 +1,5 @@
 package isa.FishingBookingApp.controller;
 
-import isa.FishingBookingApp.dto.EntityImageDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.EntityImage;
 import isa.FishingBookingApp.model.ReservationEntities;
@@ -65,8 +64,7 @@ public class ReservationEntitiesController {
     }
 
     @PostMapping(value = "/imageUpload/{entityId}")
-    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
-    public ResponseEntity<EntityImageDTO> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId) {
+    public ResponseEntity<EntityImage> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId) {
         ReservationEntities entity = reservationEntitiesService.get(entityId);
         if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
@@ -80,10 +78,8 @@ public class ReservationEntitiesController {
 
         image.setEntity(entity);
         image = entityImageService.save(image);
-        EntityImageDTO imageDTO = new EntityImageDTO();
-        imageDTO.setBase64Image(Base64.getEncoder().encodeToString(image.getContent()));
 
         if (image == null)  return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        return new ResponseEntity<>(imageDTO, HttpStatus.OK);
+        return new ResponseEntity<>(image, HttpStatus.OK);
     }
 }

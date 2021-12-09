@@ -7,11 +7,6 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import java.io.DataInputStream;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.util.ArrayList;
-
 @SpringBootApplication
 public class FishingBookingAppApplication implements CommandLineRunner {
 
@@ -19,15 +14,13 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 	private AddressRepository addressRepository;
 	private UserRepository userRepository;
 	private UserRoleRepository userRoleRepository;
-	private EntityImageRepository entityImageRepository;
 
 	@Autowired
-	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository){
+	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository){
 		this.reservationEntitiesRepository = reservationEntitiesRepository;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
-		this.entityImageRepository = entityImageRepository;
 	}
 
 	public static void main(String[] args) {
@@ -74,34 +67,6 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		reservationEntitiesRepository.save(cottage1);
 		reservationEntitiesRepository.save(cottage2);
 
-		// Ucitavanje slika
-		String file1 ="src/main/resources/static/images/imgCottage1.jpg";
-		String file2 ="src/main/resources/static/images/imgCottage2.jpeg";
-		byte[] img1 = null;
-		byte[] img2 = null;
-
-		try {
-			img1 = readImage(file1);
-			EntityImage entityImage1 = new EntityImage(cottage1, img1, "Vikendica1");
-			entityImageRepository.save(entityImage1);
-
-			img2 = readImage(file2);
-			EntityImage entityImage2 = new EntityImage(cottage2, img2, "Vikendica2");
-			entityImageRepository.save(entityImage2);
-		} catch (Exception e) {
-
-		}
 	}
 
-	private byte[] readImage(String file) throws IOException {
-		byte[] img1 = null;
-		DataInputStream reader = new DataInputStream(new FileInputStream(file));
-		int nBytesToRead = reader.available();
-		if(nBytesToRead > 0) {
-			byte[] bytes = new byte[nBytesToRead];
-			reader.read(bytes);
-			img1 = bytes;
-		}
-		return img1;
-	}
 }
