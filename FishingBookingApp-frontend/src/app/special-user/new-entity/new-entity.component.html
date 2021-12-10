@@ -30,24 +30,30 @@
                                     <label class="label">Broj soba</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Broj soba" name="numberOfRooms"
+                                            (focusout)="onFocusOutNumberOfRooms()"
                                             [(ngModel)]="newReservationEntity.numberOfRooms">
                                     </div>
+                                    <p class="is-danger help" *ngIf="isNumberOfRoomsValid == false">Broj soba mora biti cifra.</p>
                                 </div>
 
                                 <div class="field">
                                     <label class="label">Broj kreveta po sobi</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Broj kreveta po sobi"
+                                            (focusout)="onFocusOutNumberOfBeds()"
                                             name="bedsPerRoom" [(ngModel)]="newReservationEntity.bedsPerRoom">
                                     </div>
+                                    <p class="is-danger help" *ngIf="isNumberOfBedsValid == false">Broj kreveta mora biti cifra.</p>
                                 </div>
 
                                 <div class="field">
                                     <label class="label">Cena noćenja</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Cena noćenja" name="price"
+                                            (focusout)="onFocusOutPrice()"
                                             [(ngModel)]="newReservationEntity.price">
                                     </div>
+                                    <p class="is-danger help" *ngIf="isPriceValid == false">Cena mora biti cifra.</p>
                                 </div>
 
                                 <!-- ----------------------- -->

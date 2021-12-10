@@ -11,8 +11,11 @@ import { ReservationEntity } from './ReservationEntity';
 })
 export class NewEntityComponent implements OnInit {
 
-  newReservationEntity= new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", null);
+  isNumberOfRoomsValid = true;
+  isNumberOfBedsValid = true;
+  isPriceValid = true;
   isPostalCodeValid = true;
+  newReservationEntity= new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", null);
   userRole : any;
   constructor(private entityService: EntitiesService, private toastr: ToastrService, private router: Router) { }
 
@@ -35,7 +38,7 @@ export class NewEntityComponent implements OnInit {
       )
     }
     else {
-      this.toastr.error("Nisu popunjena sva polja.")
+      this.toastr.error("Nisu popunjena sva polja ili su neka nevalidno unesena.")
     }
   }
 
@@ -44,7 +47,7 @@ export class NewEntityComponent implements OnInit {
   }
 
   isAllValid(): boolean {
-    if (this.isAllFilled() && this.isPostalCodeValid) {
+    if (this.isAllFilled() && this.isNumberOfBedsValid && this.isNumberOfRoomsValid && this.isPriceValid && this.isPostalCodeValid) {
       return true;
     }
     else {
@@ -74,6 +77,21 @@ export class NewEntityComponent implements OnInit {
   onFocusOutPostalCode(): void {
     var regexp = new RegExp('^[0-9]{5}$');
     this.isPostalCodeValid = regexp.test(this.newReservationEntity.postalCode);
+  }
+
+  onFocusOutNumberOfRooms(): void {
+    var regexp = new RegExp('^[0-9]*$');
+    this.isNumberOfRoomsValid = regexp.test(this.newReservationEntity.numberOfRooms);
+  }
+  
+  onFocusOutNumberOfBeds(): void {
+    var regexp = new RegExp('^[0-9]*$');
+    this.isNumberOfBedsValid = regexp.test(this.newReservationEntity.bedsPerRoom);
+  }
+
+  onFocusOutPrice(): void {
+    var regexp = new RegExp('^[0-9]*$');
+    this.isPriceValid = regexp.test(this.newReservationEntity.price);
   }
 
 }

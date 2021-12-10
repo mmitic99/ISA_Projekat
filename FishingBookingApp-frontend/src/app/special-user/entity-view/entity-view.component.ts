@@ -11,6 +11,9 @@ import { EntitiesService } from '../service/entities.service';
 })
 export class EntityViewComponent implements OnInit {
 
+  isNumberOfRoomsValid = true;
+  isNumberOfBedsValid = true;
+  isPriceValid = true;
   reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
   isPostalCodeValid = true;
   userRole: any;
@@ -47,7 +50,7 @@ export class EntityViewComponent implements OnInit {
         if (data.length > 0) {
           for (let base64Image of data) {
             let img = 'data:image/jpg;base64,' + base64Image;
-            this.imageObject.push({image : img, thumbImage : img});
+            this.imageObject.push({ image: img, thumbImage: img });
           }
         }
       }
@@ -66,7 +69,7 @@ export class EntityViewComponent implements OnInit {
       );
     }
     else {
-      this.toastr.error("Nisu popunjena sva polja.")
+      this.toastr.error("Nisu popunjena sva polja ili su neka nevalidno unesena.")
     }
   }
 
@@ -85,8 +88,8 @@ export class EntityViewComponent implements OnInit {
 
   }
 
-  uploadImage(ev : Event) {
-    const target= ev.target as HTMLInputElement;
+  uploadImage(ev: Event) {
+    const target = ev.target as HTMLInputElement;
     const file: File = (target.files as FileList)[0];
     const size = file.size;
     if (size >= 1048576) {
@@ -97,7 +100,7 @@ export class EntityViewComponent implements OnInit {
       (data) => {
         this.toastr.success("Uspešno ste postavili sliku.")
         let img = 'data:image/jpg;base64,' + data.base64Image;
-        this.imageObject.unshift({image : img, thumbImage : img})
+        this.imageObject.unshift({ image: img, thumbImage: img })
       },
       () => {
         this.toastr.error("Neuspešno postavljanje slike")
@@ -106,7 +109,7 @@ export class EntityViewComponent implements OnInit {
   }
 
   isAllValid(): boolean {
-    if (this.isAllFilled() && this.isPostalCodeValid) {
+    if (this.isAllFilled() && this.isNumberOfBedsValid && this.isNumberOfRoomsValid && this.isPriceValid && this.isPostalCodeValid) {
       return true;
     }
     else {
@@ -138,6 +141,20 @@ export class EntityViewComponent implements OnInit {
     this.isPostalCodeValid = regexp.test(this.reservationEntity.postalCode);
   }
 
+  onFocusOutNumberOfRooms(): void {
+    var regexp = new RegExp('^[0-9]*$');
+    this.isNumberOfRoomsValid = regexp.test(this.reservationEntity.numberOfRooms);
+  }
+
+  onFocusOutNumberOfBeds(): void {
+    var regexp = new RegExp('^[0-9]*$');
+    this.isNumberOfBedsValid = regexp.test(this.reservationEntity.bedsPerRoom);
+  }
+
+  onFocusOutPrice(): void {
+    var regexp = new RegExp('^[0-9]*$');
+    this.isPriceValid = regexp.test(this.reservationEntity.price);
+  }
 
   freeAppointmentsForReservation(): void {
     this.toastr.show("Bice implementirano sa tackom 3.13");
