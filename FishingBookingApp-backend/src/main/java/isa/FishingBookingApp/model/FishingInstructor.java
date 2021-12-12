@@ -34,6 +34,9 @@ public class FishingInstructor extends User{
 	public void setClasses(Set<FishingClass> classes) {
 		this.classes = classes;
 	}
-
+    public FishingInstructor(String mailAddress, String password, String name, String surname, String mobileNumber, Address address, UserRole role, boolean enabled, boolean verified, String explanationOfReg) {
+        super(mailAddress, password, name, surname, mobileNumber, address, role, enabled, verified);
+        this.explanationOfReg = explanationOfReg;
+    }
 	
 }

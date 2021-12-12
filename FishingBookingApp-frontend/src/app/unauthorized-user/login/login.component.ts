@@ -49,6 +49,9 @@ export class LoginComponent implements OnInit {
     }
     else if (localStorage.getItem('role') == "TODO") {
     }
+    else if (localStorage.getItem('role') == "ROLE_fishingInstructor"){
+      this.router.navigate(['fishingInstructor']);
+    }
     else {
       this.router.navigate(['']);
     }

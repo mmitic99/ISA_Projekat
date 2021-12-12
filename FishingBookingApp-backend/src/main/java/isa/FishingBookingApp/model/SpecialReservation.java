@@ -24,6 +24,8 @@ public class SpecialReservation {
 
     private LocalDateTime start;
 
+    private String address;
+    
     private double durationInHours;
 
     private int maxPeople;
@@ -97,4 +99,12 @@ public class SpecialReservation {
     public void setPrice(double price) {
         this.price = price;
     }
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
+	}
 }
