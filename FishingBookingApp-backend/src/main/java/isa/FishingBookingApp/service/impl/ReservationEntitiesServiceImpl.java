@@ -51,7 +51,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
 
     @Override
     public List<ReservationEntities> searchFilterSort(SearchFilterSort searchFilterSort) {
-        List<ReservationEntities> reservationEntities = new ArrayList<ReservationEntities>();
+        List<ReservationEntities> reservationEntities;
         if (searchFilterSort.getTypes().size() != 0) {
             reservationEntities = filter(searchFilterSort);
         } else {
