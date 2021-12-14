@@ -7,7 +7,7 @@ import { SearchFilterSortModel } from '../home/searchFilterSortModel';
   providedIn: 'root'
 })
 export class ReservationEntitiesService {
-
+ 
   constructor(private http: HttpClient) { }
 
   getAllReservationEntities() {
@@ -35,5 +35,13 @@ export class ReservationEntitiesService {
     params = params.append('search', searchFilterSortModel.search);
 
     return this.http.get<any>(serverPortApi + "reservationEntities/searchFilterSort/", { params: params, headers: header })
+  }
+
+  getEntityImages(id: any) {
+    return this.http.get<any>(serverPortApi + "reservationEntities/images/" + id);
+  }
+
+  getOneEntityImage(id: any) {
+    return this.http.get<any>(serverPortApi + "reservationEntities/oneImage/" + id);
   }
 }

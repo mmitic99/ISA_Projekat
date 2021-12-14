@@ -14,7 +14,7 @@ export class ReservationEntityComponent implements OnInit {
   reservationEntity: any;
   imageObject: Array<object> = [];
 
-  constructor(private route: ActivatedRoute, private reservationEntitiesService: ReservationEntitiesService, private entitiesService: EntitiesService) { }
+  constructor(private route: ActivatedRoute, private reservationEntitiesService: ReservationEntitiesService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
@@ -32,7 +32,7 @@ export class ReservationEntityComponent implements OnInit {
     )
   }
   getEntityImages() {
-    this.entitiesService.getEntityImages(this.id).subscribe(
+    this.reservationEntitiesService.getEntityImages(this.id).subscribe(
       (data) => {
         if (data.length > 0) {
           for (let base64Image of data) {
