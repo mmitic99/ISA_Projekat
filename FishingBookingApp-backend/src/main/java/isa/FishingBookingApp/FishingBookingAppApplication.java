@@ -21,15 +21,19 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 	private UserRoleRepository userRoleRepository;
 	private EntityImageRepository entityImageRepository;
 	private AdditionalServiceRepository additionalServiceRepository;
+	private SubscriptionRepository subscriptionRepository;
+	private RequestForDeletingAccountRepository requestForDeletingAccountRepository;
 
 	@Autowired
-	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository){
+	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository) {
 		this.reservationEntitiesRepository = reservationEntitiesRepository;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
 		this.userRoleRepository = userRoleRepository;
 		this.entityImageRepository = entityImageRepository;
 		this.additionalServiceRepository = additionalServiceRepository;
+		this.subscriptionRepository = subscriptionRepository;
+		this.requestForDeletingAccountRepository = requestForDeletingAccountRepository;
 	}
 
 	public static void main(String[] args) {
@@ -85,6 +89,18 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		additionalServiceRepository.save(additionalService2);
 		additionalServiceRepository.save(additionalService3);
 		additionalServiceRepository.save(additionalService4);
+
+		// subscription
+		Subscription subscription1 = new Subscription(regularUser2, cottage1);
+		Subscription subscription2 = new Subscription(regularUser1, cottage1);
+		Subscription subscription3 = new Subscription(regularUser2, cottage2);
+		subscriptionRepository.save(subscription1);
+		subscriptionRepository.save(subscription2);
+		subscriptionRepository.save(subscription3);
+
+		//
+		RequestForDeletingAccount requestForDeletingAccount1 = new RequestForDeletingAccount(regularUser1, "adasdasdadsad");
+		requestForDeletingAccountRepository.save(requestForDeletingAccount1);
 
 		// Ucitavanje slika
 		String file1 ="src/main/resources/static/images/imgCottage1.jpg";
