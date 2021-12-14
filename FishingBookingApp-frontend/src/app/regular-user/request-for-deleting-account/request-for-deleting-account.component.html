@@ -7,9 +7,9 @@
                     <form ngNativeValidate>
                         <div class="field">
                             <label class="label is-medium">Zašto želite da obrišete nalog?</label>
-                            <textarea class="textarea" placeholder="Vaše obrazloženje"></textarea>
+                            <textarea class="textarea" placeholder="Vaše obrazloženje" [(ngModel)]="this.requestForDeleting.explanation" name="explanation"></textarea>
                         </div>
-                        <button class="button is-block is-danger is-large is-fullwidth">Pošalji zahtev</button>
+                        <button class="button is-block is-danger is-large is-fullwidth" (click)="sendRequest()">Pošalji zahtev</button>
                     </form>
                 </div>
             </div>
