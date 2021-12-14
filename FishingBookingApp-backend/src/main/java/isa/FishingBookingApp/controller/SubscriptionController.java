@@ -45,7 +45,7 @@ public class SubscriptionController {
             return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
         }
         if(subscriptionDTO.isSubscribe()){
-            return null;
+            return new ResponseEntity<>(subscriptionService.subscribe(subscriptionDTO), HttpStatus.OK);
         }
         else{
             return new ResponseEntity<>(subscriptionService.unsubscribe(subscriptionDTO), HttpStatus.OK);

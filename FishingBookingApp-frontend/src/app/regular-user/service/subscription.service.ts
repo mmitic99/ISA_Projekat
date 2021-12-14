@@ -19,7 +19,7 @@ export class SubscriptionService {
     return this.http.get(serverPortApi + 'subscription/subscribedReservationEntities', header);
   }
 
-  unsubscribeReservationEntity(subscription: Subscription) {
+  reservationEntitySubscription(subscription: Subscription) {
     var header = {
       headers: new HttpHeaders()
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)

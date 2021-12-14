@@ -13,4 +13,8 @@ public interface SubscriptionService {
     Subscription unsubscribe(SubscriptionDTO subscriptionDTO);
 
     List<Subscription> searchFilterSort(SearchFilterSort searchFilterSort);
+
+    Subscription subscribe(SubscriptionDTO subscriptionDTO);
+
+    List<Subscription> getAll();
 }

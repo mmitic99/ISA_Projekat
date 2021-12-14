@@ -4,7 +4,10 @@ import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.dto.SubscriptionDTO;
 import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.model.Subscription;
+import isa.FishingBookingApp.model.User;
+import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
 import isa.FishingBookingApp.repository.SubscriptionRepository;
+import isa.FishingBookingApp.repository.UserRepository;
 import isa.FishingBookingApp.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,10 +18,14 @@ import java.util.List;
 @Service
 public class SubscriptionServiceImpl implements SubscriptionService {
     private SubscriptionRepository subscriptionRepository;
+    private UserRepository userRepository;
+    private ReservationEntitiesRepository reservationEntitiesRepository;
 
     @Autowired
-    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository) {
+    public SubscriptionServiceImpl(SubscriptionRepository subscriptionRepository, UserRepository userRepository, ReservationEntitiesRepository reservationEntitiesRepository) {
         this.subscriptionRepository = subscriptionRepository;
+        this.userRepository = userRepository;
+        this.reservationEntitiesRepository = reservationEntitiesRepository;
     }
 
     @Override
@@ -31,6 +38,18 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         Subscription subscription = subscriptionRepository.findByUserMailAddressAndReservationEntitiesId(subscriptionDTO.getMailAddress(), subscriptionDTO.getReservationEntityId());
         subscriptionRepository.delete(subscription);
         return subscription;
+    }
+
+    @Override
+    public Subscription subscribe(SubscriptionDTO subscriptionDTO) {
+        User user = userRepository.findByMailAddress(subscriptionDTO.getMailAddress());
+        ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesById(subscriptionDTO.getReservationEntityId());
+        return subscriptionRepository.save(new Subscription(user, reservationEntities));
+    }
+
+    @Override
+    public List<Subscription> getAll() {
+        return subscriptionRepository.findAll();
     }
 
     @Override
