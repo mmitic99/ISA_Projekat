@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface SubscriptionRepository extends JpaRepository<Subscription, Long> {
     List<Subscription> findByUserMailAddress(String mailAddress);
+
+    Subscription findByUserMailAddressAndReservationEntitiesId(String mailAddress, Long id);
 }
