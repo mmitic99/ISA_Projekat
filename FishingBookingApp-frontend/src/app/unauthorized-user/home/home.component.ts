@@ -18,7 +18,6 @@ export class HomeComponent implements OnInit {
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
     public authService: AuthService,
-    private entitiesService : EntitiesService
     ) { }
 
   ngOnInit(): void {
@@ -59,10 +58,11 @@ export class HomeComponent implements OnInit {
     }
     this.searchFilterSort()
   }
+  
   getOneImageForEveryEntity(entities : any) {
     this.reservationEntities = [];
     for (let entity of entities) {
-      this.entitiesService.getOneEntityImage(entity.id).subscribe(
+      this.reservationEntitiesService.getOneEntityImage(entity.id).subscribe(
         (data) => {
           if (data != null) {
             entity.base64Image = 'data:image/jpg;base64,' + data.base64Image;
