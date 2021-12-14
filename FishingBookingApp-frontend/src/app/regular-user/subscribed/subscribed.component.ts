@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { ToastrService } from 'ngx-toastr';
+import { UserService } from '../service/user.service';
 
 @Component({
   selector: 'app-subscribed',
@@ -7,9 +9,21 @@ import { Component, OnInit } from '@angular/core';
 })
 export class SubscribedComponent implements OnInit {
 
-  constructor() { }
+  subscribedReservationEntities : any;
+
+  constructor(private userService: UserService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
+    this.getAllSubscription()
+  }
+
+  getAllSubscription() {
+    this.userService.getSubsription().subscribe((data)=>{
+      this.subscribedReservationEntities = data;
+    },(error)=>{
+      this.toastr.error(error)
+      this.subscribedReservationEntities = []
+    })
   }
 
 }

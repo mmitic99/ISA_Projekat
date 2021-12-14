@@ -2,8 +2,8 @@ package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.RequestForDeletingAccountDTO;
 import isa.FishingBookingApp.dto.UserDTO;
-import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.service.RequestForDeletingAccountService;
+import isa.FishingBookingApp.service.SubscriptionService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,12 +20,14 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     private UserService userService;
     private RequestForDeletingAccountService requestForDeletingAccountService;
+    private SubscriptionService subscriptionService;
     private TokenUtils tokenUtils;
 
     @Autowired
-    public UserController(UserService userService, RequestForDeletingAccountService requestForDeletingAccountService, TokenUtils tokenUtils) {
+    public UserController(UserService userService, RequestForDeletingAccountService requestForDeletingAccountService, SubscriptionService subscriptionService, TokenUtils tokenUtils) {
         this.userService = userService;
         this.requestForDeletingAccountService = requestForDeletingAccountService;
+        this.subscriptionService = subscriptionService;
         this.tokenUtils = tokenUtils;
     }
 
@@ -57,5 +59,13 @@ public class UserController {
             return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(requestForDeletingAccountService.createNewRequest(requestForDeletingAccountDTO), HttpStatus.OK);
+    }
+
+    @GetMapping(value="subscribedReservationEntities")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> getSubscribed(HttpServletRequest request){
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
+        return new ResponseEntity<>(subscriptionService.getSubscribedByUsername(mailAddress), HttpStatus.OK);
     }
 }

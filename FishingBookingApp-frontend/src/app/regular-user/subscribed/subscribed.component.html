@@ -37,32 +37,19 @@
         </thead>
 
         <!--dummy data-->
-        <tfoot>
+        <tbody *ngFor="let subscription of subscribedReservationEntities">
             <tr>
-                <td>Brod/Čamac</td>
-                <td>Mesec</td>
-                <td>885-3976 Eu Av.</td>
+                <td *ngIf="subscription.reservationEntities.type == 'cottage'">vikendica</td>
+                <td *ngIf="subscription.reservationEntities.type == 'boat'">brod</td>
+                <td *ngIf="subscription.reservationEntities.type == 'fishingInstructor'">instruktor pecanja</td>
+                
+                <td>{{subscription.reservationEntities.name}}</td>
+                <td>{{subscription.reservationEntities.address.street}} {{subscription.reservationEntities.address.number}},
+                            {{subscription.reservationEntities.address.city}}, {{subscription.reservationEntities.address.country}}
+                </td>
                 <td><button class="delete is-large">Otkaži pretplatu</button></td>
             </tr>
-            <tr>
-                <td>Instruktor pecanja</td>
-                <td>Fishing</td>
-                <td>Ap #599-5983 Donec St.</td>
-                <td><button class="delete is-large">Otkaži pretplatu</button></td>
-            </tr>
-            <tr>
-                <td>Instruktor pecanja</td>
-                <td>Fishing</td>
-                <td>Ap #212-1151 Erat Rd.</td>
-                <td><button class="delete is-large">Otkaži pretplatu</button></td>
-            </tr>
-            <tr>
-                <td>Vikendica</td>
-                <td>Mesec</td>
-                <td>P.O. Box 223, 9909 Per Rd.</td>
-                <td><button class="delete is-large">Otkaži pretplatu</button></td>
-            </tr>
-        </tfoot>
+        </tbody>
     </table>
 
 
