@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { UserService } from '../service/user.service';
+import { Subscription } from './Subscription';
 
 @Component({
   selector: 'app-subscribed',
@@ -24,6 +25,16 @@ export class SubscribedComponent implements OnInit {
       this.toastr.error(error)
       this.subscribedReservationEntities = []
     })
+  }
+
+  unsubscribe(id: any){
+    var subscription = new Subscription("", id, false);
+    this.userService.unsubscribeReservationEntity(subscription).subscribe((data)=>{
+      this.toastr.success("Uspešno se otkazali pretragu")
+      this.getAllSubscription()//TODO: add filter
+    },(error)=>{
+      this.toastr.error("Niste otkazali pretragu")
+    });
   }
 
 }
