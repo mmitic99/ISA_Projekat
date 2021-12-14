@@ -10,6 +10,7 @@ public class Subscription {
 
     @OneToOne
     User user;
+
     @OneToOne
     ReservationEntities reservationEntities;
 
