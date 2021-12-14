@@ -6,11 +6,19 @@ public class SearchFilterSort {
     private String sort;
     private List<String> types;
     private String search;
+    private String mailAddress;
 
     public SearchFilterSort(String sort, List<String> types, String search) {
         this.sort = sort;
         this.types = types;
         this.search = search;
+    }
+
+    public SearchFilterSort(String sort, List<String> types, String search, String mailAddress) {
+        this.sort = sort;
+        this.types = types;
+        this.search = search;
+        this.mailAddress = mailAddress;
     }
 
     public String getSort() {
@@ -35,5 +43,13 @@ public class SearchFilterSort {
 
     public void setSearch(String search) {
         this.search = search;
+    }
+
+    public String getMailAddress() {
+        return mailAddress;
+    }
+
+    public void setMailAddress(String mailAddress) {
+        this.mailAddress = mailAddress;
     }
 }

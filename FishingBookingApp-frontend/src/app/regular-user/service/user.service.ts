@@ -35,21 +35,4 @@ export class UserService {
     requestForDeleting.mailAddress = localStorage.getItem('mailAddress')
     return this.http.post(serverPortApi + 'users/deletingRequest', requestForDeleting, header);
   }
-
-  getSubsription() {
-    var header = {
-      headers: new HttpHeaders()
-        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
-    }
-    return this.http.get(serverPortApi + 'subscription/subscribedReservationEntities', header);
-  }
-
-  unsubscribeReservationEntity(subscription: Subscription) {
-    var header = {
-      headers: new HttpHeaders()
-        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
-    }
-    subscription.mailAddress = localStorage.getItem('mailAddress')
-    return this.http.put(serverPortApi + 'subscription/subscription', subscription, header)
-  }
 }

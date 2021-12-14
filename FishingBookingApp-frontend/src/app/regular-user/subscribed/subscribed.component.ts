@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { SearchFilterSortModel } from 'src/app/unauthorized-user/home/searchFilterSortModel';
 import { SubscriptionService } from '../service/subscription.service';
 import { UserService } from '../service/user.service';
 import { Subscription } from './Subscription';
@@ -12,6 +13,7 @@ import { Subscription } from './Subscription';
 export class SubscribedComponent implements OnInit {
 
   subscribedReservationEntities : any;
+  searchFilterSortModel= new SearchFilterSortModel("", new Array<string>());
 
   constructor(private userService: UserService, private subscriptionService: SubscriptionService, private toastr: ToastrService) { }
 
@@ -36,6 +38,31 @@ export class SubscribedComponent implements OnInit {
     },(error)=>{
       this.toastr.error("Niste otkazali pretragu")
     });
+  }
+
+  searchFilterSort(){
+    if(this.searchFilterSortModel.types.length == 0){
+      this.getAllSubscription();
+    }
+    else{
+      this.subscriptionService.searchFilterSort(this.searchFilterSortModel).subscribe(
+        (data)=>{
+          this.subscribedReservationEntities = data;
+        },
+        (error)=>{
+          this.subscribedReservationEntities = []
+        }
+      )
+    }
+  }
+  
+  selectType(type: string){
+    if (this.searchFilterSortModel.types.includes(type)) {
+      this.searchFilterSortModel.types = this.searchFilterSortModel.types.filter(item => item !== type)
+    } else {
+      this.searchFilterSortModel.types.push(type)
+    }
+    this.searchFilterSort()
   }
 
 }
