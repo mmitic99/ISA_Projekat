@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { SubscriptionService } from '../service/subscription.service';
 import { UserService } from '../service/user.service';
 import { Subscription } from './Subscription';
 
@@ -12,14 +13,14 @@ export class SubscribedComponent implements OnInit {
 
   subscribedReservationEntities : any;
 
-  constructor(private userService: UserService, private toastr: ToastrService) { }
+  constructor(private userService: UserService, private subscriptionService: SubscriptionService, private toastr: ToastrService) { }
 
   ngOnInit(): void {
     this.getAllSubscription()
   }
 
   getAllSubscription() {
-    this.userService.getSubsription().subscribe((data)=>{
+    this.subscriptionService.getSubsription().subscribe((data)=>{
       this.subscribedReservationEntities = data;
     },(error)=>{
       this.toastr.error(error)
@@ -29,7 +30,7 @@ export class SubscribedComponent implements OnInit {
 
   unsubscribe(id: any){
     var subscription = new Subscription("", id, false);
-    this.userService.unsubscribeReservationEntity(subscription).subscribe((data)=>{
+    this.subscriptionService.unsubscribeReservationEntity(subscription).subscribe((data)=>{
       this.toastr.success("Uspešno se otkazali pretragu")
       this.getAllSubscription()//TODO: add filter
     },(error)=>{
