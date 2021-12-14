@@ -1,6 +1,7 @@
 package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.RequestForDeletingAccountDTO;
+import isa.FishingBookingApp.dto.SubscriptionDTO;
 import isa.FishingBookingApp.dto.UserDTO;
 import isa.FishingBookingApp.service.RequestForDeletingAccountService;
 import isa.FishingBookingApp.service.SubscriptionService;
@@ -67,5 +68,21 @@ public class UserController {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
         return new ResponseEntity<>(subscriptionService.getSubscribedByUsername(mailAddress), HttpStatus.OK);
+    }
+
+    @PutMapping(value = "subscription")
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> subscription(@RequestBody SubscriptionDTO subscriptionDTO, HttpServletRequest request){
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
+        if(!mailAddress.equals(subscriptionDTO.getMailAddress())){
+            return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
+        }
+        if(subscriptionDTO.isSubscribe()){
+            return null;
+        }
+        else{
+            return new ResponseEntity<>(subscriptionService.unsubscribe(subscriptionDTO), HttpStatus.OK);
+        }
     }
 }

@@ -1,5 +1,6 @@
 package isa.FishingBookingApp.service.impl;
 
+import isa.FishingBookingApp.dto.SubscriptionDTO;
 import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.model.Subscription;
 import isa.FishingBookingApp.repository.SubscriptionRepository;
@@ -21,5 +22,12 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     public List<Subscription> getSubscribedByUsername(String mailAddress) {
         return subscriptionRepository.findByUserMailAddress(mailAddress);
+    }
+
+    @Override
+    public Subscription unsubscribe(SubscriptionDTO subscriptionDTO) {
+        Subscription subscription = subscriptionRepository.findByUserMailAddressAndReservationEntitiesId(subscriptionDTO.getMailAddress(), subscriptionDTO.getReservationEntityId());
+        subscriptionRepository.delete(subscription);
+        return subscription;
     }
 }
