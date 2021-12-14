@@ -42,6 +42,7 @@ export class HomeComponent implements OnInit {
       this.reservationEntitiesService.searchFilterSort(this.searchFilterSortModel).subscribe(
         (data)=>{
           this.reservationEntities = data;
+          this.getOneImageForEveryEntity(data);
         },
         (error)=>{
           this.reservationEntities = []

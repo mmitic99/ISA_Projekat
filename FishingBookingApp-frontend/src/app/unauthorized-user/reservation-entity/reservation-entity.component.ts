@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { EntitiesService } from 'src/app/special-user/service/entities.service';
 import { ReservationEntitiesService } from '../service/reservation-entities.service';
 
 @Component({
@@ -11,53 +12,34 @@ export class ReservationEntityComponent implements OnInit {
 
   private id: any;
   reservationEntity: any;
-  imageObject: Array<object> = [{
-    image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-    thumbImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-    alt: 'image not loaded',
-},{
-  image: 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Altja_jõgi_Lahemaal.jpg',
-  thumbImage: 'https://upload.wikimedia.org/wikipedia/commons/c/c8/Altja_jõgi_Lahemaal.jpg',
-  alt: 'image not loaded',
-},{
-  image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  thumbImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  alt: 'image not loaded',
-},{
-  image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  thumbImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  alt: 'image not loaded',
-},{
-  image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  thumbImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  alt: 'image not loaded',
-},{
-  image: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  thumbImage: 'https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png',
-  alt: 'image not loaded',
-}, {
-    image: '.../iOe/xHHf4nf8AE75h3j1x64ZmZ//Z==', // Support base64 image
-    thumbImage: '.../iOe/xHHf4nf8AE75h3j1x64ZmZ//Z==', // Support base64 image
-    title: 'Image title', //Optional: You can use this key if want to show image with title
-    alt: 'image not loaded', //Optional: You can use this key if want to show image with alt
-    //order: 1 //Optional: if you pass this key then slider images will be arrange according @input: slideOrderType
-}
-];
+  imageObject: Array<object> = [];
 
-
-  constructor(private route: ActivatedRoute, private reservationEntitiesService: ReservationEntitiesService) { }
+  constructor(private route: ActivatedRoute, private reservationEntitiesService: ReservationEntitiesService, private entitiesService: EntitiesService) { }
 
   ngOnInit(): void {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     })
-    this.getEntity();;
+    this.getEntity();
+    this.getEntityImages();
   }
 
   getEntity() {
     this.reservationEntitiesService.getEntity(this.id).subscribe(
       (data)=>{
         this.reservationEntity = data
+      }
+    )
+  }
+  getEntityImages() {
+    this.entitiesService.getEntityImages(this.id).subscribe(
+      (data) => {
+        if (data.length > 0) {
+          for (let base64Image of data) {
+            let img = 'data:image/jpg;base64,' + base64Image;
+            this.imageObject.push({ image: img, thumbImage: img });
+          }
+        }
       }
     )
   }
