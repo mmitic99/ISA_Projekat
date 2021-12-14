@@ -41,7 +41,7 @@ export class UserService {
       headers: new HttpHeaders()
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
     }
-    return this.http.get(serverPortApi + 'users/subscribedReservationEntities', header);
+    return this.http.get(serverPortApi + 'subscription/subscribedReservationEntities', header);
   }
 
   unsubscribeReservationEntity(subscription: Subscription) {
@@ -50,6 +50,6 @@ export class UserService {
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
     }
     subscription.mailAddress = localStorage.getItem('mailAddress')
-    return this.http.put(serverPortApi + 'users/subscription', subscription, header)
+    return this.http.put(serverPortApi + 'subscription/subscription', subscription, header)
   }
 }

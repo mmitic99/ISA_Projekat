@@ -21,14 +21,12 @@ import javax.servlet.http.HttpServletRequest;
 public class UserController {
     private UserService userService;
     private RequestForDeletingAccountService requestForDeletingAccountService;
-    private SubscriptionService subscriptionService;
     private TokenUtils tokenUtils;
 
     @Autowired
-    public UserController(UserService userService, RequestForDeletingAccountService requestForDeletingAccountService, SubscriptionService subscriptionService, TokenUtils tokenUtils) {
+    public UserController(UserService userService, RequestForDeletingAccountService requestForDeletingAccountService, TokenUtils tokenUtils) {
         this.userService = userService;
         this.requestForDeletingAccountService = requestForDeletingAccountService;
-        this.subscriptionService = subscriptionService;
         this.tokenUtils = tokenUtils;
     }
 
@@ -62,27 +60,4 @@ public class UserController {
         return new ResponseEntity<>(requestForDeletingAccountService.createNewRequest(requestForDeletingAccountDTO), HttpStatus.OK);
     }
 
-    @GetMapping(value="subscribedReservationEntities")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Object> getSubscribed(HttpServletRequest request){
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        return new ResponseEntity<>(subscriptionService.getSubscribedByUsername(mailAddress), HttpStatus.OK);
-    }
-
-    @PutMapping(value = "subscription")
-    @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Object> subscription(@RequestBody SubscriptionDTO subscriptionDTO, HttpServletRequest request){
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        if(!mailAddress.equals(subscriptionDTO.getMailAddress())){
-            return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
-        }
-        if(subscriptionDTO.isSubscribe()){
-            return null;
-        }
-        else{
-            return new ResponseEntity<>(subscriptionService.unsubscribe(subscriptionDTO), HttpStatus.OK);
-        }
-    }
 }
