@@ -29,7 +29,7 @@ export class HomeComponent implements OnInit {
     this.getAllSubscriptions();
   }
   getAllSubscriptions() {
-    this.subscriptionService.getSubsription().subscribe((data)=>{
+    this.subscriptionService.getSubsriptions().subscribe((data)=>{
       this.subscriptions = data;
     });
   }

@@ -51,7 +51,7 @@
                 <p>{{reservationEntity.name}}</p>
             </a>
             <span class="icon">
-                <a *ngIf="!isSubscribed(reservationEntity.id)" (click)="subscribe(reservationEntity.id)">
+                <a *ngIf="!isSubscribed(reservationEntity.id) && this.authService.getRole() == 'ROLE_USER'" (click)="subscribe(reservationEntity.id)">
                     <i class="fas fa-lg fa-bell"></i>
                 </a>
             </span>
