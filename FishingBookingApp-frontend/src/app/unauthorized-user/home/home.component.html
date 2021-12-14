@@ -46,10 +46,17 @@
     <h1 *ngIf="reservationEntities==null || reservationEntities.length == 0">Za izabrane kriterijume ne postoje
         vikendice / brodovi / instruktori pecanja</h1>
     <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntities">
-        <a routerLink="../reservationEntity/{{reservationEntity.id}}">
-            <div class="message-header">
+        <div class="message-header">
+            <a routerLink="../reservationEntity/{{reservationEntity.id}}" style="text-decoration: none">
                 <p>{{reservationEntity.name}}</p>
-            </div>
+            </a>
+            <span class="icon">
+                <a *ngIf="!isSubscribed(reservationEntity.id)" (click)="subscribe(reservationEntity.id)">
+                    <i class="fas fa-lg fa-bell"></i>
+                </a>
+            </span>
+        </div>
+        <a routerLink="../reservationEntity/{{reservationEntity.id}}" style="text-decoration: none">
             <div class="message-body">
                 <div class="columns">
                     <div class="column is-one-quarter">

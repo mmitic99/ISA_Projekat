@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { EntitiesService } from 'src/app/special-user/service/entities.service';
-import { SuHomeComponent } from 'src/app/special-user/su-home/su-home.component';
+import { ToastrService } from 'ngx-toastr';
+import { SubscriptionService } from 'src/app/regular-user/service/subscription.service';
+import { Subscription } from 'src/app/regular-user/subscribed/Subscription';
 import { AuthService } from '../service/auth.service';
 import { ReservationEntitiesService } from '../service/reservation-entities.service';
 import { SearchFilterSortModel } from './searchFilterSortModel';
@@ -14,14 +15,23 @@ export class HomeComponent implements OnInit {
 
   reservationEntities: any;
   searchFilterSortModel= new SearchFilterSortModel("", new Array<string>());
+  subscriptions: any;
 
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
     public authService: AuthService,
+    private subscriptionService: SubscriptionService,
+    private toastr: ToastrService
     ) { }
 
   ngOnInit(): void {
     this.getAllReservationEntities();
+    this.getAllSubscriptions();
+  }
+  getAllSubscriptions() {
+    this.subscriptionService.getSubsription().subscribe((data)=>{
+      this.subscriptions = data;
+    });
   }
 
   getAllReservationEntities() {
@@ -74,5 +84,39 @@ export class HomeComponent implements OnInit {
           }
       )
     }
+  }
+
+  subscribe(id: any){
+    let subscription = new  Subscription("", id, true)
+    this.subscriptionService.reservationEntitySubscription(subscription).subscribe((data)=>{
+      this.toastr.success("Usepšno ste se pretplatili")
+      this.getAllSubscriptions()
+    },(error)=>{
+      this.toastr.error(error)
+    });
+  }
+
+  isSubscribed(reservationEntityId: any){
+    var retVal = false;
+    var mailAddress = localStorage.getItem('mailAddress');
+    
+    /*
+    for(let subscription of this.subscriptions){
+      if(subscription.user.mailAddress == mailAddress && subscription.reservationEntities.id == reservationEntityId){
+        retVal = true;
+        break;
+      }
+    }*/
+
+    var filtered = this.subscriptions.filter((subscription: { user: { mailAddress: string | null; }; reservationEntities: { id: any; }; })=>(subscription.user.mailAddress == mailAddress && subscription.reservationEntities.id == reservationEntityId))
+
+    if(filtered.length != 0){
+      retVal = true
+    }
+    else{
+      retVal = false;
+    }
+
+    return retVal;
   }
 }

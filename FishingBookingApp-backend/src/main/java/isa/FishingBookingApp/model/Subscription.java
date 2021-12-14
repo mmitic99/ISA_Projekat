@@ -2,6 +2,10 @@ package isa.FishingBookingApp.model;
 
 import javax.persistence.*;
 
+@Table(
+        uniqueConstraints=
+        @UniqueConstraint(columnNames={"user_user_id", "reservation_entities_id"})
+)
 @Entity
 public class Subscription {
     @Id
