@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { EntitiesService } from 'src/app/special-user/service/entities.service';
+import { SuHomeComponent } from 'src/app/special-user/su-home/su-home.component';
 import { AuthService } from '../service/auth.service';
 import { ReservationEntitiesService } from '../service/reservation-entities.service';
 import { SearchFilterSortModel } from './searchFilterSortModel';
@@ -15,7 +17,8 @@ export class HomeComponent implements OnInit {
 
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
-    public authService: AuthService
+    public authService: AuthService,
+    private entitiesService : EntitiesService
     ) { }
 
   ngOnInit(): void {
@@ -26,6 +29,7 @@ export class HomeComponent implements OnInit {
     this.reservationEntitiesService.getAllReservationEntities().subscribe(
       (data)=>{
         this.reservationEntities = data
+        this.getOneImageForEveryEntity(data);
       }
     )
   }
@@ -54,5 +58,20 @@ export class HomeComponent implements OnInit {
     }
     this.searchFilterSort()
   }
-
+  getOneImageForEveryEntity(entities : any) {
+    this.reservationEntities = [];
+    for (let entity of entities) {
+      this.entitiesService.getOneEntityImage(entity.id).subscribe(
+        (data) => {
+          if (data != null) {
+            entity.base64Image = 'data:image/jpg;base64,' + data.base64Image;
+          }
+          this.reservationEntities.push(entity);
+          },
+        () => {
+          this.reservationEntities.push(entity);
+          }
+      )
+    }
+  }
 }
