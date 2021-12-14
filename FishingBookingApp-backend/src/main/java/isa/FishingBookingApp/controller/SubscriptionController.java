@@ -14,6 +14,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -58,5 +60,17 @@ public class SubscriptionController {
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
         SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, mailAddress);
         return subscriptionService.searchFilterSort(searchFilterSort);
+    }
+
+    @GetMapping(value="/getByUserAndEntity", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getByUserAndEntity(@RequestParam String mailAddress, @RequestParam Long reservationEntityId, HttpServletRequest request) throws UnsupportedEncodingException {
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String mailAddress1 = tokenUtils.getUsernameFromToken(token.substring(7));
+
+        /*if(subscriptionService.getByUserAndEntity(mailAddress, reservationEntityId) != null){
+            return new ResponseEntity<>(true, HttpStatus.OK);
+        }
+        return new ResponseEntity<>(false, HttpStatus.OK);*/
+        return new ResponseEntity<>(subscriptionService.getByUserAndEntity(mailAddress1, reservationEntityId), HttpStatus.OK);
     }
 }

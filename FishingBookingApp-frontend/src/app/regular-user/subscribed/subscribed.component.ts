@@ -22,7 +22,7 @@ export class SubscribedComponent implements OnInit {
   }
 
   getAllSubscription() {
-    this.subscriptionService.getSubsription().subscribe((data)=>{
+    this.subscriptionService.getSubsriptions().subscribe((data)=>{
       this.subscribedReservationEntities = data;
     },(error)=>{
       this.toastr.error(error)

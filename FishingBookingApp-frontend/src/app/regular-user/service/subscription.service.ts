@@ -11,7 +11,7 @@ export class SubscriptionService {
 
   constructor(private http: HttpClient) { }
 
-  getSubsription() {
+  getSubsriptions() {
     var header = {
       headers: new HttpHeaders()
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
@@ -46,5 +46,19 @@ export class SubscriptionService {
 
     return this.http.get<any>(serverPortApi + "subscription/searchFilterSort", { params: params, headers: header })
   
+  }
+  
+  checkSubscription(id: any) {
+    var mailAddress = localStorage.getItem('mailAddress')
+    if(mailAddress == null){
+      mailAddress = ""
+    }
+    var header = new HttpHeaders()
+      .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    var params = new HttpParams();
+    params = params.append('mailAddress', mailAddress);
+    params = params.append('reservationEntityId', id);
+
+    return this.http.get<any>(serverPortApi + "subscription/getByUserAndEntity", { params: params, headers: header })
   }
 }

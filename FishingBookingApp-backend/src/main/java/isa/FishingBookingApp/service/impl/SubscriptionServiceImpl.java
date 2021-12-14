@@ -53,6 +53,11 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public Subscription getByUserAndEntity(String mailAddress, Long reservationEntityId) {
+        return subscriptionRepository.findByUserMailAddressAndReservationEntitiesId(mailAddress, reservationEntityId);
+    }
+
+    @Override
     public List<Subscription> searchFilterSort(SearchFilterSort searchFilterSort) {
         List<Subscription> subscriptions;
         if (searchFilterSort.getTypes().size() != 0) {

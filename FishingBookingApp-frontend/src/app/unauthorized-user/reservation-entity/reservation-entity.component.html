@@ -8,9 +8,18 @@
                 <h5 class="subtitle" *ngIf="reservationEntity.type == 'fishingInstructor'">Instruktor pecanja</h5>
             </div>
             <div class="box">
+
+                <div class="has-text-right">
+                    <span class="icon">
+                        <a *ngIf="isSubscribe && this.authService.getRole() == 'ROLE_USER'"
+                            (click)="subscribe()">
+                            <i class="fas fa-2x fa-bell"></i>
+                        </a>
+                    </span>
+                </div>
                 <div class="has-text-centered">
-                    <ng-image-slider [images]="imageObject" 
-                    [imageSize]="{width: 250, height: 200}" #nav></ng-image-slider>
+                    <ng-image-slider [images]="imageObject" [imageSize]="{width: 250, height: 200}" #nav>
+                    </ng-image-slider>
 
                     <!--
                     <img height="20%" width="20%"
