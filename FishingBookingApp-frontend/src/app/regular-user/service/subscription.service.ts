@@ -48,7 +48,7 @@ export class SubscriptionService {
   
   }
   
-  checkSubscription(id: any) {
+  checkSubscriptionForReservationEntityId(id: any) {
     var mailAddress = localStorage.getItem('mailAddress')
     if(mailAddress == null){
       mailAddress = ""
