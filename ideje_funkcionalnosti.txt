@@ -1,0 +1,14 @@
+- Svaka rola se mora cuvati sa prefiksom "ROLE_"
+
+- Kada se registruje vlasnik ili istruktor on ima polje "verified" koje je inicijalno false i administrator na taj 
+nacin gleda "zahteve" za registraciju tih posebnih korisnika i ukoliko potvrdi tada se ta vrednost menja na true, a 
+ukoliko odbije registraciju brise se taj korisnik iz baze.
+
+- Dodatne usluge su zamisljene tako da svaki vlasnik za svaki svoj entitet posebno kreira uslugu (mozda 
+zeli da neka ista usluga kosta vise ili manje u zavisnosti od mesta gde se nalazi)
+
+- Rezervacije funkcionisu tako sto postoje obicne i specijalne rezervacije (u napred kreirane tj za brzu rezervaciju) 
+i za svaku od njih postoji po tabela...vlasnici mogu kreirati specijalne rezervacije koje korisnici mogu izabrati i 
+rezervisati za sebe gde u tom trenutku ta unapred kreirana rezervacija prelazi iz svoje tabele (brise se) u tabelu 
+za rezervacije gde joj se dodeljuje korisnik koji je preuzeo tu rezervaciju. Kada se proverava zauzece termina 
+moraju se proveravati termini iz obe tabele.
