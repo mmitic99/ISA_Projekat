@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { SubscriptionService } from 'src/app/regular-user/service/subscription.service';
+import { Subscription } from 'src/app/regular-user/subscribed/Subscription';
 import { EntitiesService } from 'src/app/special-user/service/entities.service';
 import { AuthService } from '../service/auth.service';
 import { ReservationEntitiesService } from '../service/reservation-entities.service';
@@ -15,12 +17,13 @@ export class ReservationEntityComponent implements OnInit {
   private id: any;
   reservationEntity: any;
   imageObject: Array<object> = [];
-  isSubscribe: any;
+  subscription: any;
 
   constructor(private route: ActivatedRoute,
     private reservationEntitiesService: ReservationEntitiesService,
     public authService: AuthService,
-    private subscribeService: SubscriptionService
+    private subscriptionService: SubscriptionService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit(): void {
@@ -29,7 +32,7 @@ export class ReservationEntityComponent implements OnInit {
     })
     this.getEntity();
     this.getEntityImages();
-    this.isSubscribe = this.isSubscribed();
+    this.getSubscription();
   }
 
   getEntity() {
@@ -39,6 +42,7 @@ export class ReservationEntityComponent implements OnInit {
       }
     )
   }
+
   getEntityImages() {
     this.reservationEntitiesService.getEntityImages(this.id).subscribe(
       (data) => {
@@ -52,22 +56,37 @@ export class ReservationEntityComponent implements OnInit {
     )
   }
 
-  isSubscribed() {
-    this.subscribeService.checkSubscription(this.id).subscribe((data) => {
-      console.log(data)
-      if (data == null) {
-        return true;
+  getSubscription() {
+    this.subscriptionService.checkSubscriptionForReservationEntityId(this.id).subscribe(
+      (data) => {
+        this.subscription = data
       }
-      return false;
-    }, (error) => {
-      console.log(error)
-      return false;
-    })
-    return false
+    )
   }
 
-  subscribe() {
+  isSubscribed() {
+    if (this.subscription != null) {
+      return true;
+    }
+    else {
+      return false;
+    }
+  }
 
+  subscribe(subscribe: boolean) {
+    let subscription = new Subscription("", this.id, subscribe)
+    this.subscriptionService.reservationEntitySubscription(subscription).subscribe((data) => {
+      if (subscribe) {
+        this.toastr.success("Uspešno ste se pretplatili")
+        this.subscription = data
+      }
+      else{
+        this.toastr.success("Uspešno ste se otkazali pretplatu")
+        this.subscription = null
+      }
+    }, (error) => {
+      this.toastr.error(error)
+    });
   }
 
 }

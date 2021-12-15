@@ -89,7 +89,7 @@ export class HomeComponent implements OnInit {
   subscribe(id: any){
     let subscription = new  Subscription("", id, true)
     this.subscriptionService.reservationEntitySubscription(subscription).subscribe((data)=>{
-      this.toastr.success("Usepšno ste se pretplatili")
+      this.toastr.success("Uspešno ste se pretplatili")
       this.getAllSubscriptions()
     },(error)=>{
       this.toastr.error(error)
