@@ -10,7 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.time.LocalDateTime;
 
 @SpringBootApplication
 public class FishingBookingAppApplication implements CommandLineRunner {
@@ -23,9 +23,10 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 	private AdditionalServiceRepository additionalServiceRepository;
 	private SubscriptionRepository subscriptionRepository;
 	private RequestForDeletingAccountRepository requestForDeletingAccountRepository;
+	private AvailableAppointmentRepository availableAppointmentRepository;
 
 	@Autowired
-	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository) {
+	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository, AvailableAppointmentRepository availableAppointmentRepository) {
 		this.reservationEntitiesRepository = reservationEntitiesRepository;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
@@ -34,6 +35,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		this.additionalServiceRepository = additionalServiceRepository;
 		this.subscriptionRepository = subscriptionRepository;
 		this.requestForDeletingAccountRepository = requestForDeletingAccountRepository;
+		this.availableAppointmentRepository = availableAppointmentRepository;
 	}
 
 	public static void main(String[] args) {
@@ -101,6 +103,13 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		//
 		RequestForDeletingAccount requestForDeletingAccount1 = new RequestForDeletingAccount(regularUser1, "adasdasdadsad");
 		requestForDeletingAccountRepository.save(requestForDeletingAccount1);
+
+		// dostupni termini za rezervaciju entiteta
+		LocalDateTime dtStart1 = LocalDateTime.now();
+		LocalDateTime dtEnd1 = dtStart1.plusDays(10);
+		AvailableAppointment appointment1 = new AvailableAppointment(cottage1, dtStart1, dtEnd1);
+		availableAppointmentRepository.save(appointment1);
+
 
 		// Ucitavanje slika
 		String file1 ="src/main/resources/static/images/imgCottage1.jpg";

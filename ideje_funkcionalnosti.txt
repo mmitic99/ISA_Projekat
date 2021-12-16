@@ -12,3 +12,7 @@ i za svaku od njih postoji po tabela...vlasnici mogu kreirati specijalne rezerva
 rezervisati za sebe gde u tom trenutku ta unapred kreirana rezervacija prelazi iz svoje tabele (brise se) u tabelu 
 za rezervacije gde joj se dodeljuje korisnik koji je preuzeo tu rezervaciju. Kada se proverava zauzece termina 
 moraju se proveravati termini iz obe tabele.
+
+- Termini dostupnosti za entitete funkcionisu tako sto se navode samo termini u kojima je entitet dostupan za 
+rezervaciju, a u ostalim terminima se smatra da taj entitet nije dostupan. Jedan entitet moze imati vise termina 
+dostupnosti.
