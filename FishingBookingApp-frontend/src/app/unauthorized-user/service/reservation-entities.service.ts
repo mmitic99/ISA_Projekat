@@ -44,4 +44,29 @@ export class ReservationEntitiesService {
   getOneEntityImage(id: any) {
     return this.http.get<any>(serverPortApi + "reservationEntities/oneImage/" + id);
   }
+
+  checkReservation(searchFilterSortModel: SearchFilterSortModel) {
+    var header = new HttpHeaders()
+      .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    var params = new HttpParams();
+    params = params.append('sort', searchFilterSortModel.sort);
+
+    if (searchFilterSortModel.types.length != 0) {
+      for (let type of searchFilterSortModel.types) {
+        params = params.append('types', type);
+      }
+    }
+    else {
+      params = params.append('types', '');
+    }
+    params = params.append('search', searchFilterSortModel.search);
+
+    params = params.append('date', searchFilterSortModel.date);
+    params = params.append('time', searchFilterSortModel.time);
+    params = params.append('days', searchFilterSortModel.daysNumber);
+    params = params.append('guests', searchFilterSortModel.guestsNumber);
+
+    return this.http.get<any>(serverPortApi + "reservationEntities/checkReservation", { params: params, headers: header })
+  
+  }
 }
