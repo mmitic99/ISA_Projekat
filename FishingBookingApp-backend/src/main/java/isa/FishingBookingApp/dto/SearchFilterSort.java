@@ -1,5 +1,6 @@
 package isa.FishingBookingApp.dto;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public class SearchFilterSort {
@@ -7,6 +8,9 @@ public class SearchFilterSort {
     private List<String> types;
     private String search;
     private String mailAddress;
+    private int days;
+    private int guests;
+    private LocalDateTime dateTime;
 
     public SearchFilterSort(String sort, List<String> types, String search) {
         this.sort = sort;
@@ -19,6 +23,35 @@ public class SearchFilterSort {
         this.types = types;
         this.search = search;
         this.mailAddress = mailAddress;
+    }
+
+    public SearchFilterSort(String sort, List<String> types, String search, String dateString, String timeString, int days, int guests) throws Exception {
+        this.sort = sort;
+        this.types = types;
+        this.search = search;
+        this.days = days;
+        this.guests = guests;
+        this.dateTime = getDateTimeFromStrings(dateString, timeString);
+        if(dateTime == null){
+            throw new Exception("Datum ili vreme nisu u dobrom formatu.");
+        }
+    }
+
+    private LocalDateTime getDateTimeFromStrings(String dateString, String timeString) {
+        try {
+            String dateNumbers[] = dateString.split("-");
+            int year = Integer.parseInt(dateNumbers[0]);
+            int month = Integer.parseInt(dateNumbers[1]);
+            int day = Integer.parseInt(dateNumbers[2]);
+
+            String timeNumbers[] = timeString.split(":");
+
+            int hour = Integer.parseInt(timeNumbers[0]);
+            int minute = Integer.parseInt(timeNumbers[1]);
+            return LocalDateTime.of(year, month, day, hour, minute);
+        }catch (Exception e){
+            return null;
+        }
     }
 
     public String getSort() {
@@ -51,5 +84,29 @@ public class SearchFilterSort {
 
     public void setMailAddress(String mailAddress) {
         this.mailAddress = mailAddress;
+    }
+
+    public int getDays() {
+        return days;
+    }
+
+    public void setDays(int days) {
+        this.days = days;
+    }
+
+    public int getGuests() {
+        return guests;
+    }
+
+    public void setGuests(int guests) {
+        this.guests = guests;
+    }
+
+    public LocalDateTime getDateTime() {
+        return dateTime;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        this.dateTime = dateTime;
     }
 }

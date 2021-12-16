@@ -11,6 +11,7 @@ import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.service.CottageService;
 import isa.FishingBookingApp.service.EntityImageService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
+import isa.FishingBookingApp.service.ReservationService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -33,34 +34,36 @@ public class ReservationEntitiesController {
     private ReservationEntitiesService reservationEntitiesService;
     private EntityImageService entityImageService;
     private CottageService cottageService;
+    private ReservationService reservationService;
     private TokenUtils tokenUtils;
 
     @Autowired
-    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, TokenUtils tokenUtils) {
-        this.reservationEntitiesService=reservationEntitiesService;
+    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, ReservationService reservationService, TokenUtils tokenUtils) {
+        this.reservationEntitiesService = reservationEntitiesService;
         this.entityImageService = entityImageService;
         this.cottageService = cottageService;
+        this.reservationService = reservationService;
         this.tokenUtils = tokenUtils;
     }
 
-    @GetMapping(value="/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationEntities> getAll() {
         return reservationEntitiesService.getAll();
     }
 
-    @GetMapping(value="/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/get/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ReservationEntities getOne(@PathVariable Long id) {
         return reservationEntitiesService.get(id);
     }
 
-    @GetMapping(value="/searchFilterSort", produces = MediaType.APPLICATION_JSON_VALUE)
+    @GetMapping(value = "/searchFilterSort", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationEntities> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search) {
         SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search);
         return reservationEntitiesService.searchFilterSort(searchFilterSort);
     }
 
     @GetMapping(value = "/images/{entityId}")
-    public ResponseEntity<List<String>> getEntityImages(@PathVariable Long entityId){
+    public ResponseEntity<List<String>> getEntityImages(@PathVariable Long entityId) {
         ReservationEntities entity = reservationEntitiesService.get(entityId);
         if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
@@ -68,7 +71,7 @@ public class ReservationEntitiesController {
         if (images == null) return new ResponseEntity<>(new ArrayList<String>(), HttpStatus.OK);
 
         ArrayList<String> base64Images = new ArrayList<String>();
-        for (EntityImage image : images){
+        for (EntityImage image : images) {
             base64Images.add(Base64.getEncoder().encodeToString(image.getContent()));
         }
 
@@ -76,7 +79,7 @@ public class ReservationEntitiesController {
     }
 
     @GetMapping(value = "/additionalServices/{entityId}")
-    public ResponseEntity<List<AdditionalService>> getAdditionalServices(@PathVariable Long entityId){
+    public ResponseEntity<List<AdditionalService>> getAdditionalServices(@PathVariable Long entityId) {
         ArrayList<AdditionalService> additionalServices = (ArrayList<AdditionalService>) reservationEntitiesService.getAdditionalServices(entityId);
 
         if (additionalServices == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -92,7 +95,7 @@ public class ReservationEntitiesController {
 
         EntityImage image = new EntityImage();
         image.setName(multipartImage.getName());
-        try{
+        try {
             image.setContent(multipartImage.getBytes());
         } catch (Exception e) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -103,7 +106,7 @@ public class ReservationEntitiesController {
         EntityImageDTO imageDTO = new EntityImageDTO();
         imageDTO.setBase64Image(Base64.getEncoder().encodeToString(image.getContent()));
 
-        if (image == null)  return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        if (image == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(imageDTO, HttpStatus.OK);
     }
 
@@ -116,7 +119,7 @@ public class ReservationEntitiesController {
         if (image == null) return new ResponseEntity<>(HttpStatus.OK);
         EntityImageDTO imageDTO = new EntityImageDTO();
         imageDTO.setBase64Image(Base64.getEncoder().encodeToString(image.getContent()));
-        
+
         return new ResponseEntity<>(imageDTO, HttpStatus.OK);
     }
 
@@ -130,11 +133,9 @@ public class ReservationEntitiesController {
         if (entity.getType().equals("cottage")) {
             Cottage cottage = cottageService.get(entity.getId());
             userMailAddress = cottage.getCottageOwner().getMailAddress();
-        }
-        else if (entity.getType().equals("boat")) {
+        } else if (entity.getType().equals("boat")) {
             // TODO: implementirati kada se budu implementirale stvari za brod
-        }
-        else {
+        } else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
@@ -150,5 +151,17 @@ public class ReservationEntitiesController {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String username = tokenUtils.getUsernameFromToken(token.substring(7));
         return username.equals(ownerUsername);
+    }
+
+    @GetMapping(value = "/checkReservation", produces = MediaType.APPLICATION_JSON_VALUE)
+    //@PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> checkReservation(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @RequestParam String date, @RequestParam String time, @RequestParam int days, @RequestParam int guests) {
+        try {
+            SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, date, time, days, guests);
+            List<ReservationEntities> reservationEntities = reservationEntitiesService.searchFilterSort(searchFilterSort);
+            return new ResponseEntity<>(reservationService.checkIsReservationEntitiesIsAvailable(reservationEntities, searchFilterSort), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
     }
 }
