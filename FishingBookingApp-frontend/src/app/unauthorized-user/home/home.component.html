@@ -1,16 +1,65 @@
 <div class="container">
     <br>
     <nav class="panel">
-        <div class="panel-block">
-            <p class="control has-icons-left">
-                <input class="input" type="text" placeholder="Pretraga" [(ngModel)]="this.searchFilterSortModel.search">
-            </p>
-            <a class="button is-info" (click)="searchFilterSort()">
-                Pretraži
-            </a>
+        <div *ngIf="this.authService.getRole() != 'ROLE_USER'; else reservationBlock">
+            <div class="panel-block">
+                <div class="control has-icons-left">
+                    <input class="input" type="text" placeholder="Pretraga"
+                        [(ngModel)]="this.searchFilterSortModel.search">
+                </div>
+                <a class="button is-info" (click)="searchFilterSort()">
+                    Pretraži
+                </a>
+            </div>
         </div>
-        <p>Vrsta: </p>
+        <ng-template #reservationBlock>
+            <div class="columns is-multiline is-vcentered">
+                <div class="column is-full">
+                    <input class="input" type="text" placeholder="Pretraga"
+                        [(ngModel)]="this.searchFilterSortModel.search">
+                </div>
+                <div class="column is-2">
+                    <input class="input" type="date"
+                        [(ngModel)]="this.searchFilterSortModel.date">
+                </div>
 
+                <div class="column is-2">
+                    <div class="select is-fullwidth">
+                        <select
+                        [(ngModel)]="this.searchFilterSortModel.time">
+                            <option value="">Vreme dolaska</option>
+                            <option *ngFor="let time of times" [ngValue]="time">{{time}}</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="column is-2">
+                    <input class="input" type="number" placeholder="Broj dana" min="1"
+                        [(ngModel)]="this.searchFilterSortModel.daysNumber">
+                </div>
+                <div class="column is-1">
+                    <p>dana</p>
+                </div>
+                <div class="column is-2">
+                    <input class="input" type="number" placeholder="Broj gostiju" min="1"
+                        [(ngModel)]="this.searchFilterSortModel.guestsNumber">
+                </div>
+                <div class="column is-2">
+                    <p>broj gostiju</p>
+                </div>
+                <div class="column is-1">
+                    <a class="button is-danger is-light" (click)="resetReservationSearch()">
+                        <i class="fas fa-lg fa-times-circle"></i></a>
+                </div>
+                <div class="column">
+                    <button class="button is-info is-pulled-right" (click)="searchFilterSort()">
+                        Pretraži
+                    </button>
+                </div>
+            </div>
+        </ng-template>
+
+        <p class="ml-3">Vrsta: </p>
         <div>
             <label class="checkbox ml-6">
                 <input type="checkbox" (click)="selectType('cottage')"> Vikendice
@@ -51,7 +100,8 @@
                 <p>{{reservationEntity.name}}</p>
             </a>
             <span class="icon">
-                <a *ngIf="this.authService.getRole() == 'ROLE_USER' && !isSubscribed(reservationEntity.id)" (click)="subscribe(reservationEntity.id)">
+                <a *ngIf="this.authService.getRole() == 'ROLE_USER' && !isSubscribed(reservationEntity.id)"
+                    (click)="subscribe(reservationEntity.id)">
                     <i class="fas fa-lg fa-bell"></i>
                 </a>
             </span>

@@ -13,7 +13,7 @@ import { Subscription } from './Subscription';
 export class SubscribedComponent implements OnInit {
 
   subscribedReservationEntities : any;
-  searchFilterSortModel= new SearchFilterSortModel("", new Array<string>());
+  searchFilterSortModel= new SearchFilterSortModel("", "", "", 0, 0, new Array<string>());
 
   constructor(private userService: UserService, private subscriptionService: SubscriptionService, private toastr: ToastrService) { }
 
