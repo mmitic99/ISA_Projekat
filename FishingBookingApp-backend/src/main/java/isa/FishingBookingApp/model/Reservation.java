@@ -32,6 +32,14 @@ public class Reservation {
 
     private double price;
 
+    public Reservation(User user, ReservationEntities reservationEntity, LocalDateTime start, double durationInHours, int maxPeople, double price) {
+        this.user = user;
+        this.reservationEntity = reservationEntity;
+        this.start = start;
+        this.durationInHours = durationInHours;
+        this.maxPeople = maxPeople;
+        this.price = price;
+    }
 
     public Long getId() {
         return id;

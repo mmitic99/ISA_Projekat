@@ -24,9 +24,10 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 	private SubscriptionRepository subscriptionRepository;
 	private RequestForDeletingAccountRepository requestForDeletingAccountRepository;
 	private AvailableAppointmentRepository availableAppointmentRepository;
+	private ReservationRepository reservationRepository;
 
 	@Autowired
-	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository, AvailableAppointmentRepository availableAppointmentRepository) {
+	public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationRepository reservationRepository) {
 		this.reservationEntitiesRepository = reservationEntitiesRepository;
 		this.addressRepository = addressRepository;
 		this.userRepository = userRepository;
@@ -36,6 +37,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		this.subscriptionRepository = subscriptionRepository;
 		this.requestForDeletingAccountRepository = requestForDeletingAccountRepository;
 		this.availableAppointmentRepository = availableAppointmentRepository;
+		this.reservationRepository = reservationRepository;
 	}
 
 	public static void main(String[] args) {
@@ -110,6 +112,9 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		AvailableAppointment appointment1 = new AvailableAppointment(cottage1, dtStart1, dtEnd1);
 		availableAppointmentRepository.save(appointment1);
 
+		// rezervacije
+		Reservation reservation = new Reservation(regularUser2, cottage1, LocalDateTime.now().plusDays(3), 24, 1, 1000);
+		reservationRepository.save(reservation);
 
 		// Ucitavanje slika
 		String file1 ="src/main/resources/static/images/imgCottage1.jpg";
