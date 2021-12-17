@@ -11,6 +11,7 @@ import { ComplaintComponent } from './complaint/complaint.component';
 import { SubscribedComponent } from './subscribed/subscribed.component';
 import { PenaltiesComponent } from './penalties/penalties.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
+import { AdditionalServicesReservationComponent } from './additional-services-reservation/additional-services-reservation.component';
 
 
 @NgModule({
@@ -23,6 +24,7 @@ import { ChangePasswordComponent } from './change-password/change-password.compo
     SubscribedComponent,
     PenaltiesComponent,
     ChangePasswordComponent,
+    AdditionalServicesReservationComponent,
   ],
   imports: [
     CommonModule,

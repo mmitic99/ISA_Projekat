@@ -1,9 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { ReservationService } from 'src/app/regular-user/service/reservation.service';
 import { SubscriptionService } from 'src/app/regular-user/service/subscription.service';
 import { Subscription } from 'src/app/regular-user/subscribed/Subscription';
 import { AuthService } from '../service/auth.service';
 import { ReservationEntitiesService } from '../service/reservation-entities.service';
+import { Reservation } from './reservation';
 import { SearchFilterSortModel } from './searchFilterSortModel';
 
 @Component({
@@ -23,7 +26,9 @@ export class HomeComponent implements OnInit {
     private reservationEntitiesService: ReservationEntitiesService,
     public authService: AuthService,
     private subscriptionService: SubscriptionService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private router: Router,
+    private reservationService: ReservationService,
   ) { }
 
   ngOnInit(): void {
@@ -113,12 +118,12 @@ export class HomeComponent implements OnInit {
     }
   }
 
-  reservationSearchIsNotEmpty(){
+  reservationSearchIsNotEmpty() {
     return this.searchFilterSortModel.date != "" && this.searchFilterSortModel.time != "" &&
-    this.searchFilterSortModel.daysNumber != 0 && this.searchFilterSortModel.guestsNumber != 0;
+      this.searchFilterSortModel.daysNumber != 0 && this.searchFilterSortModel.guestsNumber != 0;
   }
 
-  checkIsReservationSearched(){
+  checkIsReservationSearched() {
     return this.reservationSearchIsNotEmpty() && this.reservationResponseReceived;
   }
 
@@ -134,16 +139,16 @@ export class HomeComponent implements OnInit {
   getOneImageForEveryEntity(entities: any) {
     this.reservationEntities = [];
     for (let entity of entities) {
-      if(entity.type == "cottage"){
+      if (entity.type == "cottage") {
         entity.articleClass = "is-success"
       }
-      else if(entity.type == "boat"){
+      else if (entity.type == "boat") {
         entity.articleClass = "is-info"
       }
-      else if(entity.type == "fishingInstructor"){
+      else if (entity.type == "fishingInstructor") {
         entity.articleClass = "is-warning"
       }
-      else{
+      else {
         entity.articleClass = ""
       }
       this.reservationEntitiesService.getOneEntityImage(entity.id).subscribe(
@@ -200,5 +205,21 @@ export class HomeComponent implements OnInit {
     this.searchFilterSortModel.daysNumber = 0
     this.searchFilterSortModel.guestsNumber = 0
     this.searchFilterSort()
+  }
+
+  reserveEntity(id: any) {
+    let reservation = new Reservation(this.searchFilterSortModel.date, this.searchFilterSortModel.time, this.searchFilterSortModel.daysNumber, this.searchFilterSortModel.guestsNumber, id);
+
+    this.reservationService.reserve(reservation).subscribe((data)=>{
+
+    },(error)=>{
+      this.toastr.error(error)
+    })
+
+    this.router.navigateByUrl('/aditional_services_reservation/' + id +
+      '?date=' + this.searchFilterSortModel.date +
+      '&time=' + this.searchFilterSortModel.time +
+      '&daysNumber=' + this.searchFilterSortModel.daysNumber +
+      '&guestsNumber=' + this.searchFilterSortModel.guestsNumber);
   }
 }

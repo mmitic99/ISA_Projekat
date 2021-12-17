@@ -66,7 +66,7 @@ export class ReservationEntitiesService {
     params = params.append('days', searchFilterSortModel.daysNumber);
     params = params.append('guests', searchFilterSortModel.guestsNumber);
 
-    return this.http.get<any>(serverPortApi + "reservationEntities/checkReservation", { params: params, headers: header })
+    return this.http.get<any>(serverPortApi + "reservation/checkReservation", { params: params, headers: header })
   
   }
 }
