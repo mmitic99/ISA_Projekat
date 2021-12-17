@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { ToastrModule } from 'ngx-toastr';
+import { AdditionalServicesReservationComponent } from './additional-services-reservation/additional-services-reservation.component';
 import { ChangePasswordComponent } from './change-password/change-password.component';
 import { ComplaintComponent } from './complaint/complaint.component';
 import { CurentReservationComponent } from './curent-reservation/curent-reservation.component';
@@ -19,6 +20,7 @@ const routes: Routes = [
   { path: 'subscribed', component: SubscribedComponent },
   { path: 'penalties', component: PenaltiesComponent },
   { path: 'change_password', component: ChangePasswordComponent },
+  { path: 'aditional_services_reservation/:id', component: AdditionalServicesReservationComponent },
   
 ];
 

@@ -153,15 +153,4 @@ public class ReservationEntitiesController {
         return username.equals(ownerUsername);
     }
 
-    @GetMapping(value = "/checkReservation", produces = MediaType.APPLICATION_JSON_VALUE)
-    //@PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Object> checkReservation(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @RequestParam String date, @RequestParam String time, @RequestParam int days, @RequestParam int guests) {
-        try {
-            SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, date, time, days, guests);
-            List<ReservationEntities> reservationEntities = reservationEntitiesService.searchFilterSort(searchFilterSort);
-            return new ResponseEntity<>(reservationService.checkIsReservationEntitiesIsAvailable(reservationEntities, searchFilterSort), HttpStatus.OK);
-        } catch (Exception e) {
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
-        }
-    }
 }
