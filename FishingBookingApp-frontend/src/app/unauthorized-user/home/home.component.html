@@ -19,14 +19,12 @@
                         [(ngModel)]="this.searchFilterSortModel.search">
                 </div>
                 <div class="column is-2">
-                    <input class="input" type="date"
-                        [(ngModel)]="this.searchFilterSortModel.date">
+                    <input class="input" type="date" [(ngModel)]="this.searchFilterSortModel.date">
                 </div>
 
                 <div class="column is-2">
                     <div class="select is-fullwidth">
-                        <select
-                        [(ngModel)]="this.searchFilterSortModel.time">
+                        <select [(ngModel)]="this.searchFilterSortModel.time">
                             <option value="">Vreme dolaska</option>
                             <option *ngFor="let time of times" [ngValue]="time">{{time}}</option>
                         </select>
@@ -52,7 +50,7 @@
                         <i class="fas fa-lg fa-times-circle"></i></a>
                 </div>
                 <div class="column">
-                    <button class="button is-info is-pulled-right" (click)="searchFilterSort()">
+                    <button class="button is-link is-pulled-right" (click)="searchFilterSort()">
                         Pretraži
                     </button>
                 </div>
@@ -94,7 +92,7 @@
     </nav>
     <h1 *ngIf="reservationEntities==null || reservationEntities.length == 0">Za izabrane kriterijume ne postoje
         vikendice / brodovi / instruktori pecanja</h1>
-    <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntities">
+    <article style="height: 25%;" *ngFor="let reservationEntity of reservationEntities" class="message {{reservationEntity.articleClass}}" >
         <div class="message-header">
             <a routerLink="../reservationEntity/{{reservationEntity.id}}" style="text-decoration: none">
                 <p>{{reservationEntity.name}}</p>
@@ -117,18 +115,22 @@
                         <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}},
                             {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</p>
                         <br>
-                        <p class="cut-text2" style="height: 20%;">
+                        <p class="cut-text2" style="height: Auto;">
                             Opis: {{reservationEntity.promotionalDescription}}
                         </p>
                         <br>
-                        <p class="cut-text1" style="height: 10%;">
+                        <p class="cut-text1" style="height: Auto;">
                             Pravila ponašanja: {{reservationEntity.rulesOfConduct}}
                         </p>
                         <br>
                         <p *ngIf="reservationEntity.type == 'cottage'">Vrsta: vikendica</p>
                         <p *ngIf="reservationEntity.type == 'boat'">Vrsta: brod</p>
                         <p *ngIf="reservationEntity.type == 'fishingInstructor'">Vrsta: instruktor pecanja</p>
+
+                    </div>
+                    <div class="column is-2">
                         <p class="level-right">10/10</p>
+                        <a class="button is-fullwidth {{reservationEntity.articleClass}}" style="margin-top: 120px;" *ngIf="checkIsReservationSearched()">Rezerviši</a>
                     </div>
                 </div>
             </div>
