@@ -17,6 +17,7 @@ export class HomeComponent implements OnInit {
   searchFilterSortModel = new SearchFilterSortModel("", "", "");
   subscriptions: any;
   times: string[] = [];
+  reservationResponseReceived = false;
 
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
@@ -60,6 +61,7 @@ export class HomeComponent implements OnInit {
   }
 
   searchFilterSort() {
+    this.reservationResponseReceived = false;
     if (this.isParametersEmpty()) {
       this.getAllReservationEntities();
     }
@@ -94,12 +96,12 @@ export class HomeComponent implements OnInit {
   }
 
   private checkReservation() {
-    if (this.searchFilterSortModel.date != "" && this.searchFilterSortModel.time != "" &&
-      this.searchFilterSortModel.daysNumber != 0 && this.searchFilterSortModel.guestsNumber != 0) {
+    if (this.reservationSearchIsNotEmpty()) {
       this.reservationEntitiesService.checkReservation(this.searchFilterSortModel).subscribe(
         (data) => {
           this.reservationEntities = data;
           this.getOneImageForEveryEntity(data);
+          this.reservationResponseReceived = true;
         },
         (error) => {
           this.reservationEntities = [];
@@ -109,6 +111,15 @@ export class HomeComponent implements OnInit {
     else {
       this.toastr.error("Molimo vas da unesete sve kriterijume pretrage rezervacije");
     }
+  }
+
+  reservationSearchIsNotEmpty(){
+    return this.searchFilterSortModel.date != "" && this.searchFilterSortModel.time != "" &&
+    this.searchFilterSortModel.daysNumber != 0 && this.searchFilterSortModel.guestsNumber != 0;
+  }
+
+  checkIsReservationSearched(){
+    return this.reservationSearchIsNotEmpty() && this.reservationResponseReceived;
   }
 
   selectType(type: string) {
@@ -123,6 +134,18 @@ export class HomeComponent implements OnInit {
   getOneImageForEveryEntity(entities: any) {
     this.reservationEntities = [];
     for (let entity of entities) {
+      if(entity.type == "cottage"){
+        entity.articleClass = "is-success"
+      }
+      else if(entity.type == "boat"){
+        entity.articleClass = "is-info"
+      }
+      else if(entity.type == "fishingInstructor"){
+        entity.articleClass = "is-warning"
+      }
+      else{
+        entity.articleClass = ""
+      }
       this.reservationEntitiesService.getOneEntityImage(entity.id).subscribe(
         (data) => {
           if (data != null) {
