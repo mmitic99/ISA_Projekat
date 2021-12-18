@@ -9,7 +9,8 @@
                     <a class="button is-info is-light"
                         routerLink="../../entityReservations/{{reservationEntity.id}}">Uvid u rezervacije</a>
                     <hr />
-                    <a class="button is-info is-light" (click)="freeAppointmentsForReservation()">Definisanje perioda
+                    <a class="button is-info is-light"
+                        routerLink="../../availableAppointments/{{reservationEntity.id}}">Periodi
                         dostupnosti</a>
                     <hr />
                     <a class="button is-info is-light" (click)="createNewAction()">Kreiranje akcija za
@@ -37,15 +38,15 @@
                         <div class="box">
 
                             <div class="has-text-centered" *ngIf="imageObject.length > 0">
-                                <ng-image-slider [images]="imageObject" 
-                                [imageSize]="{width: 200, height: 200}" #nav></ng-image-slider>
+                                <ng-image-slider [images]="imageObject" [imageSize]="{width: 200, height: 200}" #nav>
+                                </ng-image-slider>
                             </div>
 
                             <label class="label">Izaberite sliku za postavljanje</label>
                             <nav class="level box">
                                 <div class="control">
-                                    <input type="file" name="picture"
-                                        accept=".jpg, .jpeg, .png" (change)="uploadImage($event)">
+                                    <input type="file" name="picture" accept=".jpg, .jpeg, .png"
+                                        (change)="uploadImage($event)">
                                 </div>
                             </nav>
 
@@ -65,28 +66,29 @@
                                     <label class="label">Broj soba</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Broj soba" name="numberOfRooms"
-                                        (focusout)="onFocusOutNumberOfRooms()"
+                                            (focusout)="onFocusOutNumberOfRooms()"
                                             [(ngModel)]="reservationEntity.numberOfRooms">
                                     </div>
-                                    <p class="is-danger help" *ngIf="isNumberOfRoomsValid == false">Broj soba mora biti cifra.</p>
+                                    <p class="is-danger help" *ngIf="isNumberOfRoomsValid == false">Broj soba mora biti
+                                        cifra.</p>
                                 </div>
 
                                 <div class="field" *ngIf="userRole == 'ROLE_cottageOwner'">
                                     <label class="label">Broj kreveta po sobi</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Broj kreveta po sobi"
-                                        (focusout)="onFocusOutNumberOfBeds()"
-                                            name="bedsPerRoom" [(ngModel)]="reservationEntity.bedsPerRoom">
+                                            (focusout)="onFocusOutNumberOfBeds()" name="bedsPerRoom"
+                                            [(ngModel)]="reservationEntity.bedsPerRoom">
                                     </div>
-                                    <p class="is-danger help" *ngIf="isNumberOfBedsValid == false">Broj kreveta mora biti cifra.</p>
+                                    <p class="is-danger help" *ngIf="isNumberOfBedsValid == false">Broj kreveta mora
+                                        biti cifra.</p>
                                 </div>
 
                                 <div class="field">
                                     <label class="label">Cena noćenja</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Cena noćenja" name="price"
-                                        (focusout)="onFocusOutPrice()"
-                                            [(ngModel)]="reservationEntity.price">
+                                            (focusout)="onFocusOutPrice()" [(ngModel)]="reservationEntity.price">
                                     </div>
                                     <p class="is-danger help" *ngIf="isPriceValid == false">Cena mora biti cifra.</p>
                                 </div>

@@ -167,10 +167,6 @@ export class BoatViewComponent implements OnInit {
     this.isPostalCodeValid = regexp.test(this.boat.postalCode);
   }
 
-  freeAppointmentsForReservation(): void {
-    this.toastr.show("Bice implementirano sa tackom 3.13");
-  }
-
   createNewAction(): void {
     this.toastr.show("Bice implementirano sa tackom 3.16");
   }

@@ -1,0 +1,64 @@
+<button class="button is-link" routerLink="../../viewEntity/{{reservationEntity.id}}">Nazad</button>
+<h1 class="title has-text-centered">Slobodni termini za {{reservationEntity.name}}</h1>
+<div class="container">
+    <br>
+    <nav class="panel has-text-centered">
+        <button class="button is-primary" (click)="enableCreating()" *ngIf="isCreatingAvailableAppointment == false">Novi
+            slobodan termin za rezervacije</button>
+        <button class="button is-info" (click)="disableCreating()" *ngIf="isCreatingAvailableAppointment == true">Sakrij
+            formu</button>
+    </nav>
+    <nav class="panel has-text-centered column is-6 is-offset-3" *ngIf="isCreatingAvailableAppointment == true">
+        <div class="columns is-multiline is-vcentered">
+            <label class="label">Datum početka tremina</label>
+            <div class="column is-4">
+                <input class="input" type="date" [(ngModel)]="this.newAvailableAppointment.startDateString">
+            </div>
+
+            <div class="column is-4">
+                <div class="select is-fullwidth">
+                    <select [(ngModel)]="this.newAvailableAppointment.startTimeString">
+                        <option value="">Vreme</option>
+                        <option *ngFor="let time of times" [ngValue]="time">{{time}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="columns is-multiline is-vcentered">
+            <label class="label">Datum kraja tremina</label>
+            <div class="column is-4">
+                <input class="input" type="date" [(ngModel)]="this.newAvailableAppointment.endDateString">
+            </div>
+
+            <div class="column is-4">
+                <div class="select is-fullwidth">
+                    <select [(ngModel)]="this.newAvailableAppointment.endTimeString">
+                        <option value="">Vreme</option>
+                        <option *ngFor="let time of times" [ngValue]="time">{{time}}</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <br>
+        <button class="button is-info is-large is-fullwidth" (click)="createAvailableAppointment()">Kreiraj
+            termin</button>
+    </nav>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Datum i vreme početka</th>
+                <th>Datum i vreme kraja</th>
+            </tr>
+        </thead>
+
+        <tfoot *ngFor="let availableAppointment of availableAppointments">
+            <tr>
+                <td>{{availableAppointment.fromTime | date:"dd.MM.yyyy., HH:mm"}}</td>
+                <td>{{availableAppointment.toTime | date:"dd.MM.yyyy., HH:mm"}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+</div>

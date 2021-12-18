@@ -8,6 +8,7 @@ import { EntityReservationComponent } from './entity-reservation/entity-reservat
 import { EntityViewComponent } from './entity-view/entity-view.component';
 import { NewBoatComponent } from './new-boat/new-boat.component';
 import { NewEntityComponent } from './new-entity/new-entity.component';
+import { NewAvailableAppointmentComponent } from './new-available-appointment/new-free-appointment.component';
 import { ProfileComponent } from './profile/profile.component';
 import { SuHomeComponent } from './su-home/su-home.component';
 
@@ -20,6 +21,7 @@ const routes: Routes = [
     { path: 'viewBoat/:id', component: BoatViewComponent},
     { path: 'entityReservations/:id', component: EntityReservationComponent},
     { path: 'additionalServices/:id', component: AdditionalServicesComponent},
+    { path: 'availableAppointments/:id', component: NewAvailableAppointmentComponent},
     { path: 'entityBusyness', component: EntityBusynessComponent}
 ];
 
