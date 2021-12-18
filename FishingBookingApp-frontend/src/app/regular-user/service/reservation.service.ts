@@ -18,4 +18,12 @@ export class ReservationService {
     reservation.mailAddress = localStorage.getItem('mailAddress');
     return this.http.post(serverPortApi + "reservation/reserve", reservation, header);
   }
+
+  getAdditionalServiceByEntityId(id: any) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.get(serverPortApi + "reservation/getAdditionalServices/" + id,  header);
+  }
 }

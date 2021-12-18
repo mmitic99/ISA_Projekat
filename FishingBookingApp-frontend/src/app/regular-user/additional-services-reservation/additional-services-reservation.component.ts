@@ -15,6 +15,8 @@ export class AdditionalServicesReservationComponent implements OnInit {
   time = "";
   days = 0;
   guests = 0;
+  additionalServices:any
+  reservation = new Reservation()
 
   constructor(private activatedRoute: ActivatedRoute,
     private reservationService: ReservationService,
@@ -31,15 +33,32 @@ export class AdditionalServicesReservationComponent implements OnInit {
       this.days = params.daysNumber;
       this.guests = params.guestsNumber;
     });
+    this.getAdditionalServices()
+    
+    this.reservation = new Reservation(this.date, this.time, this.days, this.guests, this.id);
 
+  }
+  getAdditionalServices() {
+    this.reservationService.getAdditionalServiceByEntityId(this.id).subscribe((data)=>{
+      this.additionalServices = data;
+    },(error)=>{
+
+    })
   }
 
   reserveEntity() {
-    let reservation = new Reservation(this.date, this.time, this.days, this.guests, this.id);
-    this.reservationService.reserve(reservation).subscribe((data) => {
+    this.reservationService.reserve(this.reservation).subscribe((data) => {
 
     }, (error) => {
       this.toastr.error(error.error.error)
     })
+  }
+
+  selectAdditionalService(type: number) {
+    if (this.reservation.additionalServicesId.includes(type)) {
+      this.reservation.additionalServicesId = this.reservation.additionalServicesId.filter(item => item !== type)
+    } else {
+      this.reservation.additionalServicesId.push(type)
+    }
   }
 }

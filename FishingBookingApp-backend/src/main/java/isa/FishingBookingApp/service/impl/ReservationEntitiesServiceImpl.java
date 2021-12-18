@@ -38,7 +38,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
 
     @Override
     public List<AdditionalService> getAdditionalServices(Long id) {
-        return additionalServiceRepository.getAllAdditionalServicesOfReservationEntity(id);
+        return additionalServiceRepository.findAdditionalServiceByReservationEntityId(id);
     }
 
     @Override

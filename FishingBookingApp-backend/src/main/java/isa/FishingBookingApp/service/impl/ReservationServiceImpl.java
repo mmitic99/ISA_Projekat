@@ -69,7 +69,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
-        reservation.setPrice(reservation.getPrice() * reservation.getDurationInHours()/24);
+        reservation.setPrice(reservation.getReservationEntity().getPrice() * reservation.getDurationInHours()/24);
         for (AdditionalService additionalService : additionalServices) {
             reservation.setPrice(reservation.getPrice() + additionalService.getPrice()*reservation.getDurationInHours()/24);
         }
@@ -78,7 +78,7 @@ public class ReservationServiceImpl implements ReservationService {
     private List<AdditionalService> reserveAdditionalServices(Reservation reservation, ReservationDTO reservationDTO) throws Exception {
         List<AdditionalService> retVal = new ArrayList<>();
         for (Long id : reservationDTO.getAdditionalServicesId()) {
-            AdditionalService additionalService = additionalServiceRepository.getById(id);
+            AdditionalService additionalService = additionalServiceRepository.findAdditionalServiceById(id);
             if(additionalService != null){
                 additionalServiceReservationRepository.save(new AdditionalServiceReservation(additionalService, reservation));
                 retVal.add(additionalService);
