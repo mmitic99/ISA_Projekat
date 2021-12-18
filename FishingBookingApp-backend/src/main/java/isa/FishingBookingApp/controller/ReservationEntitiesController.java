@@ -4,10 +4,8 @@ import isa.FishingBookingApp.dto.AdditionalServiceDTO;
 import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.dto.EntityImageDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
-import isa.FishingBookingApp.model.AdditionalService;
-import isa.FishingBookingApp.model.Cottage;
-import isa.FishingBookingApp.model.EntityImage;
-import isa.FishingBookingApp.model.ReservationEntities;
+import isa.FishingBookingApp.model.*;
+import isa.FishingBookingApp.service.BoatService;
 import isa.FishingBookingApp.service.CottageService;
 import isa.FishingBookingApp.service.EntityImageService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
@@ -36,14 +34,16 @@ public class ReservationEntitiesController {
     private CottageService cottageService;
     private ReservationService reservationService;
     private TokenUtils tokenUtils;
+    private BoatService boatService;
 
     @Autowired
-    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, ReservationService reservationService, TokenUtils tokenUtils) {
-        this.reservationEntitiesService = reservationEntitiesService;
+    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, BoatService boatService, TokenUtils tokenUtils, ReservationService reservationService) {
+        this.reservationEntitiesService=reservationEntitiesService;
         this.entityImageService = entityImageService;
         this.cottageService = cottageService;
-        this.reservationService = reservationService;
+        this.boatService = boatService;
         this.tokenUtils = tokenUtils;
+        this.reservationService = reservationService;
     }
 
     @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -77,7 +77,7 @@ public class ReservationEntitiesController {
 
         return new ResponseEntity<>(base64Images, HttpStatus.OK);
     }
-
+ 
     @GetMapping(value = "/additionalServices/{entityId}")
     public ResponseEntity<List<AdditionalService>> getAdditionalServices(@PathVariable Long entityId) {
         ArrayList<AdditionalService> additionalServices = (ArrayList<AdditionalService>) reservationEntitiesService.getAdditionalServices(entityId);
@@ -133,9 +133,12 @@ public class ReservationEntitiesController {
         if (entity.getType().equals("cottage")) {
             Cottage cottage = cottageService.get(entity.getId());
             userMailAddress = cottage.getCottageOwner().getMailAddress();
-        } else if (entity.getType().equals("boat")) {
-            // TODO: implementirati kada se budu implementirale stvari za brod
-        } else {
+        }
+        else if (entity.getType().equals("boat")) {
+            Boat boat = boatService.get(entity.getId());
+            userMailAddress = boat.getBoatOwner().getMailAddress();
+        }
+        else {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 

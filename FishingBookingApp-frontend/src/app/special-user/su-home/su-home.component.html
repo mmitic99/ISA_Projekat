@@ -10,25 +10,10 @@
                 Pretraži
             </a>
         </div>
-<!--
-        <div class="navbar-end">
-            <div class="select level-right">
-                <select>
-                    <option value="">Sortiraj</option>
-                    <option value="na">Naziv rastuće</option>
-                    <option value="nd">Naziv opadajuće</option>
-                    <option value="la">Lokacija rastuće</option>
-                    <option value="ld">Lokacija opadajuće</option>
-                    <option value="ra">Ocena rastuće</option>
-                    <option value="rd">Ocena opadajuće</option>
-                </select>
-            </div>
-        </div>
--->
     </nav>
 
     <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntitiesToShow">
-        <a routerLink="../specialUser/viewEntity/{{reservationEntity.id}}">
+        <a routerLink="{{entityViewRouterLink}}/{{reservationEntity.id}}">
             <div class="message-header">
                 <p>{{reservationEntity.name}}</p>
             </div>

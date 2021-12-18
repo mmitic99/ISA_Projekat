@@ -45,7 +45,7 @@
           *ngIf="this.authService.getRole() == 'ROLE_cottageOwner'">
           Kreiraj vikendicu
         </a>
-        <a class="navbar-item" [routerLink]="['/specialUser/createEntity']"
+        <a class="navbar-item" [routerLink]="['/specialUser/createBoat']"
           *ngIf="this.authService.getRole() == 'ROLE_boatOwner'">
           Kreiraj brod/čamac
         </a>

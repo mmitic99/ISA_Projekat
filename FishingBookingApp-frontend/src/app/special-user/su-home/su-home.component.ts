@@ -11,10 +11,18 @@ export class SuHomeComponent implements OnInit {
   reservationEntities: any;
   reservationEntitiesToShow: any;
   searchParameter = "";
+  entityViewRouterLink = "";
   constructor(private entitiesService : EntitiesService) { }
 
   ngOnInit(): void {
     this.getAppropriateReservationEntities();
+    
+    if (localStorage.getItem('role') == "ROLE_cottageOwner"){
+      this.entityViewRouterLink = "../specialUser/viewEntity";
+    }
+    else {
+      this.entityViewRouterLink = "../specialUser/viewBoat";
+    }
   }
 
   getAppropriateReservationEntities() {
