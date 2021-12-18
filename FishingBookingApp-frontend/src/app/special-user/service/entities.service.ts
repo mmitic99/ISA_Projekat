@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { serverPortApi } from 'src/app/app.consts';
 import { AdditionalService } from '../additional-services/AdditionalService';
+import { AvailableAppointment } from '../new-available-appointment/AvailableAppointment';
 import { Boat } from '../new-boat/Boat';
 import { Cottage } from '../new-entity/Cottage';
 import { ReservationEntity } from '../new-entity/ReservationEntity';
@@ -48,6 +49,19 @@ export class EntitiesService {
     }
 
     return this.http.post<any>(serverPortApi + 'reservationEntities/imageUpload/' + entityId, photo, header);
+  }
+
+  getAvailableAppointments(entityId: string) {
+    return this.http.get<any>(serverPortApi + "reservationEntities/availableAppointments/" + entityId);
+  }
+
+  createAvailableAppointment(availableAppointment: AvailableAppointment) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    
+    return this.http.post<any>(serverPortApi + "reservationEntities/availableAppointments", availableAppointment, header);
   }
 
   // DEO METODA VEZAN ZA VIKENDICE //////////////////////////

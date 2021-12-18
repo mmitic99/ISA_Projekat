@@ -1,9 +1,6 @@
 package isa.FishingBookingApp.controller;
 
-import isa.FishingBookingApp.dto.AdditionalServiceDTO;
-import isa.FishingBookingApp.dto.CottageDTO;
-import isa.FishingBookingApp.dto.EntityImageDTO;
-import isa.FishingBookingApp.dto.SearchFilterSort;
+import isa.FishingBookingApp.dto.*;
 import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.service.BoatService;
 import isa.FishingBookingApp.service.CottageService;
@@ -87,6 +84,15 @@ public class ReservationEntitiesController {
         return new ResponseEntity<>(additionalServices, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/availableAppointments/{entityId}")
+    public ResponseEntity<List<AvailableAppointment>> getAvailableAppointments(@PathVariable Long entityId) {
+        ArrayList<AvailableAppointment> availableAppointments = (ArrayList<AvailableAppointment>) reservationEntitiesService.getAvailableAppointmentsOfEntity(entityId);
+
+        if (availableAppointments == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(availableAppointments, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/imageUpload/{entityId}")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<EntityImageDTO> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId) {
@@ -126,9 +132,37 @@ public class ReservationEntitiesController {
     @PostMapping(value = "/additionalServices")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<AdditionalService> createAdditionalService(@RequestBody AdditionalServiceDTO additionalServiceDTO, HttpServletRequest request) {
+        String userMailAddress = getMailAddressOfEntityOwner(additionalServiceDTO.getReservationEntityId());
+        if (!authorizedUser(userMailAddress, request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+
+        AdditionalService additionalService = reservationEntitiesService.createAdditionalService(additionalServiceDTO);
+        if (additionalService == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(additionalService, HttpStatus.OK);
+    }
+
+    @PostMapping(value = "availableAppointments")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<AvailableAppointment> createAvailableAppointment(@RequestBody AvailableAppointmentDTO availableAppointmentDTO, HttpServletRequest request) {
+        String userMailAddress = getMailAddressOfEntityOwner(availableAppointmentDTO.getEntityId());
+        if (!authorizedUser(userMailAddress, request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+
+        AvailableAppointment availableAppointment = reservationEntitiesService.createAvailableAppointment(availableAppointmentDTO);
+        if (availableAppointment == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+
+        return new ResponseEntity<>(availableAppointment, HttpStatus.OK);
+    }
+
+    private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String username = tokenUtils.getUsernameFromToken(token.substring(7));
+        return username.equals(ownerUsername);
+    }
+
+    private String getMailAddressOfEntityOwner(Long entityId) {
         String userMailAddress = "";
-        ReservationEntities entity = reservationEntitiesService.get(additionalServiceDTO.getReservationEntityId());
-        if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        ReservationEntities entity = reservationEntitiesService.get(entityId);
+        if (entity == null) return userMailAddress;
 
         if (entity.getType().equals("cottage")) {
             Cottage cottage = cottageService.get(entity.getId());
@@ -138,22 +172,8 @@ public class ReservationEntitiesController {
             Boat boat = boatService.get(entity.getId());
             userMailAddress = boat.getBoatOwner().getMailAddress();
         }
-        else {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
 
-        if (!authorizedUser(userMailAddress, request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
-
-        AdditionalService additionalService = reservationEntitiesService.createAdditionalService(additionalServiceDTO);
-        if (additionalService == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-
-        return new ResponseEntity<>(additionalService, HttpStatus.OK);
-    }
-
-    private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String username = tokenUtils.getUsernameFromToken(token.substring(7));
-        return username.equals(ownerUsername);
+        return userMailAddress;
     }
 
 }

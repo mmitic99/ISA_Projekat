@@ -13,7 +13,7 @@ import { AdditionalService } from './AdditionalService';
 export class AdditionalServicesComponent implements OnInit {
 
   private entityId : any;
-  reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");;
+  reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
   additionalServices : any;
   creatingAdditionalService : boolean = false;
   newAdditionalService = new AdditionalService("", "", "", "");

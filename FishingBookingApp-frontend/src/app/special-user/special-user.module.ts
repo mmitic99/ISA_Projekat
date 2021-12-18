@@ -17,6 +17,7 @@ import { AdditionalServicesComponent } from './additional-services/additional-se
 import { EntityBusynessComponent } from './entity-busyness/entity-busyness.component';
 import { NewBoatComponent } from './new-boat/new-boat.component';
 import { BoatViewComponent } from './boat-view/boat-view.component';
+import { NewAvailableAppointmentComponent } from './new-available-appointment/new-free-appointment.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -33,7 +34,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     AdditionalServicesComponent,
     EntityBusynessComponent,
     NewBoatComponent,
-    BoatViewComponent
+    BoatViewComponent,
+    NewAvailableAppointmentComponent
   ],
   imports: [
     CommonModule,

@@ -1,15 +1,19 @@
 package isa.FishingBookingApp.service.impl;
 
 import isa.FishingBookingApp.dto.AdditionalServiceDTO;
+import isa.FishingBookingApp.dto.AvailableAppointmentDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.AdditionalService;
+import isa.FishingBookingApp.model.AvailableAppointment;
 import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.repository.AdditionalServiceRepository;
+import isa.FishingBookingApp.repository.AvailableAppointmentRepository;
 import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,11 +23,13 @@ import java.util.List;
 public class ReservationEntitiesServiceImpl implements ReservationEntitiesService {
     private ReservationEntitiesRepository reservationEntitiesRepository;
     private AdditionalServiceRepository additionalServiceRepository;
+    private AvailableAppointmentRepository availableAppointmentRepository;
 
     @Autowired
-    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository) {
+    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository, AvailableAppointmentRepository availableAppointmentRepository) {
         this.reservationEntitiesRepository = reservationEntitiesRepository;
         this.additionalServiceRepository = additionalServiceRepository;
+        this.availableAppointmentRepository = availableAppointmentRepository;
     }
 
     @Override
@@ -42,11 +48,45 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
     }
 
     @Override
+    public List<AvailableAppointment> getAvailableAppointmentsOfEntity(Long id) {
+        return availableAppointmentRepository.findByEntityId(id);
+    }
+
+    @Override
     public AdditionalService createAdditionalService(AdditionalServiceDTO additionalServiceDTO) {
         ReservationEntities reservationEntity = reservationEntitiesRepository.findById(additionalServiceDTO.getReservationEntityId()).orElse(null);
         if (reservationEntity == null) return null;
         AdditionalService additionalService = new AdditionalService(reservationEntity, additionalServiceDTO.getName(), additionalServiceDTO.getDescription(), additionalServiceDTO.getPrice());
         return additionalServiceRepository.save(additionalService);
+    }
+
+    @Override
+    public AvailableAppointment createAvailableAppointment(AvailableAppointmentDTO availableAppointmentDTO) {
+        ReservationEntities reservationEntity = reservationEntitiesRepository.findById(availableAppointmentDTO.getEntityId()).orElse(null);
+        availableAppointmentDTO.setDateTimesFromStrings();
+        if (reservationEntity == null || availableAppointmentDTO.getFromTime() == null || availableAppointmentDTO.getToTime() == null
+                || overlapsWithOtherEntityAppointments(reservationEntity.getId(), availableAppointmentDTO))
+            return null;
+        AvailableAppointment availableAppointment = new AvailableAppointment(reservationEntity, availableAppointmentDTO.getFromTime(), availableAppointmentDTO.getToTime());
+        return availableAppointmentRepository.save(availableAppointment);
+    }
+
+    private boolean overlapsWithOtherEntityAppointments(Long id, AvailableAppointmentDTO newAvailableAppointment) {
+        LocalDateTime newStart = newAvailableAppointment.getFromTime();
+        LocalDateTime newEnd = newAvailableAppointment.getToTime();
+
+        List<AvailableAppointment> appointmentsOfEntity = availableAppointmentRepository.findByEntityId(id);
+        if (appointmentsOfEntity.size() == 0)   return false;
+
+        for (AvailableAppointment appointment : appointmentsOfEntity) {
+            LocalDateTime appointmentStart = appointment.getFromTime();
+            LocalDateTime appointmentEnd = appointment.getToTime();
+            if ((newStart.isBefore(appointmentStart) && newEnd.isBefore(appointmentStart)) || (newStart.isAfter(appointmentEnd) && newEnd.isAfter(appointmentEnd))) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     @Override
