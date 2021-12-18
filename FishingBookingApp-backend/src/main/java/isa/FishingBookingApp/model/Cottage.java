@@ -13,11 +13,10 @@ public class Cottage extends ReservationEntities {
     }
 
     public Cottage(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, CottageOwner cottageOwner, int numberOfRooms, int bedsPerRoom, double price) {
-        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "cottage");
+        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "cottage", price);
         this.cottageOwner = cottageOwner;
         this.numberOfRooms = numberOfRooms;
         this.bedsPerRoom = bedsPerRoom;
-        this.price = price;
     }
 
     @ManyToOne
@@ -26,8 +25,6 @@ public class Cottage extends ReservationEntities {
     private int numberOfRooms;
 
     private int bedsPerRoom;
-
-    private double price;
 
     public CottageOwner getCottageOwner() {
         return cottageOwner;
@@ -53,11 +50,4 @@ public class Cottage extends ReservationEntities {
         this.bedsPerRoom = bedsPerRoom;
     }
 
-    public double getPrice() {
-        return price;
-    }
-
-    public void setPrice(double price) {
-        this.price = price;
-    }
 }

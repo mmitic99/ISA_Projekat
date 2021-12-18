@@ -37,6 +37,13 @@ public class SearchFilterSort {
         }
     }
 
+    public SearchFilterSort(String mailAddress, int days, int guests, LocalDateTime dateTime) {
+        this.mailAddress = mailAddress;
+        this.days = days;
+        this.guests = guests;
+        this.dateTime = dateTime;
+    }
+
     private LocalDateTime getDateTimeFromStrings(String dateString, String timeString) {
         try {
             String dateNumbers[] = dateString.split("-");

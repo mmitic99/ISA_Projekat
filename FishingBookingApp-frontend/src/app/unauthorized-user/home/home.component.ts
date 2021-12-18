@@ -207,16 +207,8 @@ export class HomeComponent implements OnInit {
     this.searchFilterSort()
   }
 
-  reserveEntity(id: any) {
-    let reservation = new Reservation(this.searchFilterSortModel.date, this.searchFilterSortModel.time, this.searchFilterSortModel.daysNumber, this.searchFilterSortModel.guestsNumber, id);
-
-    this.reservationService.reserve(reservation).subscribe((data)=>{
-
-    },(error)=>{
-      this.toastr.error(error)
-    })
-
-    this.router.navigateByUrl('/aditional_services_reservation/' + id +
+  reserveAditionalServices(id: any) {
+        this.router.navigateByUrl('/aditional_services_reservation/' + id +
       '?date=' + this.searchFilterSortModel.date +
       '&time=' + this.searchFilterSortModel.time +
       '&daysNumber=' + this.searchFilterSortModel.daysNumber +

@@ -2,6 +2,7 @@ package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.ReservationDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
+import isa.FishingBookingApp.model.Reservation;
 import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
 import isa.FishingBookingApp.service.ReservationService;
@@ -44,10 +45,12 @@ public class ReservationController {
     @PostMapping(value = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> reserve(@RequestBody ReservationDTO reservationDTO, HttpServletRequest request) {
-        reservationDTO.setDateTimeFromStrings();
-
-        //TODO:
-
-        return new ResponseEntity<>("error", HttpStatus.BAD_REQUEST);
+        try {
+            reservationDTO.setDateTimeFromStrings();
+            Reservation reservation = reservationService.reserveEntity(reservationDTO);
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
     }
 }
