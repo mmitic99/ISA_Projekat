@@ -108,6 +108,7 @@ public class ReservationController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
     private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String username = tokenUtils.getUsernameFromToken(token.substring(7));

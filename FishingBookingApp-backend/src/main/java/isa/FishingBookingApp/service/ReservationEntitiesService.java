@@ -8,6 +8,7 @@ import isa.FishingBookingApp.model.AvailableAppointment;
 import isa.FishingBookingApp.model.ReservationEntities;
 
 import java.util.List;
+import java.util.Set;
 
 public interface ReservationEntitiesService {
     List<ReservationEntities> getAll();
@@ -23,4 +24,6 @@ public interface ReservationEntitiesService {
     AvailableAppointment createAvailableAppointment(AvailableAppointmentDTO availableAppointmentDTO);
 
     List<ReservationEntities> searchFilterSort(SearchFilterSort searchFilterSort);
+
+    Set<ReservationEntities> getPossibleReservationEntitiesForComplaint(String mailAddress);
 }

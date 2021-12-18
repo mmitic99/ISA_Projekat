@@ -2,11 +2,7 @@ package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.*;
 import isa.FishingBookingApp.model.*;
-import isa.FishingBookingApp.service.BoatService;
-import isa.FishingBookingApp.service.CottageService;
-import isa.FishingBookingApp.service.EntityImageService;
-import isa.FishingBookingApp.service.ReservationEntitiesService;
-import isa.FishingBookingApp.service.ReservationService;
+import isa.FishingBookingApp.service.*;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -32,15 +28,18 @@ public class ReservationEntitiesController {
     private ReservationService reservationService;
     private TokenUtils tokenUtils;
     private BoatService boatService;
+    private ComplaintService complaintService;
 
     @Autowired
-    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, BoatService boatService, TokenUtils tokenUtils, ReservationService reservationService) {
-        this.reservationEntitiesService=reservationEntitiesService;
+    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, BoatService boatService, TokenUtils tokenUtils, ReservationService reservationService, ComplaintService complaintService) {
+        this.reservationEntitiesService = reservationEntitiesService;
         this.entityImageService = entityImageService;
         this.cottageService = cottageService;
         this.boatService = boatService;
         this.tokenUtils = tokenUtils;
         this.reservationService = reservationService;
+        ;
+        this.complaintService = complaintService;
     }
 
     @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -74,7 +73,7 @@ public class ReservationEntitiesController {
 
         return new ResponseEntity<>(base64Images, HttpStatus.OK);
     }
- 
+
     @GetMapping(value = "/additionalServices/{entityId}")
     public ResponseEntity<List<AdditionalService>> getAdditionalServices(@PathVariable Long entityId) {
         ArrayList<AdditionalService> additionalServices = (ArrayList<AdditionalService>) reservationEntitiesService.getAdditionalServices(entityId);
@@ -153,6 +152,32 @@ public class ReservationEntitiesController {
         return new ResponseEntity<>(availableAppointment, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/getPossibleReservationEntitiesForComplaint/{mailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> getPossibleReservationEntitiesForComplaint(@PathVariable String mailAddress, HttpServletRequest request) {
+        try {
+            if (!authorizedUser(mailAddress, request)) {
+                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(reservationEntitiesService.getPossibleReservationEntitiesForComplaint(mailAddress), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "/addComplaint", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> addComplaint(@RequestBody ComplaintDTO complaintDTO, HttpServletRequest request) {
+        try {
+            if (!authorizedUser(complaintDTO.getMailAddress(), request)) {
+                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(complaintService.addComplaint(complaintDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
     private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String username = tokenUtils.getUsernameFromToken(token.substring(7));
@@ -167,8 +192,7 @@ public class ReservationEntitiesController {
         if (entity.getType().equals("cottage")) {
             Cottage cottage = cottageService.get(entity.getId());
             userMailAddress = cottage.getCottageOwner().getMailAddress();
-        }
-        else if (entity.getType().equals("boat")) {
+        } else if (entity.getType().equals("boat")) {
             Boat boat = boatService.get(entity.getId());
             userMailAddress = boat.getBoatOwner().getMailAddress();
         }
