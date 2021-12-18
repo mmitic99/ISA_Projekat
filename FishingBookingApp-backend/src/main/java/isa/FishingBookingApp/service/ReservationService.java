@@ -11,4 +11,8 @@ public interface ReservationService {
     List<ReservationEntities> checkIsReservationEntitiesIsAvailable(List<ReservationEntities> reservationEntities, SearchFilterSort searchFilterSort);
 
     Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception;
+
+    List<Reservation> getCurrentReservationForUser(String mailAddress);
+
+    Reservation cancelReservation(Long id) throws Exception;
 }

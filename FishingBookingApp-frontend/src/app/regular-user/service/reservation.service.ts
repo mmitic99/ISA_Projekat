@@ -26,4 +26,21 @@ export class ReservationService {
     }
     return this.http.get(serverPortApi + "reservation/getAdditionalServices/" + id,  header);
   }
+
+  getCurrentReservation() {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.get(serverPortApi + "reservation/getCurrentReservation/" + localStorage.getItem('mailAddress'),  header);
+  }
+
+  cancelReservation(dto: any) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    dto.mailAddress = localStorage.getItem('mailAddress')
+    return this.http.put(serverPortApi + "reservation/cancelReservation/" , dto,  header)
+  }
 }

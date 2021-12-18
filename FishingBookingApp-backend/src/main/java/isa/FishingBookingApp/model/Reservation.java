@@ -14,11 +14,11 @@ public class Reservation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     private ReservationEntities reservationEntity;
 
     private LocalDateTime start;
@@ -32,6 +32,8 @@ public class Reservation {
 
     private double price;
 
+    private boolean deleted;
+
     public Reservation(User user, ReservationEntities reservationEntity, LocalDateTime start, double durationInHours, int maxPeople, double price) {
         this.user = user;
         this.reservationEntity = reservationEntity;
@@ -39,6 +41,7 @@ public class Reservation {
         this.durationInHours = durationInHours;
         this.maxPeople = maxPeople;
         this.price = price;
+        this.deleted = false;
     }
 
     public Long getId() {
@@ -103,5 +106,13 @@ public class Reservation {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }
