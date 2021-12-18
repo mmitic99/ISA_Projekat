@@ -62,24 +62,37 @@ public class EmailService {
         mail.setSubject("ISA-PROJEKAT Potvrda rezervacije");
 
         String type = "";
-        if(reservation.getReservationEntity().getType().equals("cottage")){
+        if (reservation.getReservationEntity().getType().equals("cottage")) {
             type = "vikendicu";
-        }
-        else if(reservation.getReservationEntity().getType().equals("boat")){
+        } else if (reservation.getReservationEntity().getType().equals("boat")) {
             type = "brod";
-        }
-        else if(reservation.getReservationEntity().getType().equals("fishingInstructor")){
+        } else if (reservation.getReservationEntity().getType().equals("fishingInstructor")) {
             type = "instruktora pecanja";
         }
 
-        String text = "Pozdrav " + reservation.getUser().getName() + ",<br><br>"+"" +
+        String text = "Pozdrav " + reservation.getUser().getName() + ",<br><br>" + "" +
                 "Vaša rezervacija za " + type + " <strong>" + reservation.getReservationEntity().getName() +
                 "</strong> je uspešno prihvaćena." +
                 "<br><br> Detalji rezervacije: <br>" +
                 "<table border=\"1\">" +
-                "<tr><td style=\"width: 200\">Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName()+ "</td></tr>" +
-                "<tr><td style=\"width: 200\">Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName()+ "</td></tr>" +
-                "</table>";
+                "<tr><td>Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName() + "</td></tr>" +
+                "<tr><td>Adresa</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getAddress() + "</td></tr>" +
+                "<tr><td>Ukupno dana</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 + "</td></tr>" +
+                "<tr><td>Cena po danu</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 * reservation.getReservationEntity().getPrice() + "</td></tr>" +
+                "</table><br>";
+
+        if(reservation.getAdditionalServices() !=null && reservation.getAdditionalServices().size() != 0) {
+            text += "Dodatne usluge:<br><table border=\"1\">" +
+                    "<tr><th>Naziv</th><th>Cena po danu</th></tr>";
+            for (AdditionalService additionalService :
+                    reservation.getAdditionalServices()) {
+                text += "<tr><td style=\"width: 100%\">" + additionalService.getName() + "</td><td style=\"width: 200px\">" + additionalService.getPrice() + "</td></tr>";
+
+            }
+            text += "</table>";
+        }
+
+        text += "<h1 align=\"right\">Ukupna cena: " + reservation.getPrice() + "</h1>";
 
         mail.setText(text, true);
 

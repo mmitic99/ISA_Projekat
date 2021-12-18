@@ -53,7 +53,7 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception {
         ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesById(reservationDTO.getReservationEntitiesId());
         User user = userRepository.findByMailAddress(reservationDTO.getMailAddress());
-        Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24, reservationDTO.getGuests(), reservationDTO.getDays() * reservationEntities.getPrice());
+        Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24, reservationDTO.getGuests(), 0);
 
         // provera za 4.4
         if (!reservationEntityIsAvailable(reservationEntities, new SearchFilterSort(reservationDTO.getMailAddress(), reservationDTO.getDays(), reservationDTO.getGuests(), reservationDTO.getDateTime()))) {
@@ -61,8 +61,17 @@ public class ReservationServiceImpl implements ReservationService {
         } else {
             reservationRepository.save(reservation);
             List<AdditionalService> additionalServices = reserveAdditionalServices(reservation, reservationDTO);
+            addPriceToReservation(reservation, additionalServices);
+            reservationRepository.save(reservation);
             emailService.sendReservationInfo(reservation, additionalServices);
             return reservation;
+        }
+    }
+
+    private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
+        reservation.setPrice(reservation.getPrice() * reservation.getDurationInHours()/24);
+        for (AdditionalService additionalService : additionalServices) {
+            reservation.setPrice(reservation.getPrice() + additionalService.getPrice()*reservation.getDurationInHours()/24);
         }
     }
 
