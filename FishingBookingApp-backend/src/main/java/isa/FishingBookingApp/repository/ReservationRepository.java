@@ -11,5 +11,7 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
 
     List<Reservation> findReservationByUserMailAddressAndStartGreaterThanEqualAndDeletedEquals(String mailAddress, LocalDateTime start, boolean deleted);
 
+    List<Reservation> findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(String mailAddress, LocalDateTime start, boolean deleted);
+
     Reservation findReservationById(Long id);
 }

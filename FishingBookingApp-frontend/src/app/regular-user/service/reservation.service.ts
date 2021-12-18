@@ -43,4 +43,11 @@ export class ReservationService {
     dto.mailAddress = localStorage.getItem('mailAddress')
     return this.http.put(serverPortApi + "reservation/cancelReservation/" , dto,  header)
   }
+  getAllOldReservation() {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.get(serverPortApi + "reservation/getAllOldReservation/" + localStorage.getItem('mailAddress'),  header);
+  }
 }
