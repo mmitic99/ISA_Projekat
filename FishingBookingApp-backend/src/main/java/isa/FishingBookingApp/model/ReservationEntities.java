@@ -27,21 +27,21 @@ public class ReservationEntities {
 
     private String rulesOfConduct;
 
-    //@OneToMany(mappedBy = "reservationEntity")
-    //private Set<AdditionalService> additionalServices;
-
     private String type;
+
+    private double price;
 
     public ReservationEntities() {
     }
 
-    public ReservationEntities(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, String type) {
+    public ReservationEntities(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, String type, double price) {
         this.name = name;
         this.address = address;
         this.promotionalDescription = promotionalDescription;
         this.preDefinedReservations = preDefinedReservations;
         this.rulesOfConduct = rulesOfConduct;
         this.type = type;
+        this.price = price;
     }
 
     public Long getId() {
@@ -90,5 +90,13 @@ public class ReservationEntities {
 
     public void setRulesOfConduct(String rulesOfConduct) {
         this.rulesOfConduct = rulesOfConduct;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
     }
 }

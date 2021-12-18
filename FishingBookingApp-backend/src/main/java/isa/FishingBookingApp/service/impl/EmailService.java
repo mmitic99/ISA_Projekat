@@ -1,5 +1,7 @@
 package isa.FishingBookingApp.service.impl;
 
+import isa.FishingBookingApp.model.AdditionalService;
+import isa.FishingBookingApp.model.Reservation;
 import isa.FishingBookingApp.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
@@ -12,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import java.util.List;
 
 @Service
 public class EmailService {
@@ -39,7 +42,7 @@ public class EmailService {
 
         String text = "Pozdrav " + user.getName() + ",<br>"
                 + "Da bi ste verifikovali svoj nalog, posetite sledeću stranicu:<br>"
-                + "<h1><a href=" + url + " target=\"_self\">VERIFIKUJ</a></h1>"
+                + "<h1><a href=" + url + " target=\"_self\">VERIFIKUJ</a></h1> "
                 + "Hvala,<br>" + "IsaTim27.";
 
         mail.setText(text, true);
@@ -47,5 +50,39 @@ public class EmailService {
         javaMailSender.send(message);
 
         System.out.println("Email sended!");
+    }
+
+    @Async
+    public void sendReservationInfo(Reservation reservation, List<AdditionalService> additionalServices) throws Exception {
+        MimeMessage message = javaMailSender.createMimeMessage();
+        MimeMessageHelper mail = new MimeMessageHelper(message);
+
+        mail.setTo(reservation.getUser().getMailAddress());
+        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setSubject("ISA-PROJEKAT Potvrda rezervacije");
+
+        String type = "";
+        if(reservation.getReservationEntity().getType().equals("cottage")){
+            type = "vikendicu";
+        }
+        else if(reservation.getReservationEntity().getType().equals("boat")){
+            type = "brod";
+        }
+        else if(reservation.getReservationEntity().getType().equals("fishingInstructor")){
+            type = "instruktora pecanja";
+        }
+
+        String text = "Pozdrav " + reservation.getUser().getName() + ",<br><br>"+"" +
+                "Vaša rezervacija za " + type + " <strong>" + reservation.getReservationEntity().getName() +
+                "</strong> je uspešno prihvaćena." +
+                "<br><br> Detalji rezervacije: <br>" +
+                "<table border=\"1\">" +
+                "<tr><td style=\"width: 200\">Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName()+ "</td></tr>" +
+                "<tr><td style=\"width: 200\">Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName()+ "</td></tr>" +
+                "</table>";
+
+        mail.setText(text, true);
+
+        javaMailSender.send(message);
     }
 }

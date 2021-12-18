@@ -14,7 +14,7 @@ public class Boat extends ReservationEntities {
     }
 
     public Boat(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, BoatOwner boatOwner) {
-        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "boat");
+        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "boat", 0);
         this.boatOwner = boatOwner;
     }
 

@@ -1,6 +1,7 @@
 package isa.FishingBookingApp.dto;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 public class ReservationDTO {
     private String mailAddress;
@@ -10,8 +11,9 @@ public class ReservationDTO {
     private String time;
     private LocalDateTime dateTime;
     private Long reservationEntitiesId;
+    private List<Long> additionalServicesId;
 
-    public ReservationDTO(String mailAddress, int days, int guests, String date, String time, LocalDateTime dateTime, Long reservationEntitiesId) {
+    public ReservationDTO(String mailAddress, int days, int guests, String date, String time, LocalDateTime dateTime, Long reservationEntitiesId, List<Long> additionalServicesId) throws Exception {
         this.mailAddress = mailAddress;
         this.days = days;
         this.guests = guests;
@@ -20,12 +22,13 @@ public class ReservationDTO {
         this.dateTime = dateTime;
         this.reservationEntitiesId = reservationEntitiesId;
         this.dateTime = getDateTimeFromStrings(date, time);
+        this.additionalServicesId = additionalServicesId;
     }
 
     public ReservationDTO() {
     }
 
-    private LocalDateTime getDateTimeFromStrings(String dateString, String timeString) {
+    private LocalDateTime getDateTimeFromStrings(String dateString, String timeString) throws Exception {
         try {
             String dateNumbers[] = dateString.split("-");
             int year = Integer.parseInt(dateNumbers[0]);
@@ -38,7 +41,7 @@ public class ReservationDTO {
             int minute = Integer.parseInt(timeNumbers[1]);
             return LocalDateTime.of(year, month, day, hour, minute);
         }catch (Exception e){
-            return null;
+            throw new Exception("Datum ili vreme nisu u dobrom formatu");
         }
     }
 
@@ -86,7 +89,7 @@ public class ReservationDTO {
         return dateTime;
     }
 
-    public void setDateTimeFromStrings() {
+    public void setDateTimeFromStrings() throws Exception {
         this.dateTime = getDateTimeFromStrings(date, time);
     }
 
@@ -96,5 +99,13 @@ public class ReservationDTO {
 
     public void setReservationEntitiesId(Long reservationEntitiesId) {
         this.reservationEntitiesId = reservationEntitiesId;
+    }
+
+    public List<Long> getAdditionalServicesId() {
+        return additionalServicesId;
+    }
+
+    public void setAdditionalServicesId(List<Long> additionalServicesId) {
+        this.additionalServicesId = additionalServicesId;
     }
 }

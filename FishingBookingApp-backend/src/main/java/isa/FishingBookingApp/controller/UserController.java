@@ -41,9 +41,7 @@ public class UserController {
     @PutMapping(value="editUser")
     @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> editUser(@RequestBody UserDTO user, HttpServletRequest request){
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        if(!mailAddress.equals(user.getMailAddress())){
+        if(!isUserAuthorized(user.getMailAddress(), request)){
             return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(userService.editUser(user), HttpStatus.OK);
@@ -52,12 +50,16 @@ public class UserController {
     @PostMapping(value = "deletingRequest")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> deleteRequest(@RequestBody RequestForDeletingAccountDTO requestForDeletingAccountDTO, HttpServletRequest request){
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        if(!mailAddress.equals(requestForDeletingAccountDTO.getMailAddress())){
+        if(!isUserAuthorized(requestForDeletingAccountDTO.getMailAddress(), request)){
             return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
         }
         return new ResponseEntity<>(requestForDeletingAccountService.createNewRequest(requestForDeletingAccountDTO), HttpStatus.OK);
+    }
+
+    private boolean isUserAuthorized(String mailAddress, HttpServletRequest request) {
+        String token = tokenUtils.getAuthHeaderFromHeader(request);
+        String username = tokenUtils.getUsernameFromToken(token.substring(7));
+        return username.equals(mailAddress);
     }
 
 }
