@@ -2,20 +2,23 @@
     <div class="hero-body">
         <div class="container has-text-centered">
             <div class="column is-8 is-offset-2">
-                <h3 class="title is-danger">Imate primedbe na neku vikendicu, brod ili instruktora pecanja?<br> Pošaljite nam vaše primedbe</h3>
+                <h3 class="title is-danger">Imate primedbe na neku vikendicu, brod ili instruktora pecanja?<br>
+                    Pošaljite nam vaše primedbe</h3>
                 <div class="box">
                     <form ngNativeValidate>
                         <div class="select is-fullwidth">
-                            <select>
-                              <option>Izaberite naziv objekta za koji pišete žalbu</option>
-                              <option>Vikendica -- Mesec</option>
-                              <option>Instruktor pecanja -- Fishing</option>
+                            <select [(ngModel)]="this.complaint.entityIdString" name="entityIdString">
+                                <option selected value="">Izaberite naziv objekta za koji pišete žalbu</option>
+                                <option *ngFor="let entity of possibleEntitiesForComplaint" value="{{entity.id}}">
+                                    {{getType(entity.type)}} -- {{entity.name}}, adresa: {{entity.address.street}}
+                                    {{entity.address.number}},
+                                    {{entity.address.city}}, {{entity.address.country}}</option>
                             </select>
-                          </div>
-                        <div class="field">
-                            <textarea class="textarea" placeholder="Vaše obrazloženje"></textarea>
                         </div>
-                        <button class="button is-block is-info is-large is-fullwidth">Pošalji</button>
+                        <div class="field">
+                            <textarea class="textarea" placeholder="Vaše obrazloženje" [(ngModel)]="this.complaint.explain" name="explain"></textarea>
+                        </div>
+                        <button class="button is-block is-info is-large is-fullwidth" (click)="sendComplain()">Pošalji</button>
                     </form>
                 </div>
             </div>

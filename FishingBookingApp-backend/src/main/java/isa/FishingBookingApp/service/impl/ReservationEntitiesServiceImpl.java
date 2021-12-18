@@ -5,31 +5,33 @@ import isa.FishingBookingApp.dto.AvailableAppointmentDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.AdditionalService;
 import isa.FishingBookingApp.model.AvailableAppointment;
+import isa.FishingBookingApp.model.Reservation;
+
 import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.repository.AdditionalServiceRepository;
 import isa.FishingBookingApp.repository.AvailableAppointmentRepository;
 import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
+import isa.FishingBookingApp.repository.ReservationRepository;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 
 @Service
 public class ReservationEntitiesServiceImpl implements ReservationEntitiesService {
     private ReservationEntitiesRepository reservationEntitiesRepository;
     private AdditionalServiceRepository additionalServiceRepository;
     private AvailableAppointmentRepository availableAppointmentRepository;
+    private ReservationRepository reservationRepository;
 
     @Autowired
-    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository, AvailableAppointmentRepository availableAppointmentRepository) {
+    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationRepository reservationRepository) {
         this.reservationEntitiesRepository = reservationEntitiesRepository;
         this.additionalServiceRepository = additionalServiceRepository;
         this.availableAppointmentRepository = availableAppointmentRepository;
+        this.reservationRepository = reservationRepository;
     }
 
     @Override
@@ -76,7 +78,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
         LocalDateTime newEnd = newAvailableAppointment.getToTime();
 
         List<AvailableAppointment> appointmentsOfEntity = availableAppointmentRepository.findByEntityId(id);
-        if (appointmentsOfEntity.size() == 0)   return false;
+        if (appointmentsOfEntity.size() == 0) return false;
 
         for (AvailableAppointment appointment : appointmentsOfEntity) {
             LocalDateTime appointmentStart = appointment.getFromTime();
@@ -100,6 +102,16 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
         sort(searchFilterSort, reservationEntities);
         List<ReservationEntities> usersRetVal = search(searchFilterSort, reservationEntities);
         return usersRetVal;
+    }
+
+    @Override
+    public Set<ReservationEntities> getPossibleReservationEntitiesForComplaint(String mailAddress) {
+        List<Reservation> reservations = reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
+        Set<ReservationEntities> retVal = new HashSet<>();
+        for (Reservation reservation : reservations) {
+            retVal.add(reservation.getReservationEntity());
+        }
+        return retVal;
     }
 
     private List<ReservationEntities> search(SearchFilterSort searchFilterSort, List<ReservationEntities> reservationEntities) {

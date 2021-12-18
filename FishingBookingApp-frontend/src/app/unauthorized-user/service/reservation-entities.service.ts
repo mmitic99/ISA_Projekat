@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { serverPortApi } from 'src/app/app.consts';
 import { SearchFilterSortModel } from '../home/searchFilterSortModel';
+import { Complaint } from 'src/app/regular-user/complaint/Complaint';
 
 @Injectable({
   providedIn: 'root'
@@ -68,5 +69,22 @@ export class ReservationEntitiesService {
 
     return this.http.get<any>(serverPortApi + "reservation/checkReservation", { params: params, headers: header })
   
+  }
+
+  getPossibleReservationEntitiesForComplaint() {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.get(serverPortApi + "reservationEntities/getPossibleReservationEntitiesForComplaint/" + localStorage.getItem('mailAddress'),  header);
+  }
+
+  sendComplain(complaint: Complaint) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    complaint.mailAddress = localStorage.getItem('mailAddress')
+    return this.http.post(serverPortApi + 'reservationEntities/addComplaint', complaint, header)
   }
 }
