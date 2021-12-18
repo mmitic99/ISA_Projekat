@@ -1,0 +1,229 @@
+<div class="columns">
+    <div class="column is-one-fifth">
+        <section class="hero is-medium">
+            <div class="hero-body ">
+                <div class="container has-text-centered">
+                    <a class="button is-info is-light" routerLink="../../additionalServices/{{boat.id}}">Dodatne
+                        usluge</a>
+                    <hr />
+                    <a class="button is-info is-light" routerLink="../../entityReservations/{{boat.id}}">Uvid u
+                        rezervacije</a>
+                    <hr />
+                    <a class="button is-info is-light" (click)="freeAppointmentsForReservation()">Definisanje perioda
+                        dostupnosti</a>
+                    <hr />
+                    <a class="button is-info is-light" (click)="createNewAction()">Kreiranje akcija za
+                        brzu rezervaciju</a>
+                    <hr />
+                    <a class="button is-info is-light" (click)="createNewReservationForClient()">Kreirajte novu
+                        rezervaciju za klijenta</a>
+                    <hr />
+                    <a class="button is-danger is-light" (click)="deleteBoat()">Brisanje broda/čamca</a>
+                </div>
+            </div>
+        </section>
+    </div>
+    <div class="column ">
+        <section class="hero is-fullheight">
+            <div class="hero-body ">
+                <div class="container has-text-centered">
+                    <div class="column is-10 is-offset-2">
+                        <h2 class="title">Vaš brod/čamac
+                            {{boat.name}}</h2>
+                        <div class="box">
+
+                            <div class="has-text-centered" *ngIf="imageObject.length > 0">
+                                <ng-image-slider [images]="imageObject" [imageSize]="{width: 200, height: 200}" #nav>
+                                </ng-image-slider>
+                            </div>
+
+                            <label class="label">Izaberite sliku za postavljanje</label>
+                            <nav class="level box">
+                                <div class="control">
+                                    <input type="file" name="picture" accept=".jpg, .jpeg, .png"
+                                        (change)="uploadImage($event)">
+                                </div>
+                            </nav>
+
+                            <br />
+
+                            <form>
+                                <div class="field">
+                                    <label class="label">Naziv</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Naziv" name="name"
+                                            [(ngModel)]="boat.name">
+                                    </div>
+                                </div>
+
+                                <!-- POSEDUJE SAMO BROD -->
+                                <div class="field">
+                                    <label class="label">Tip</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Tip" name="boatType"
+                                            [(ngModel)]="boat.boatType">
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Dužina (m)</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Dužina"
+                                            (focusout)="onFocusOutBoatLength()" name="boatLength"
+                                            [(ngModel)]="boat.boatLength">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isBoatLengthValid == false">Dužina broda/čamca
+                                        mora biti broj.</p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Kapacitet ljudi</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Kapacitet" name="capacity"
+                                            (focusout)="onFocusOutCapacity()" [(ngModel)]="boat.capacity">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isCapacityValid == false">Kapacitet mora biti
+                                        cifra.
+                                    </p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Broj motora</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Broj motora"
+                                            (focusout)="onFocusOutNumberOfEngines()" name="numberOfEngines"
+                                            [(ngModel)]="boat.numberOfEngines">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isNumberOfEnginesValid == false">Broj broda/čamca
+                                        mora
+                                        biti broj.</p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Snaga motora (kW)</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Snaga motora"
+                                            (focusout)="onFocusOutEnginePower()" name="enginePower"
+                                            [(ngModel)]="boat.enginePower">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isEnginePowerValid == false">Snaga motora mora
+                                        biti broj.</p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Maksimalna brzina (km/h)</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Maksimalna brzina"
+                                            (focusout)="onFocusOutMaxSpeed()" name="maxSpeed"
+                                            [(ngModel)]="boat.maxSpeed">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isMaxSpeedValid == false">Maksimalna brzina
+                                        broda/čamca mora biti broj.</p>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Navigaciona oprema</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Navigaciona oprema"
+                                            name="navigationEquipment"
+                                            [(ngModel)]="boat.navigationEquipment"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Oprema za pecanje</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Oprema za pecanje"
+                                            name="fishingEquipment" [(ngModel)]="boat.fishingEquipment"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Uslovi otkazivanja rezervacije</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Uslovi otkazivanja rezervacije"
+                                            name="cancellationConditions" [(ngModel)]="boat.cancellationConditions"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Cena po danu (din)</label>
+                                    <div class="control">
+                                        <input class="input" type="number" placeholder="Cena po danu" name="price"
+                                            (focusout)="onFocusOutPrice()" [(ngModel)]="boat.price">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isPriceValid == false">Cena mora biti cifra.</p>
+                                </div>
+                                <!-- ------------------ -->
+
+                                <div class="field">
+                                    <label class="label">Promotivni opis</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Promotivni opis"
+                                            name="promotionalDescription"
+                                            [(ngModel)]="boat.promotionalDescription"></textarea>
+                                    </div>
+                                </div>
+
+                                <div class="field">
+                                    <label class="label">Pravila ponašanja</label>
+                                    <div class="control">
+                                        <textarea class="textarea" placeholder="Pravila ponašanja" name="rulesOfConduct"
+                                            [(ngModel)]="boat.rulesOfConduct"></textarea>
+                                    </div>
+                                </div>
+
+                                <hr />
+
+                                <div class="field">
+                                    <label class="label">Ulica</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Ulica" name="street"
+                                            [(ngModel)]="boat.street">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Broj</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Broj" name="number"
+                                            [(ngModel)]="boat.number">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Grad</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Grad" name="city"
+                                            [(ngModel)]="boat.city">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Poštanski broj</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="12345" name="postalCode"
+                                            (focusout)="onFocusOutPostalCode()" [(ngModel)]="boat.postalCode">
+                                    </div>
+                                    <p class="is-danger help" *ngIf="isPostalCodeValid == false">Poštanski broj mora
+                                        sadržati 5
+                                        cifara</p>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Država</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Država" name="country"
+                                            [(ngModel)]="boat.country">
+                                    </div>
+                                </div>
+
+                                <br>
+
+                                <button class="button is-block is-info is-large is-fullwidth"
+                                    (click)="updateBoat()">Izmeni
+                                    brod/čamac</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

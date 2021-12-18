@@ -61,10 +61,14 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		Address address2 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", "Srbija");
 		Address address3 = new Address(0, 0, "Periceva ulica", "bb", "Zlatibor", "24555", "Srbija");
 		Address address4 = new Address(0, 0, "Tornjoški put", "5а", "Senta", "11100", "Srbija");
+		Address addressOfBoat1 = new Address(0, 0, "Adresa reke", "bb", "Beograd", "88888", "Srbija");
+		Address addressOfBoat2 = new Address(0, 0, "Muo", "bb", "Kotor", "15151", "Crna gora");
 		addressRepository.save(address1);
 		addressRepository.save(address2);
 		addressRepository.save(address3);
 		addressRepository.save(address4);
+		addressRepository.save(addressOfBoat1);
+		addressRepository.save(addressOfBoat2);
 
 		// inicijalizacija korisnika (LOZINKA ZA SVE: 123)
 		RegularUser regularUser1 = new RegularUser("isaproject.tim27+1@gmail.com", "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu", "Pero", "Peric", "+3816011111", address1, regUserRole, true, false);
@@ -84,15 +88,25 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		reservationEntitiesRepository.save(cottage1);
 		reservationEntitiesRepository.save(cottage2);
 
+		// Inicijalizacija brodova tj camaca
+		Boat boat1 = new Boat("Sofija", addressOfBoat1, "Uzivajte u pecanju na sred mora sa profesionalnim lokalnim ribolovcem.", null, "Poštovati sva uputstva i pravila vodiča i ribolovca.", null, boatOwner1, "čamac za pecanje", 6, 1, 70, 80, "GPS, radar, VHF radio, fishFinder", "- Profesionalni štapovi i oprema za pecanje morskih riba", 5, "Besplatno otkazivanje.", 8000);
+		Boat boat2 = new Boat("Brzi Gonzales", addressOfBoat2, "Uzivajte u brzoj voznji po moru.", null, "Poštovati sva uputstva i pravila vodiča.", null, boatOwner1, "gliser", 6, 3, 100, 250, "GPS, radar", "", 4, "Prilikom otkazivanja rezervacije vlasnik zadržava 20%.", 10000);
+		reservationEntitiesRepository.save(boat1);
+		reservationEntitiesRepository.save(boat2);
+
 		// Inicijalizacija dodatnih usluga
 		AdditionalService additionalService1 = new AdditionalService(cottage1, "Djakuzi u dvoristu vikendice", "Pristup djakuziju u bilo koje doba dana. Uživajte u vreloj kupki na otvorenom.", 5000);
 		AdditionalService additionalService2 = new AdditionalService(cottage1, "Pun pansion (cena na dan)", "Doručak, ručak i večera...uvek sveža hrana koju priprema najbolji kuvar iz okoline", 3000);
 		AdditionalService additionalService3 = new AdditionalService(cottage1, "Vožnja kvadovima", "Sat vremena vožnje kvadovima po prelepoj prirodi.", 6000);
 		AdditionalService additionalService4 = new AdditionalService(cottage2, "Djakuzi u dvoristu vikendice", "Pristup djakuziju u bilo koje doba dana. Uživajte u vreloj kupki na otvorenom.", 7000);
+		AdditionalService additionalServiceForBoat1 = new AdditionalService(boat1, "Lov harpunom", "60 minuta lovljenja ribe harpunom (ronjenje sa specijalnom opremom za ronjenje i harpunom)", 15000);
+		AdditionalService additionalServiceForBoat2 = new AdditionalService(boat2, "Parajedrenje", "20 minuta parajedrenja (uz pomoć glisera Vas vučemo dok ste zakačeni na posebnu vrstu padobrana)", 6000);
 		additionalServiceRepository.save(additionalService1);
 		additionalServiceRepository.save(additionalService2);
 		additionalServiceRepository.save(additionalService3);
 		additionalServiceRepository.save(additionalService4);
+		additionalServiceRepository.save(additionalServiceForBoat1);
+		additionalServiceRepository.save(additionalServiceForBoat2);
 
 		// subscription
 		Subscription subscription1 = new Subscription(regularUser2, cottage1);
@@ -119,8 +133,14 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 		// Ucitavanje slika
 		String file1 ="src/main/resources/static/images/imgCottage1.jpg";
 		String file2 ="src/main/resources/static/images/imgCottage2.jpeg";
+		String boatfile1 ="src/main/resources/static/images/boat1.jpg";
+		String boatfile2 ="src/main/resources/static/images/boat2img1.jpg";
+		String boatfile3 ="src/main/resources/static/images/boat2img2.jpg";
 		byte[] img1 = null;
 		byte[] img2 = null;
+		byte[] boatImg1 = null;
+		byte[] boatImg2 = null;
+		byte[] boatImg3 = null;
 
 		try {
 			img1 = readImage(file1);
@@ -130,6 +150,18 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 			img2 = readImage(file2);
 			EntityImage entityImage2 = new EntityImage(cottage2, img2, "Vikendica2");
 			entityImageRepository.save(entityImage2);
+
+			boatImg1 = readImage(boatfile1);
+			EntityImage entityImage3 = new EntityImage(boat1, boatImg1, "Brod1");
+			entityImageRepository.save(entityImage3);
+
+			boatImg2 = readImage(boatfile2);
+			EntityImage entityImage4 = new EntityImage(boat2, boatImg2, "Brod2");
+			entityImageRepository.save(entityImage4);
+
+			boatImg3 = readImage(boatfile3);
+			EntityImage entityImage5 = new EntityImage(boat2, boatImg3, "Brod2");
+			entityImageRepository.save(entityImage5);
 		} catch (Exception e) {
 
 		}

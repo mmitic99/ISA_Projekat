@@ -2,6 +2,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { serverPortApi } from 'src/app/app.consts';
 import { AdditionalService } from '../additional-services/AdditionalService';
+import { Boat } from '../new-boat/Boat';
 import { Cottage } from '../new-entity/Cottage';
 import { ReservationEntity } from '../new-entity/ReservationEntity';
 
@@ -107,6 +108,30 @@ export class EntitiesService {
         .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
     }
     return this.http.get<any>(serverPortApi + "boat/" + localStorage.getItem("mailAddress") + "/allBoats", header)
+  }
+
+  createNewBoat(newBoat: Boat) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.post(serverPortApi + 'boat/create', newBoat, header);
+  }
+
+  updateBoat(boat : any) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.put<any>(serverPortApi + "boat/update", boat, header);
+  }
+
+  deleteBoat(id : string) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.delete<any>(serverPortApi + "boat/" + id, header)
   }
 
   ///////////////////////////////////////////////////////////

@@ -44,7 +44,7 @@ export class LoginComponent implements OnInit {
 
   private redirectUser() {
     // TODO: dopuniti navigaciju
-    if (localStorage.getItem('role') == "ROLE_cottageOwner"){
+    if (localStorage.getItem('role') == "ROLE_cottageOwner" || localStorage.getItem('role') == "ROLE_boatOwner"){
       this.router.navigate(['specialUser']);
     }
     else if (localStorage.getItem('role') == "TODO") {
