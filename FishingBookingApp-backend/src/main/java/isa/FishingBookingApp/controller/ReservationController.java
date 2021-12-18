@@ -29,7 +29,6 @@ public class ReservationController {
         this.reservationService = reservationService;
     }
 
-
     @GetMapping(value = "/checkReservation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> checkReservation(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @RequestParam String date, @RequestParam String time, @RequestParam int days, @RequestParam int guests) {
@@ -51,6 +50,16 @@ public class ReservationController {
             return new ResponseEntity<>(reservation, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/getAdditionalServices/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> checkReservation(@PathVariable Long id) {
+        try {
+            return new ResponseEntity<>(reservationEntitiesService.getAdditionalServices(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
 }

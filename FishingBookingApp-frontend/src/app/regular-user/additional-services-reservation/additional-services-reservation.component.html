@@ -1,1 +1,23 @@
+<div class="container">
+    <h1>Odaberite dodatne usluge:</h1>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Naziv dodatne usluge</th>
+                <th>Cena po danu[dinara]</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr *ngFor="let additionalService of additionalServices">
+                <td><input type="checkbox" class="checkbox" (click)="selectAdditionalService(additionalService.id)"></td>
+                <td>{{additionalService.name}}</td>
+                <td>{{additionalService.price}}</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>
+
+
 <a class="button" (click)="reserveEntity()"></a>

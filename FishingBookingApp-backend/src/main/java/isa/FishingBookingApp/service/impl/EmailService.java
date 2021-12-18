@@ -74,19 +74,19 @@ public class EmailService {
                 "Vaša rezervacija za " + type + " <strong>" + reservation.getReservationEntity().getName() +
                 "</strong> je uspešno prihvaćena." +
                 "<br><br> Detalji rezervacije: <br>" +
-                "<table border=\"1\">" +
-                "<tr><td>Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName() + "</td></tr>" +
-                "<tr><td>Adresa</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getAddress() + "</td></tr>" +
-                "<tr><td>Ukupno dana</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 + "</td></tr>" +
-                "<tr><td>Cena po danu</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 * reservation.getReservationEntity().getPrice() + "</td></tr>" +
+                "<table border=\"1\" style=\"width: 100%\">" +
+                "<tr><td style=\"width: 20%\">Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName() + "</td></tr>" +
+                "<tr><td style=\"width: 20%\">Adresa</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getAddress() + "</td></tr>" +
+                "<tr><td style=\"width: 20%\">Ukupno dana</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 + "</td></tr>" +
+                "<tr><td style=\"width: 20%\">Cena po danu</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 * reservation.getReservationEntity().getPrice() + "</td></tr>" +
                 "</table><br>";
 
-        if(reservation.getAdditionalServices() !=null && reservation.getAdditionalServices().size() != 0) {
-            text += "Dodatne usluge:<br><table border=\"1\">" +
+        if(additionalServices !=null && additionalServices.size() != 0) {
+            text += "Dodatne usluge:<br><table border=\"1\" style=\"width: 100%\">" +
                     "<tr><th>Naziv</th><th>Cena po danu</th></tr>";
             for (AdditionalService additionalService :
-                    reservation.getAdditionalServices()) {
-                text += "<tr><td style=\"width: 100%\">" + additionalService.getName() + "</td><td style=\"width: 200px\">" + additionalService.getPrice() + "</td></tr>";
+                    additionalServices) {
+                text += "<tr><td style=\"width: 80%\">" + additionalService.getName() + "</td><td style=\"width: 20%\">" + additionalService.getPrice() + "</td></tr>";
 
             }
             text += "</table>";
