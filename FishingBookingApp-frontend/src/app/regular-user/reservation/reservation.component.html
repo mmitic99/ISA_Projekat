@@ -51,49 +51,20 @@
             </tr>
         </thead>
 
-        <!--dummy data-->
-        <tfoot>
-            <tr>
-                <td>Brod/Čamac</td>
-                <td>Mesec</td>
-                <td>885-3976 Eu Av.</td>
-                <td>12.01.2021</td>
-                <td>8</td>
-                <td>88 658</td>
+        <h1 *ngIf="reservations==null || reservations.length == 0">Za izabrane kriterijume ne postoje rezervacije</h1>
+        <tbody>
+            <tr *ngFor="let reservation of reservations">
+                <td *ngIf="reservation.reservationEntity.type == 'cottage'">Vikendica</td>
+                <td *ngIf="reservation.reservationEntity.type == 'boat'">Brod</td>
+                <td *ngIf="reservation.reservationEntity.type == 'fishingInstructor'">Instruktor pecanja</td>
+                <td>{{reservation.reservationEntity.name}}</td>
+                <td>{{reservation.reservationEntity.address.street}} {{reservation.reservationEntity.address.number}},
+                    {{reservation.reservationEntity.address.city}}, {{reservation.reservationEntity.address.country}}</td>
+                <td>{{reservation.start | date:"dd.MM.yyyy, HH:mm"}}</td>
+                <td>{{reservation.durationInHours/24}}</td>
+                <td>{{reservation.price}}</td>
             </tr>
-            <tr>
-                <td>Instruktor pecanja</td>
-                <td>Fishing</td>
-                <td>Ap #599-5983 Donec St.</td>
-                <td>17.05.2021</td>
-                <td>3</td>
-                <td>37 727</td>
-            </tr>
-            <tr>
-                <td>Instruktor pecanja</td>
-                <td>Fishing</td>
-                <td>Ap #212-1151 Erat Rd.</td>
-                <td>25.10.2021</td>
-                <td>9</td>
-                <td>57 008</td>
-            </tr>
-            <tr>
-                <td>Vikendica</td>
-                <td>Mesec</td>
-                <td>P.O. Box 223, 9909 Per Rd.</td>
-                <td>26.09.2020</td>
-                <td>4</td>
-                <td>49 372</td>
-            </tr>
-            <tr>
-                <td>Vikendica</td>
-                <td>Mesec</td>
-                <td>Ap #123-4889 Dapibus Avenue</td>
-                <td>24.06.2021</td>
-                <td>2</td>
-                <td>1 902</td>
-            </tr>
-        </tfoot>
+        </tbody>
     </table>
 
 

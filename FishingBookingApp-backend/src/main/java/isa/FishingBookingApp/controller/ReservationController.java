@@ -96,6 +96,18 @@ public class ReservationController {
         }
     }
 
+    @GetMapping(value = "/getAllOldReservation/{mailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<Object> getAllOldReservation(@PathVariable String mailAddress, HttpServletRequest request) {
+        try {
+            if(!authorizedUser(mailAddress, request)){
+                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            }
+            return new ResponseEntity<>(reservationService.getAllOldReservation(mailAddress), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
     private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String username = tokenUtils.getUsernameFromToken(token.substring(7));

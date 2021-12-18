@@ -70,8 +70,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getCurrentReservationForUser(String mailAddress) {
-        List<Reservation> retVal = reservationRepository.findReservationByUserMailAddressAndStartGreaterThanEqualAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
-        return retVal;
+        return reservationRepository.findReservationByUserMailAddressAndStartGreaterThanEqualAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
     }
 
     @Override
@@ -90,7 +89,12 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
+    @Override
+    public List<Reservation> getAllOldReservation(String mailAddress) {
+        return reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
+    }
+
+        private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
         reservation.setPrice(reservation.getReservationEntity().getPrice() * reservation.getDurationInHours()/24);
         for (AdditionalService additionalService : additionalServices) {
             reservation.setPrice(reservation.getPrice() + additionalService.getPrice()*reservation.getDurationInHours()/24);

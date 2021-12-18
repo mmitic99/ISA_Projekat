@@ -15,4 +15,6 @@ public interface ReservationService {
     List<Reservation> getCurrentReservationForUser(String mailAddress);
 
     Reservation cancelReservation(Long id) throws Exception;
+
+    List<Reservation> getAllOldReservation(String mailAddress);
 }
