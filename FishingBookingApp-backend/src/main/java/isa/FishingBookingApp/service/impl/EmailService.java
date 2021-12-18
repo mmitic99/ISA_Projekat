@@ -78,7 +78,7 @@ public class EmailService {
                 "<tr><td style=\"width: 20%\">Naziv</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getName() + "</td></tr>" +
                 "<tr><td style=\"width: 20%\">Adresa</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getAddress() + "</td></tr>" +
                 "<tr><td style=\"width: 20%\">Ukupno dana</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 + "</td></tr>" +
-                "<tr><td style=\"width: 20%\">Cena po danu</td><td style=\"width: 100%\">" + reservation.getDurationInHours() / 24 * reservation.getReservationEntity().getPrice() + "</td></tr>" +
+                "<tr><td style=\"width: 20%\">Cena po danu</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getPrice() + "</td></tr>" +
                 "</table><br>";
 
         if(additionalServices !=null && additionalServices.size() != 0) {
