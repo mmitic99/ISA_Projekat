@@ -68,6 +68,28 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
+    @Override
+    public List<Reservation> getCurrentReservationForUser(String mailAddress) {
+        List<Reservation> retVal = reservationRepository.findReservationByUserMailAddressAndStartGreaterThanEqualAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
+        return retVal;
+    }
+
+    @Override
+    public Reservation cancelReservation(Long id) throws Exception {
+        Reservation reservation = reservationRepository.findReservationById(id);
+        LocalDateTime dateTime = LocalDateTime.now().plusDays(3);
+        if(reservation == null){
+            throw new Exception("Nepostojeca rezervacija");
+        }
+        else if(reservation.getStart().isAfter(dateTime)){
+            throw new Exception("Rezervaciju je moguće otkazati 3 dana ranije");
+        }
+        else{
+            reservation.setDeleted(true);
+            return reservationRepository.save(reservation);
+        }
+    }
+
     private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
         reservation.setPrice(reservation.getReservationEntity().getPrice() * reservation.getDurationInHours()/24);
         for (AdditionalService additionalService : additionalServices) {
@@ -114,7 +136,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     private boolean DateTimeNotInReservations(ReservationEntities reservationEntity, SearchFilterSort searchFilterSort) {
-        List<Reservation> reservations = reservationRepository.findByReservationEntityId(reservationEntity.getId());
+        List<Reservation> reservations = reservationRepository.findByReservationEntityIdAndDeletedEquals(reservationEntity.getId(), false);
 
         LocalDateTime start = searchFilterSort.getDateTime();
         LocalDateTime end = start.plusDays(searchFilterSort.getDays());

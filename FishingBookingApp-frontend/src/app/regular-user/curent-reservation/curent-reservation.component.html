@@ -45,61 +45,28 @@
                 <th>Vrsta</th>
                 <th>Naziv</th>
                 <th>Adresa</th>
-                <th>Datum</th>
+                <th>Datum početka</th>
                 <th>Trajanje[u danima]</th>
                 <th>Cena[dinara]</th>
                 <th></th>
             </tr>
         </thead>
 
-        <!--dummy data-->
-        <tfoot>
-            <tr>
-                <td>Vikendica</td>
-                <td>Mesec</td>
-                <td>Ap #119-5266 Luctus Rd.</td>
-                <td>29.12.2021</td>
-                <td>9</td>
-                <td>12 158</td>
-                <td><button class="button is-danger">Otkaži</button></td>
+        <h1 *ngIf="curentReservations==null || curentReservations.length == 0">Za izabrane kriterijume ne postoje rezervacije</h1>
+        <tbody>
+            <tr *ngFor="let reservation of curentReservations">
+                <td *ngIf="reservation.reservationEntity.type == 'cottage'">Vikendica</td>
+                <td *ngIf="reservation.reservationEntity.type == 'boat'">Brod</td>
+                <td *ngIf="reservation.reservationEntity.type == 'fishingInstructor'">Instruktor pecanja</td>
+                <td>{{reservation.reservationEntity.name}}</td>
+                <td>{{reservation.reservationEntity.address.street}} {{reservation.reservationEntity.address.number}},
+                    {{reservation.reservationEntity.address.city}}, {{reservation.reservationEntity.address.country}}</td>
+                <td>{{reservation.start | date:"dd.MM.yyyy, HH:mm"}}</td>
+                <td>{{reservation.durationInHours/24}}</td>
+                <td>{{reservation.price}}</td>
+                <td><button class="button is-danger" *ngIf="isPossibleToCancel(reservation.start)" (click)="cancelReservation(reservation.id)">Otkaži</button></td>
             </tr>
-            <tr>
-                <td>Brod/Čamac</td>
-                <td>Fishing</td>
-                <td>P.O. Box 137, 5310 Orci Av.</td>
-                <td>19.12.2021</td>
-                <td>6</td>
-                <td>73 387</td>
-                <td><button class="button is-danger">Otkaži</button></td>
-            </tr>
-            <tr>
-                <td>Vikendica</td>
-                <td>Sunce</td>
-                <td>9625 Turpis. Avenue</td>
-                <td>11.12.2021</td>
-                <td>3</td>
-                <td>14 503</td>
-                <td></td>
-            </tr>
-            <tr>
-                <td>Instruktor pecanja</td>
-                <td>Sunce</td>
-                <td>644 Malesuada Road</td>
-                <td>23.12.2021</td>
-                <td>4</td>
-                <td>13 275</td>
-                <td><button class="button is-danger">Otkaži</button></td>
-            </tr>
-            <tr>
-                <td>Vikendica</td>
-                <td>Mesec</td>
-                <td>Ap #448-8196 Diam Street</td>
-                <td>10.12.2021</td>
-                <td>3</td>
-                <td>35 085</td>
-                <td></td>
-            </tr>
-        </tfoot>
+        </tbody>
     </table>
 
 
