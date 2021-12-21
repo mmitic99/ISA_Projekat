@@ -70,12 +70,11 @@ public class ReviewServiceImpl implements ReviewService {
         return retVal;
     }
 
-    private MarksDTO averageMarks(ReservationEntities reservationEntities) {
-
-        /*for (Review review :
-                reviewRepository.findReviewByReservationReservationEntitiesId(reservationEntities.getId())) {
-            
-        }*/
-        return null;
+    @Override
+    public Double getAvgMarksForEntity(Long id) {
+        if(reviewRepository.getAverageMarksByReservationEntitiesId(id) == null){
+            return 0.0;
+        }
+        return reviewRepository.getAverageMarksByReservationEntitiesId(id);
     }
 }

@@ -13,6 +13,7 @@ import isa.FishingBookingApp.repository.AvailableAppointmentRepository;
 import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
 import isa.FishingBookingApp.repository.ReservationRepository;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
+import isa.FishingBookingApp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,13 +26,15 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
     private AdditionalServiceRepository additionalServiceRepository;
     private AvailableAppointmentRepository availableAppointmentRepository;
     private ReservationRepository reservationRepository;
+    private ReviewService reviewService;
 
     @Autowired
-    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationRepository reservationRepository) {
+    public ReservationEntitiesServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, AdditionalServiceRepository additionalServiceRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationRepository reservationRepository, ReviewService reviewService) {
         this.reservationEntitiesRepository = reservationEntitiesRepository;
         this.additionalServiceRepository = additionalServiceRepository;
         this.availableAppointmentRepository = availableAppointmentRepository;
         this.reservationRepository = reservationRepository;
+        this.reviewService = reviewService;
     }
 
     @Override
@@ -164,8 +167,12 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
                         .compareToIgnoreCase(re1.getAddress().getCity()));
                 break;
             case "ra":
+                Collections.sort(reservationEntities, (re1, re2) -> Double.compare(reviewService.getAvgMarksForEntity(re1.getId())
+                        , (reviewService.getAvgMarksForEntity(re2.getId()))));
                 break;
             case "rd":
+                Collections.sort(reservationEntities, (re1, re2) -> Double.compare(reviewService.getAvgMarksForEntity(re2.getId())
+                        , (reviewService.getAvgMarksForEntity(re1.getId()))));
                 break;
 
             default:
