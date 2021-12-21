@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 @Service
@@ -77,13 +78,11 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation cancelReservation(Long id) throws Exception {
         Reservation reservation = reservationRepository.findReservationById(id);
         LocalDateTime dateTime = LocalDateTime.now().plusDays(3);
-        if(reservation == null){
+        if (reservation == null) {
             throw new Exception("Nepostojeca rezervacija");
-        }
-        else if(!dateTime.isBefore(reservation.getStart())){
+        } else if (!dateTime.isBefore(reservation.getStart())) {
             throw new Exception("Rezervaciju je moguće otkazati 3 dana ranije");
-        }
-        else{
+        } else {
             reservation.setDeleted(true);
             return reservationRepository.save(reservation);
         }
@@ -91,13 +90,65 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getAllOldReservation(String mailAddress) {
-        return reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
+        List<Reservation> retval = reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
+        return retval;
     }
 
-        private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
-        reservation.setPrice(reservation.getReservationEntity().getPrice() * reservation.getDurationInHours()/24);
+    @Override
+    public List<Reservation> searchFilterSort(SearchFilterSort searchFilterSort) {
+        List<Reservation> reservations;
+        if (searchFilterSort.getTypes().size() != 0) {
+            reservations = filter(searchFilterSort);
+        } else {
+            reservations = getAllOldReservation(searchFilterSort.getMailAddress());
+        }
+        sort(searchFilterSort, reservations);
+        return reservations;
+    }
+
+    private void sort(SearchFilterSort searchFilterSort, List<Reservation> reservations) {
+        switch (searchFilterSort.getSort()) {
+            case "da":
+                Collections.sort(reservations, (re1, re2) -> re1.getStart().compareTo(re2.getStart()));
+                break;
+            case "dd":
+                Collections.sort(reservations, (re1, re2) -> re2.getStart().compareTo(re1.getStart()));
+                break;
+            case "pa":
+                Collections.sort(reservations, (re1, re2) -> Double.compare(re1.getPrice(), re2.getPrice()));
+                break;
+            case "pd":
+                Collections.sort(reservations, (re1, re2) -> Double.compare(re2.getPrice(), re1.getPrice()));
+                break;
+            case "dua":
+                Collections.sort(reservations, (re1, re2) -> Double.compare(re1.getDurationInHours(), re2.getDurationInHours()));
+                break;
+            case "dud":
+                Collections.sort(reservations, (re1, re2) -> Double.compare(re2.getDurationInHours(), re1.getDurationInHours()));
+                break;
+
+            default:
+                break;
+        }
+    }
+
+    private List<Reservation> filter(SearchFilterSort searchFilterSort) {
+        List<Reservation> retVal = new ArrayList<>();
+        for (Reservation reservation : getAllOldReservation(searchFilterSort.getMailAddress())) {
+
+            if (searchFilterSort.getTypes().size() == 0) {
+                retVal.add(reservation);
+            } else if (searchFilterSort.getTypes().contains(reservation.getReservationEntity().getType())) {
+                retVal.add(reservation);
+            }
+        }
+        return retVal;
+    }
+
+    private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
+        reservation.setPrice(reservation.getReservationEntity().getPrice() * reservation.getDurationInHours() / 24);
         for (AdditionalService additionalService : additionalServices) {
-            reservation.setPrice(reservation.getPrice() + additionalService.getPrice()*reservation.getDurationInHours()/24);
+            reservation.setPrice(reservation.getPrice() + additionalService.getPrice() * reservation.getDurationInHours() / 24);
         }
     }
 
@@ -105,11 +156,10 @@ public class ReservationServiceImpl implements ReservationService {
         List<AdditionalService> retVal = new ArrayList<>();
         for (Long id : reservationDTO.getAdditionalServicesId()) {
             AdditionalService additionalService = additionalServiceRepository.findAdditionalServiceById(id);
-            if(additionalService != null){
+            if (additionalService != null) {
                 additionalServiceReservationRepository.save(new AdditionalServiceReservation(additionalService, reservation));
                 retVal.add(additionalService);
-            }
-            else{
+            } else {
                 throw new Exception("Dodatni servis nije poznat");
             }
         }

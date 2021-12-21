@@ -156,7 +156,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
                 Collections.sort(reservationEntities, (re1, re2) -> re1.getName().compareToIgnoreCase(re2.getName()));
                 break;
             case "nd":
-                Collections.sort(reservationEntities, (re1, u2) -> u2.getName().compareToIgnoreCase(re1.getName()));
+                Collections.sort(reservationEntities, (re1, re2) -> re2.getName().compareToIgnoreCase(re1.getName()));
                 break;
             case "la":
                 Collections.sort(reservationEntities, (re1, re2) -> re1.getAddress().getCity()

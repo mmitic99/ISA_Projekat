@@ -33,6 +33,13 @@ public class ReservationController {
         this.tokenUtils = tokenUtils;
     }
 
+    @GetMapping(value = "/searchFilterSort/{mailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @PreAuthorize("hasRole('USER')")
+    public List<Reservation> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @PathVariable String mailAddress) {
+        SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, mailAddress);
+        return reservationService.searchFilterSort(searchFilterSort);
+    }
+
     @GetMapping(value = "/checkReservation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> checkReservation(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @RequestParam String date, @RequestParam String time, @RequestParam int days, @RequestParam int guests) {
