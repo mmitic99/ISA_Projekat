@@ -29,8 +29,8 @@ public class ReviewController {
     @PostMapping(value = "createReview")
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> createReview(@RequestBody ReviewDTO reviewDTO, HttpServletRequest request){
-        if(!isUserAuthorized(reviewDTO.getMailAddress(), request)){
-            return new ResponseEntity<>("Email adrese se ne podudaraju", HttpStatus.BAD_REQUEST);
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(reviewDTO.getMailAddress(), request)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         try {
             return new ResponseEntity<>(reviewService.createReview(reviewDTO), HttpStatus.OK);
@@ -43,8 +43,8 @@ public class ReviewController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> getReservationIdInReviewForMailAddress(@PathVariable String mailAddress, HttpServletRequest request) {
         try {
-            if (!isUserAuthorized(mailAddress, request)) {
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(reviewService.getReservationIdInReviewForMailAddress(mailAddress), HttpStatus.OK);
         } catch (Exception e) {
@@ -52,9 +52,4 @@ public class ReviewController {
         }
     }
 
-    private boolean isUserAuthorized(String mailAddress, HttpServletRequest request) {
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String username = tokenUtils.getUsernameFromToken(token.substring(7));
-        return username.equals(mailAddress);
-    }
 }

@@ -69,6 +69,7 @@ public class TokenUtils {
 
     /**
      * Funkcija za utvrđivanje tipa uređaja za koji se JWT kreira.
+     *
      * @return Tip uređaja.
      */
     private String generateAudience() {
@@ -122,6 +123,7 @@ public class TokenUtils {
 
     /**
      * Funkcija za preuzimanje vlasnika tokena (korisničko ime).
+     *
      * @param token JWT token.
      * @return Korisničko ime iz tokena ili null ukoliko ne postoji.
      */
@@ -142,6 +144,7 @@ public class TokenUtils {
 
     /**
      * Funkcija za preuzimanje datuma kreiranja tokena.
+     *
      * @param token JWT token.
      * @return Datum kada je token kreiran.
      */
@@ -228,24 +231,38 @@ public class TokenUtils {
     /**
      * Funkcija za validaciju JWT tokena.
      *
-     * @param token JWT token.
+     * @param token       JWT token.
      * @param userDetails Informacije o korisniku koji je vlasnik JWT tokena.
      * @return Informacija da li je token validan ili ne.
      */
-    public Boolean validateToken(String token, UserDetails userDetails) {
+    public Boolean isUserAuthorized(String token, UserDetails userDetails) {
         User user = (User) userDetails;
         final String username = getUsernameFromToken(token);
         final Date created = getIssuedAtDateFromToken(token);
+        final Date expired = getExpirationDateFromToken(token);
 
         // Token je validan kada:
         return (username != null // korisnicko ime nije null
                 && username.equals(userDetails.getUsername())); // korisnicko ime iz tokena se podudara sa korisnickom imenom koje pise u bazi
     }
 
+    public Boolean isUserAuthorizedAndTokenNotExpired(String username, HttpServletRequest request) {
+        String token = getAuthHeaderFromHeader(request).substring(7);
+        final String usernameFromToken = getUsernameFromToken(token);
+        final Date expired = getExpirationDateFromToken(token);
+        final Date asd = getIssuedAtDateFromToken(token);
+        Date date = new Date();
+        // Token je validan kada:
+        return (username != null // korisnicko ime nije null
+                && username.equals(usernameFromToken) // korisnicko ime iz tokena se podudara sa korisnickom imenom koje pise u bazi
+                && date.before(expired));
+    }
+
+
     /**
      * Funkcija proverava da li je lozinka korisnika izmenjena nakon izdavanja tokena.
      *
-     * @param created Datum kreiranja tokena.
+     * @param created           Datum kreiranja tokena.
      * @param lastPasswordReset Datum poslednje izmene lozinke.
      * @return Informacija da li je token kreiran pre poslednje izmene lozinke ili ne.
      */
@@ -268,7 +285,6 @@ public class TokenUtils {
      * Funkcija za preuzimanje sadržaja AUTH_HEADER-a iz zahteva.
      *
      * @param request HTTP zahtev.
-     *
      * @return Sadrzaj iz AUTH_HEADER-a.
      */
     public String getAuthHeaderFromHeader(HttpServletRequest request) {

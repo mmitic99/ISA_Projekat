@@ -49,8 +49,8 @@ public class ReservationController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> reserve(@RequestBody ReservationDTO reservationDTO, HttpServletRequest request) {
         try {
-            if(!authorizedUser(reservationDTO.getMailAddress(), request)){
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(reservationDTO.getMailAddress(), request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             reservationDTO.setDateTimeFromStrings();
             Reservation reservation = reservationService.reserveEntity(reservationDTO);
@@ -74,8 +74,8 @@ public class ReservationController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> getCurrentReservation(@PathVariable String mailAddress, HttpServletRequest request) {
         try {
-            if(!authorizedUser(mailAddress, request)){
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(reservationService.getCurrentReservationForUser(mailAddress), HttpStatus.OK);
         } catch (Exception e) {
@@ -87,8 +87,8 @@ public class ReservationController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> getCurrentReservation(@RequestBody CancelReservationDTO cancelReservationDTO, HttpServletRequest request) {
         try {
-            if(!authorizedUser(cancelReservationDTO.getMailAddress(), request)){
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(cancelReservationDTO.getMailAddress(), request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(reservationService.cancelReservation(cancelReservationDTO.getReservationId()), HttpStatus.OK);
         } catch (Exception e) {
@@ -100,8 +100,8 @@ public class ReservationController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> getAllOldReservation(@PathVariable String mailAddress, HttpServletRequest request) {
         try {
-            if(!authorizedUser(mailAddress, request)){
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(reservationService.getAllOldReservation(mailAddress), HttpStatus.OK);
         } catch (Exception e) {
@@ -109,9 +109,4 @@ public class ReservationController {
         }
     }
 
-    private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String username = tokenUtils.getUsernameFromToken(token.substring(7));
-        return username.equals(ownerUsername);
-    }
 }

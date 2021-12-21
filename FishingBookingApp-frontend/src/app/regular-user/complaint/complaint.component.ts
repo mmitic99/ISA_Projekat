@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/unauthorized-user/service/auth.service';
 import { ReservationEntitiesService } from 'src/app/unauthorized-user/service/reservation-entities.service';
 import { RequestForDeleting } from '../request-for-deleting-account/RequestForDeleting';
 import { ReservationService } from '../service/reservation.service';
@@ -32,6 +33,9 @@ export class ComplaintComponent implements OnInit {
       },
       (error) => {
         this.possibleEntitiesForComplaint = []
+        if(error.status == 401){
+          AuthService.logout()
+        }
       }
     )
   }
@@ -59,6 +63,9 @@ export class ComplaintComponent implements OnInit {
         },
         (error) => {
           this.toastr.error(error.error)
+          if(error.status == 401){
+            AuthService.logout()
+          }
         }
       )
     }

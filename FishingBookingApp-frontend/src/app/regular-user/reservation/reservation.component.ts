@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
 import { SearchFilterSortModel } from 'src/app/unauthorized-user/home/searchFilterSortModel';
+import { AuthService } from 'src/app/unauthorized-user/service/auth.service';
 import { ReservationService } from '../service/reservation.service';
 import { ReviewService } from '../service/review.service';
 import { Review } from './Review';
@@ -32,7 +33,10 @@ export class ReservationComponent implements OnInit {
       (data) => {
         this.reservationIdsInReviews = data
       },
-      (error) => { this.reservationIdsInReviews = [] })
+      (error) => { this.reservationIdsInReviews = []
+        if(error.status == 401){
+          AuthService.logout()
+        } })
   }
 
   getAllOldReservation() {
@@ -45,7 +49,11 @@ export class ReservationComponent implements OnInit {
           this.setModals()
         }
       },
-      (error) => { this.reservations = [] })
+      (error) => { this.reservations = []
+        if(error.status == 401){
+          AuthService.logout()
+        }
+      })
   }
   setModals() {
     for (let reservation of this.reservations) {
@@ -73,6 +81,9 @@ export class ReservationComponent implements OnInit {
         },
         (error) => {
           this.toastr.error("Desila se greška prilikom slanja ocene")
+          if(error.status == 401){
+            AuthService.logout()
+          }
         }
       )
     }

@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ToastrService } from 'ngx-toastr';
+import { AuthService } from 'src/app/unauthorized-user/service/auth.service';
 import { UserService } from '../service/user.service';
 import { RequestForDeleting } from './RequestForDeleting';
 
@@ -30,6 +31,9 @@ export class RequestForDeletingAccountComponent implements OnInit {
     },
     (error)=>{
       this.toastr.success(error)
+      if(error.status == 401){
+        AuthService.logout()
+      }
     });
   }
 
