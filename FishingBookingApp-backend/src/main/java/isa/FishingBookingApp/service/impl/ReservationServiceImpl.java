@@ -80,7 +80,7 @@ public class ReservationServiceImpl implements ReservationService {
         if(reservation == null){
             throw new Exception("Nepostojeca rezervacija");
         }
-        else if(reservation.getStart().isAfter(dateTime)){
+        else if(!dateTime.isBefore(reservation.getStart())){
             throw new Exception("Rezervaciju je moguće otkazati 3 dana ranije");
         }
         else{
