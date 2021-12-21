@@ -137,7 +137,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         availableAppointmentRepository.save(appointment3);
 
         // rezervacije
-        Reservation reservation1 = new Reservation(regularUser2, cottage1, LocalDateTime.now().plusDays(3), 24, 1, 1000);
+        Reservation reservation1 = new Reservation(regularUser2, cottage1, LocalDateTime.now().minusDays(5), 24, 1, 1000);
         reservationRepository.save(reservation1);
 
         // ocene
