@@ -87,4 +87,8 @@ export class ReservationEntitiesService {
     complaint.mailAddress = localStorage.getItem('mailAddress')
     return this.http.post(serverPortApi + 'reservationEntities/addComplaint', complaint, header)
   }
+
+  getMarks() {
+    return this.http.get(serverPortApi + "reservationEntities/getMarksForReservationEntities")
+  }
 }

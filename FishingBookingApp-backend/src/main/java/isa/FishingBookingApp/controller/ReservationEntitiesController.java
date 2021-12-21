@@ -27,18 +27,21 @@ public class ReservationEntitiesController {
     private TokenUtils tokenUtils;
     private BoatService boatService;
     private ComplaintService complaintService;
+    private ReviewService reviewService;
 
     @Autowired
-    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, BoatService boatService, TokenUtils tokenUtils, ReservationService reservationService, ComplaintService complaintService) {
+    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, ReservationService reservationService, TokenUtils tokenUtils, BoatService boatService, ComplaintService complaintService, ReviewService reviewService) {
         this.reservationEntitiesService = reservationEntitiesService;
         this.entityImageService = entityImageService;
         this.cottageService = cottageService;
-        this.boatService = boatService;
-        this.tokenUtils = tokenUtils;
         this.reservationService = reservationService;
-        ;
+        this.tokenUtils = tokenUtils;
+        this.boatService = boatService;
         this.complaintService = complaintService;
+        this.reviewService = reviewService;
     }
+
+
 
     @GetMapping(value = "/getAll", produces = MediaType.APPLICATION_JSON_VALUE)
     public List<ReservationEntities> getAll() {
@@ -194,4 +197,12 @@ public class ReservationEntitiesController {
         return userMailAddress;
     }
 
+    @GetMapping(value = "/getMarksForReservationEntities", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getMarksForReservationEntities(HttpServletRequest request) {
+        try {
+            return new ResponseEntity<>(reviewService.getMarksForReservationEntities(), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }
