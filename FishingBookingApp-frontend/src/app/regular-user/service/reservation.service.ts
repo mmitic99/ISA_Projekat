@@ -72,7 +72,8 @@ export class ReservationService {
     if(localStorage.getItem("mailAddress") != null){
       mail = localStorage.getItem("mailAddress");
     }
-    params = params.append('mailAddress', mail);
+    
+    params = params.append('isOldReservation', searchFilterSortModel.isOldReservation);
 
     return this.http.get<any>(serverPortApi + "reservation/searchFilterSort/" + localStorage.getItem('mailAddress'), { params: params, headers: header })
   }
