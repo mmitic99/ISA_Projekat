@@ -35,7 +35,6 @@ export class CurentReservationComponent implements OnInit {
   isPossibleToCancel(start: Date){
     let nowDate = new Date()
     nowDate.setDate(nowDate.getDate() + 3)
-    return true
     return nowDate <= start
   }
 
