@@ -1,12 +1,12 @@
 <h1 class="title has-text-centered">Trenutne rezervacije</h1>
 <div class="container">
     <br>
-    <nav class="panel">
+    <nav class="panel p-3">
         <p>Vrsta: </p>
 
         <div>
             <label class="checkbox ml-6">
-                <input type="checkbox">
+                <input type="checkbox" (click)="selectType('cottage')">
                 Vikendice
             </label>
         </div>
@@ -14,20 +14,20 @@
 
         <div>
             <label class="checkbox ml-6">
-                <input type="checkbox">
+                <input type="checkbox" (click)="selectType('boat')">
                 Brodovi / čamci
             </label>
         </div>
 
         <div>
             <label class="checkbox ml-6">
-                <input type="checkbox">
+                <input type="checkbox" (click)="selectType('fishingInstructor')">
                 Instruktori pecanja
             </label>
         </div>
         <div>
             <div class="select level-right">
-                <select [(ngModel)]="this.searchFilterSortModel.sort">
+                <select [(ngModel)]="this.searchFilterSortModel.sort" (change)="searchFilterSort()">
                     <option value="">Sortiraj</option>
                     <option value="da">Datum rastuće</option>
                     <option value="dd">Datum opadajuće</option>

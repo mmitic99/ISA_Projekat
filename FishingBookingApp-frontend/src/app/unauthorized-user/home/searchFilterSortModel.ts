@@ -8,6 +8,6 @@ export class SearchFilterSortModel {
         public types = new Array<string>(),
         public search = "",
         public mailAddress = "",
-        public isOldReservation = false,
+        public isOldReservation = true,
     ) { }
 }

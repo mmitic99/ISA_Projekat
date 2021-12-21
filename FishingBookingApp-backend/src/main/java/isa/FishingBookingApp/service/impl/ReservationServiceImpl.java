@@ -100,7 +100,11 @@ public class ReservationServiceImpl implements ReservationService {
         if (searchFilterSort.getTypes().size() != 0) {
             reservations = filter(searchFilterSort);
         } else {
-            reservations = getAllOldReservation(searchFilterSort.getMailAddress());
+            if (searchFilterSort.isOldReservation()) {
+                reservations = getAllOldReservation(searchFilterSort.getMailAddress());
+            } else {
+                reservations = getCurrentReservationForUser(searchFilterSort.getMailAddress());
+            }
         }
         sort(searchFilterSort, reservations);
         return reservations;
@@ -134,7 +138,13 @@ public class ReservationServiceImpl implements ReservationService {
 
     private List<Reservation> filter(SearchFilterSort searchFilterSort) {
         List<Reservation> retVal = new ArrayList<>();
-        for (Reservation reservation : getAllOldReservation(searchFilterSort.getMailAddress())) {
+        List<Reservation> reservations;
+        if (searchFilterSort.isOldReservation()) {
+            reservations = getAllOldReservation(searchFilterSort.getMailAddress());
+        } else {
+            reservations = getCurrentReservationForUser(searchFilterSort.getMailAddress());
+        }
+        for (Reservation reservation : reservations) {
 
             if (searchFilterSort.getTypes().size() == 0) {
                 retVal.add(reservation);

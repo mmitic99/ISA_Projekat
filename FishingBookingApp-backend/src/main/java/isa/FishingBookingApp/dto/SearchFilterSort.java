@@ -11,6 +11,7 @@ public class SearchFilterSort {
     private int days;
     private int guests;
     private LocalDateTime dateTime;
+    private boolean isOldReservation = true;
 
     public SearchFilterSort(String sort, List<String> types, String search) {
         this.sort = sort;
@@ -23,6 +24,14 @@ public class SearchFilterSort {
         this.types = types;
         this.search = search;
         this.mailAddress = mailAddress;
+    }
+
+    public SearchFilterSort(String sort, List<String> types, String search, String mailAddress, Boolean isOldReservation) {
+        this.sort = sort;
+        this.types = types;
+        this.search = search;
+        this.mailAddress = mailAddress;
+        this.isOldReservation = isOldReservation;
     }
 
     public SearchFilterSort(String sort, List<String> types, String search, String dateString, String timeString, int days, int guests) throws Exception {
@@ -115,5 +124,13 @@ public class SearchFilterSort {
 
     public void setDateTime(LocalDateTime dateTime) {
         this.dateTime = dateTime;
+    }
+
+    public boolean isOldReservation() {
+        return isOldReservation;
+    }
+
+    public void setOldReservation(boolean oldReservation) {
+        isOldReservation = oldReservation;
     }
 }

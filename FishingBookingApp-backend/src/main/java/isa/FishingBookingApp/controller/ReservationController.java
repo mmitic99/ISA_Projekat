@@ -35,8 +35,8 @@ public class ReservationController {
 
     @GetMapping(value = "/searchFilterSort/{mailAddress}", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
-    public List<Reservation> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @PathVariable String mailAddress) {
-        SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, mailAddress);
+    public List<Reservation> searchFilterSort(@RequestParam String sort, @RequestParam List<String> types, @RequestParam String search, @PathVariable String mailAddress, @RequestParam Boolean isOldReservation) {
+        SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, mailAddress, isOldReservation);
         return reservationService.searchFilterSort(searchFilterSort);
     }
 
