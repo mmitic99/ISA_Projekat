@@ -1,7 +1,50 @@
-//TODO: dodati prikaz rezervacije
+<section class="section">
+    <table class="table is-hoverable is-fullwidth">
+        <tr>
+            <th *ngIf="reservationEntity.type == 'cottage'">Naziv vikendice</th>
+            <th *ngIf="reservationEntity.type == 'boat'">Naziv broda</th>
+            <th *ngIf="reservationEntity.type == 'fishingInstructor'">Naziv instruktora pecanja</th>
 
+            <td>{{reservationEntity.name}}</td>
+        </tr>
+        <tr>
+            <th *ngIf="reservationEntity.type == 'cottage'">Adresa vikendice</th>
+            <th *ngIf="reservationEntity.type == 'boat'">Adresa broda</th>
+            <th *ngIf="reservationEntity.type == 'fishingInstructor'">Adresa instruktora pecanja</th>
+            <td>{{reservationEntity.address.street}} {{reservationEntity.address.number}},
+                {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</td>
+        </tr>
+        <tr>
+            <th>Datum i vreme početka rezervacije</th>
+            <td>{{reservation.date | date:"dd.MM.yyyy, "}}{{reservation.time}}</td>
+        </tr>
+        <tr>
+            <th>Broj dana</th>
+            <td>{{reservation.days}}</td>
+        </tr>
+        <tr>
+            <th>Broj gostiju</th>
+            <td>{{reservation.guests}}</td>
+        </tr>
+        <tr>
+            <th>Cena po danu</th>
+            <td>{{reservationEntity.price}}</td>
+        </tr>
+        <tr>
+            <br>
+        </tr>
+        <tr>
+            <th *ngIf="reservationEntity.type == 'cottage'">Ukupna cena vikendice</th>
+            <th *ngIf="reservationEntity.type == 'boat'">Ukupna cena broda</th>
+            <th *ngIf="reservationEntity.type == 'fishingInstructor'">Ukupna cena instruktora pecanja</th>
+            <td>{{reservationEntity.price * reservation.days}}</td>
+        </tr>
+    </table>
+</section>
+<hr>
+<br>
 <div class="container">
-    <h1>Odaberite dodatne usluge:</h1>
+    <h1 class="subtitle">Odaberite dodatne usluge:</h1>
     <table class="table is-hoverable is-fullwidth">
         <thead>
             <tr>
@@ -13,13 +56,27 @@
 
         <tfoot>
             <tr *ngFor="let additionalService of additionalServices">
-                <td><input type="checkbox" class="checkbox" (click)="selectAdditionalService(additionalService.id)"></td>
+                <td><input type="checkbox" class="checkbox" (click)="selectAdditionalService(additionalService.id)">
+                </td>
                 <td>{{additionalService.name}}</td>
                 <td>{{additionalService.price}}</td>
+            </tr>
+            <tr><br></tr>
+            <tr>
+                <td></td>
+                <th>Ukupna cena dodatnih usluga po danu</th>
+                <td>{{calculatePriceSumForAdditionalServices()}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <th>Ukupna cena dodatnih usluga za {{reservation.days}} dan/a</th>
+                <td>{{calculatePriceSumForAdditionalServices() * reservation.days}}</td>
             </tr>
         </tfoot>
     </table>
 </div>
-
-
-<a class="button" (click)="reserveEntity()"></a>
+<hr>
+<div class="has-text-right mr-6">
+    <h1 class="title">Ukupna cena: {{(reservationEntity.price + calculatePriceSumForAdditionalServices()) * reservation.days}}</h1>
+    <a class="button is-success mb-6" (click)="reserveEntity()">Potvrdi rezervaciju</a>
+</div>

@@ -21,6 +21,9 @@ export class HomeComponent implements OnInit {
   subscriptions: any;
   times: string[] = [];
   reservationResponseReceived = false;
+  minDate = new Date();
+  minTime = 6
+  maxTime = 24
 
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
@@ -35,10 +38,12 @@ export class HomeComponent implements OnInit {
     this.getAllReservationEntities();
     this.getAllSubscriptions();
     this.getTimes();
+
+    this.minDate = new Date();
   }
 
   getTimes() {
-    for (var i = 0; i < 24; i++) {
+    for (var i = this.minTime; i < this.maxTime; i++) {
       if (i < 10) {
         this.times.push('0' + i + ':' + '00')
         this.times.push('0' + i + ':' + '30')
@@ -62,9 +67,9 @@ export class HomeComponent implements OnInit {
         this.reservationEntities = data
         this.getOneImageForEveryEntity(data);
       },
-      (error)=>{
-        
-        if(error.status == 401){
+      (error) => {
+
+        if (error.status == 401) {
           AuthService.logout()
         }
       }
@@ -92,7 +97,7 @@ export class HomeComponent implements OnInit {
       },
       (error) => {
         this.reservationEntities = [];
-        if(error.status == 401){
+        if (error.status == 401) {
           AuthService.logout()
         }
       }
@@ -119,7 +124,7 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           this.reservationEntities = [];
-          if(error.status == 401){
+          if (error.status == 401) {
             AuthService.logout()
           }
         }
@@ -172,7 +177,7 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           this.reservationEntities.push(entity);
-          if(error.status == 401){
+          if (error.status == 401) {
             AuthService.logout()
           }
         }
@@ -187,7 +192,7 @@ export class HomeComponent implements OnInit {
       this.getAllSubscriptions()
     }, (error) => {
       this.toastr.error(error)
-      if(error.status == 401){
+      if (error.status == 401) {
         AuthService.logout()
       }
     });
@@ -226,7 +231,7 @@ export class HomeComponent implements OnInit {
   }
 
   reserveAditionalServices(id: any) {
-        this.router.navigateByUrl('/aditional_services_reservation/' + id +
+    this.router.navigateByUrl('/aditional_services_reservation/' + id +
       '?date=' + this.searchFilterSortModel.date +
       '&time=' + this.searchFilterSortModel.time +
       '&daysNumber=' + this.searchFilterSortModel.daysNumber +
