@@ -40,10 +40,11 @@ export class AdditionalServicesReservationComponent implements OnInit {
     });
     this.getAdditionalServices()
     this.getEntity()
-    
+
     this.reservation = new Reservation(this.date, this.time, this.days, this.guests, this.id);
 
   }
+
   getEntity() {
     this.reservationEntitiesService.getEntity(this.id).subscribe(
       (data) => {

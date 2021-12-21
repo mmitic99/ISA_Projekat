@@ -136,7 +136,8 @@
                     </a>
                 </div>
                 <div class="column is-2">
-                    <p class="level-right">10/10</p>
+                    <p class="title level-right" *ngIf="getMarkById(reservationEntity.id)!=null"><span class="tag is-large {{reservationEntity.articleClass}}">{{getMarkById(reservationEntity.id)}}/10</span></p>
+                    <p title="Još uvek nema ocena. Budite prvi koji će oceniti." class="title level-right" *ngIf="getMarkById(reservationEntity.id)==null"><span class="tag is-large {{reservationEntity.articleClass}}">0/10</span></p>
                     <a class="button is-fullwidth {{reservationEntity.articleClass}}" style="margin-top: 120px;"
                         *ngIf="checkIsReservationSearched()" (click)="reserveAditionalServices(reservationEntity.id)">Rezerviši</a>
                 </div>

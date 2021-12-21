@@ -24,6 +24,7 @@ export class HomeComponent implements OnInit {
   minDate = new Date();
   minTime = 6
   maxTime = 24
+  marks: any
 
   constructor(
     private reservationEntitiesService: ReservationEntitiesService,
@@ -38,8 +39,15 @@ export class HomeComponent implements OnInit {
     this.getAllReservationEntities();
     this.getAllSubscriptions();
     this.getTimes();
+    this.getMarks()
 
     this.minDate = new Date();
+  }
+  getMarks() {
+    this.reservationEntitiesService.getMarks().subscribe(
+      (data) => {
+        this.marks = data
+      });
   }
 
   getTimes() {
@@ -65,7 +73,7 @@ export class HomeComponent implements OnInit {
     this.reservationEntitiesService.getAllReservationEntities().subscribe(
       (data) => {
         this.reservationEntities = data
-        this.getOneImageForEveryEntity(data);
+        this.getOneImageForEveryEntity();
       },
       (error) => {
 
@@ -93,7 +101,7 @@ export class HomeComponent implements OnInit {
     this.reservationEntitiesService.searchFilterSort(this.searchFilterSortModel).subscribe(
       (data) => {
         this.reservationEntities = data;
-        this.getOneImageForEveryEntity(data);
+        this.getOneImageForEveryEntity();
       },
       (error) => {
         this.reservationEntities = [];
@@ -119,7 +127,7 @@ export class HomeComponent implements OnInit {
       this.reservationEntitiesService.checkReservation(this.searchFilterSortModel).subscribe(
         (data) => {
           this.reservationEntities = data;
-          this.getOneImageForEveryEntity(data);
+          this.getOneImageForEveryEntity();
           this.reservationResponseReceived = true;
         },
         (error) => {
@@ -153,9 +161,8 @@ export class HomeComponent implements OnInit {
     this.searchFilterSort()
   }
 
-  getOneImageForEveryEntity(entities: any) {
-    this.reservationEntities = [];
-    for (let entity of entities) {
+  getOneImageForEveryEntity() {
+    for (let entity of this.reservationEntities) {
       if (entity.type == "cottage") {
         entity.articleClass = "is-success"
       }
@@ -173,10 +180,8 @@ export class HomeComponent implements OnInit {
           if (data != null) {
             entity.base64Image = 'data:image/jpg;base64,' + data.base64Image;
           }
-          this.reservationEntities.push(entity);
         },
         (error) => {
-          this.reservationEntities.push(entity);
           if (error.status == 401) {
             AuthService.logout()
           }
@@ -237,4 +242,10 @@ export class HomeComponent implements OnInit {
       '&daysNumber=' + this.searchFilterSortModel.daysNumber +
       '&guestsNumber=' + this.searchFilterSortModel.guestsNumber);
   }
+
+  getMarkById(id: any) {
+    var mark = this.marks.find((m: { reservationEntitiesId: any; }) => { return m.reservationEntitiesId == id })
+    return mark.avgMark
+  }
+
 }

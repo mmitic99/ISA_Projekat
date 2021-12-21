@@ -1,8 +1,11 @@
 package isa.FishingBookingApp.service.impl;
 
+import isa.FishingBookingApp.dto.MarksDTO;
 import isa.FishingBookingApp.dto.ReviewDTO;
 import isa.FishingBookingApp.model.Reservation;
+import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.model.Review;
+import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
 import isa.FishingBookingApp.repository.ReservationRepository;
 import isa.FishingBookingApp.repository.ReviewRepository;
 import isa.FishingBookingApp.service.ReviewService;
@@ -17,11 +20,13 @@ import java.util.List;
 public class ReviewServiceImpl implements ReviewService {
     private ReviewRepository reviewRepository;
     private ReservationRepository reservationRepository;
+    private ReservationEntitiesRepository reservationEntitiesRepository;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, ReservationRepository reservationRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, ReservationRepository reservationRepository, ReservationEntitiesRepository reservationEntitiesRepository) {
         this.reviewRepository = reviewRepository;
         this.reservationRepository = reservationRepository;
+        this.reservationEntitiesRepository = reservationEntitiesRepository;
     }
 
     @Override
@@ -51,5 +56,26 @@ public class ReviewServiceImpl implements ReviewService {
             retVal.add(review.getReservation().getId());
         }
         return retVal;
+    }
+
+    @Override
+    public List<MarksDTO> getMarksForReservationEntities() {
+        List<MarksDTO> retVal = new ArrayList<>();
+
+        for (ReservationEntities reservationEntities : reservationEntitiesRepository.findAll()) {
+            //retVal.add(averageMarks(reservationEntities));
+            retVal.add(new MarksDTO(reservationEntities.getId(), reviewRepository.getAverageMarksByReservationEntitiesId(reservationEntities.getId())));
+        }
+
+        return retVal;
+    }
+
+    private MarksDTO averageMarks(ReservationEntities reservationEntities) {
+
+        /*for (Review review :
+                reviewRepository.findReviewByReservationReservationEntitiesId(reservationEntities.getId())) {
+            
+        }*/
+        return null;
     }
 }
