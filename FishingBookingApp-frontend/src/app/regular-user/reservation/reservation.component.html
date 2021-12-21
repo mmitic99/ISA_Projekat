@@ -48,6 +48,7 @@
                 <th>Datum</th>
                 <th>Trajanje[u danima]</th>
                 <th>Cena[dinara]</th>
+                <th></th>
             </tr>
         </thead>
 
@@ -59,10 +60,43 @@
                 <td *ngIf="reservation.reservationEntity.type == 'fishingInstructor'">Instruktor pecanja</td>
                 <td>{{reservation.reservationEntity.name}}</td>
                 <td>{{reservation.reservationEntity.address.street}} {{reservation.reservationEntity.address.number}},
-                    {{reservation.reservationEntity.address.city}}, {{reservation.reservationEntity.address.country}}</td>
+                    {{reservation.reservationEntity.address.city}}, {{reservation.reservationEntity.address.country}}
+                </td>
                 <td>{{reservation.start | date:"dd.MM.yyyy, HH:mm"}}</td>
                 <td>{{reservation.durationInHours/24}}</td>
                 <td>{{reservation.price}}</td>
+                <td><a *ngIf="canReview(reservation)" (click)="toggleModal(reservation)"><span class="icon is-medium">
+                            <i class="fas fa-2x fa-comment-dots"></i>
+                        </span></a></td>
+                <div class="modal" [ngClass]="{ 'is-active' : reservation.isModalActive }">
+                    <div class="modal-background" (click)="toggleModal(reservation)"></div>
+                    <div class="modal-card">
+                        <header class="modal-card-head">
+                            <p class="modal-card-title">Ocenjivanje rezervacije</p>
+                            <button class="delete" aria-label="close" (click)="toggleModal(reservation)"></button>
+                        </header>
+                        <section class="modal-card-body has-text-left">
+                            <form ngNativeValidate>
+                                <div class="select is-fullwidth">
+                                    <select [(ngModel)]="this.review.mark" name="entityIdString">
+                                        <option value=0>Izaberite ocenu</option>
+                                        <option *ngFor="let mark of possibleMarks"
+                                            value="{{mark}}">{{mark}}</option>
+                                    </select>
+                                </div>
+                                <div class="field">
+                                    <textarea class="textarea" placeholder="Vaše obrazloženje"
+                                        [(ngModel)]="this.review.explain" name="explain"></textarea>
+                                </div>
+                            </form>
+                        </section>
+                        <footer class="modal-card-foot">
+                            <button class="button is-success" (click)="saveReview(reservation)">Pošalji
+                                rezervaciju</button>
+                            <button class="button" (click)="toggleModal(reservation)">Otkaži</button>
+                        </footer>
+                    </div>
+                </div>
             </tr>
         </tbody>
     </table>
