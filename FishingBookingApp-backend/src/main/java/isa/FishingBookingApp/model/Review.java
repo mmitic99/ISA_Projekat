@@ -28,7 +28,10 @@ public class Review {
     @OneToOne
     private Reservation reservation;
 
+    private boolean approved;
+
     public Review() {
+        approved = false;
     }
 
     public Review(String explain, LocalDateTime creationDateTime, int mark, Reservation reservation) throws Exception {
@@ -36,6 +39,7 @@ public class Review {
         this.mark = mark;
         this.reservation = reservation;
         setCreationDateTime(creationDateTime);
+        approved = false;
     }
 
     public String getExplain() {
@@ -74,5 +78,13 @@ public class Review {
 
     public void setReservation(Reservation reservation) {
         this.reservation = reservation;
+    }
+
+    public boolean isApproved() {
+        return approved;
+    }
+
+    public void setApproved(boolean approved) {
+        this.approved = approved;
     }
 }
