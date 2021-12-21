@@ -7,5 +7,7 @@ export class SearchFilterSortModel {
         public guestsNumber: number = 0,
         public types = new Array<string>(),
         public search = "",
+        public mailAddress = "",
+        public isOldReservation = false,
     ) { }
 }

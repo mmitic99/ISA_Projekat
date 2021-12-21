@@ -91,4 +91,45 @@ export class ReservationComponent implements OnInit {
       this.toastr.error("Izaberite ocenu")
     }
   }
+  searchFilterSort() {
+    if (this.isParametersEmpty()) {
+      this.getAllOldReservation();
+    }
+    else {
+      this.onlySearchFilterSort();
+    }
+  }
+
+  private onlySearchFilterSort() {
+    this.reservationService.searchFilterSort(this.searchFilterSortModel).subscribe(
+      (data) => {
+        this.reservations = data
+        for (let reservation of this.reservations) {
+          let dateTime = reservation.start
+          reservation.start = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
+          this.setModals()
+        }
+      },
+      (error) => {
+        this.reservations = [];
+        if (error.status == 401) {
+          AuthService.logout()
+        }
+      }
+    );
+  }
+
+  private isParametersEmpty() {
+    return this.searchFilterSortModel.sort == "" && this.searchFilterSortModel.types.length == 0;
+  }
+  
+  selectType(type: string) {
+    if (this.searchFilterSortModel.types.includes(type)) {
+      this.searchFilterSortModel.types = this.searchFilterSortModel.types.filter(item => item !== type)
+    } else {
+      this.searchFilterSortModel.types.push(type)
+    }
+    this.searchFilterSort()
+  }
+
 }
