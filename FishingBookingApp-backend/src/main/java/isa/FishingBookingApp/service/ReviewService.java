@@ -12,4 +12,6 @@ public interface ReviewService {
     List<Long> getReservationIdInReviewForMailAddress(String mailAddress);
 
     List<MarksDTO> getMarksForReservationEntities();
+
+    Double getAvgMarksForEntity(Long id);
 }
