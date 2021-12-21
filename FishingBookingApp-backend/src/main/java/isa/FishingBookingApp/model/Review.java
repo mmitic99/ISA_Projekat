@@ -31,7 +31,7 @@ public class Review {
     public Review() {
     }
 
-    public Review(String explain, LocalDateTime creationDateTime, int mark, Reservation reservation) {
+    public Review(String explain, LocalDateTime creationDateTime, int mark, Reservation reservation) throws Exception {
         this.explain = explain;
         this.mark = mark;
         this.reservation = reservation;
@@ -50,12 +50,13 @@ public class Review {
         return creationDateTime;
     }
 
-    public void setCreationDateTime(LocalDateTime creationDateTime) {
+    public void setCreationDateTime(LocalDateTime creationDateTime) throws Exception {
         if (reservation.getStart().plusHours(Double.valueOf(reservation.getDurationInHours()).longValue()).isBefore(creationDateTime)) {
             this.creationDateTime = creationDateTime;
         }
         else{
-            this.creationDateTime = null;
+            //throw new Exception("Creation date and time must be after reservation finished");
+            throw new Exception("Datum kreiranja mora biti posle zavrsetka rezervacije");
         }
     }
 
