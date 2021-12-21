@@ -25,6 +25,9 @@ export class ChangePasswordComponent implements OnInit {
           },
           (error) => {
             this.toastr.error(error.error)
+            if(error.status == 401){
+              AuthService.logout()
+            }
           })
       }
       else {

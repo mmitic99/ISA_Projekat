@@ -108,8 +108,8 @@ public class AuthController {
     public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDTO changePasswordDto, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        if(!mailAddress.equals(changePasswordDto.getMailAddress())){
-            return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         if (!changePasswordDto.getNewPassword1().equals(changePasswordDto.getNewPassword2())) {
             return new ResponseEntity<>("Lozinke se ne poklapaju", HttpStatus.BAD_REQUEST);

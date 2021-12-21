@@ -35,6 +35,9 @@ public class SubscriptionController {
     public ResponseEntity<Object> getSubscribed(HttpServletRequest request){
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        }
         return new ResponseEntity<>(subscriptionService.getSubscribedByMailAddress(mailAddress), HttpStatus.OK);
     }
 
@@ -43,8 +46,8 @@ public class SubscriptionController {
     public ResponseEntity<Object> subscription(@RequestBody SubscriptionDTO subscriptionDTO, HttpServletRequest request){
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        if(!mailAddress.equals(subscriptionDTO.getMailAddress())){
-            return new ResponseEntity<>("Emails not matching", HttpStatus.BAD_REQUEST);
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         if(subscriptionDTO.isSubscribe()){
             return new ResponseEntity<>(subscriptionService.subscribe(subscriptionDTO), HttpStatus.OK);

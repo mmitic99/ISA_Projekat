@@ -10,9 +10,11 @@ import { SpecialRegistrationUser } from '../special-registration/specialRegistra
 @Injectable({
   providedIn: 'root'
 })
-export class AuthService {
 
-  constructor(private http: HttpClient, private router: Router) { }
+export class AuthService {
+  static router: Router;
+
+  constructor(private http: HttpClient, private router: Router) {  AuthService.router = router }
 
   login(loginUser: LoginUser) {
     return this.http.post(serverPortAuth + 'login', loginUser);
@@ -24,6 +26,13 @@ export class AuthService {
     localStorage.removeItem('userId')
     this.router.navigate([''])
     
+  }
+  static logout(){
+    localStorage.removeItem('role')
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('mailAddress')
+    localStorage.removeItem('userId') 
+    AuthService.router.navigate([''])  
   }
 
   register(registrationUser: RegistrationUser) {

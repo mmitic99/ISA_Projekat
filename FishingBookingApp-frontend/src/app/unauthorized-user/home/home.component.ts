@@ -61,6 +61,12 @@ export class HomeComponent implements OnInit {
       (data) => {
         this.reservationEntities = data
         this.getOneImageForEveryEntity(data);
+      },
+      (error)=>{
+        
+        if(error.status == 401){
+          AuthService.logout()
+        }
       }
     )
   }
@@ -86,6 +92,9 @@ export class HomeComponent implements OnInit {
       },
       (error) => {
         this.reservationEntities = [];
+        if(error.status == 401){
+          AuthService.logout()
+        }
       }
     );
   }
@@ -110,6 +119,9 @@ export class HomeComponent implements OnInit {
         },
         (error) => {
           this.reservationEntities = [];
+          if(error.status == 401){
+            AuthService.logout()
+          }
         }
       );
     }
@@ -158,8 +170,11 @@ export class HomeComponent implements OnInit {
           }
           this.reservationEntities.push(entity);
         },
-        () => {
+        (error) => {
           this.reservationEntities.push(entity);
+          if(error.status == 401){
+            AuthService.logout()
+          }
         }
       )
     }
@@ -172,6 +187,9 @@ export class HomeComponent implements OnInit {
       this.getAllSubscriptions()
     }, (error) => {
       this.toastr.error(error)
+      if(error.status == 401){
+        AuthService.logout()
+      }
     });
   }
 

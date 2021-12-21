@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { SearchFilterSortModel } from 'src/app/unauthorized-user/home/searchFilterSortModel';
+import { AuthService } from 'src/app/unauthorized-user/service/auth.service';
 import { ReservationService } from '../service/reservation.service';
 import { CancelReservation } from './CancelReservation';
 
@@ -29,7 +30,10 @@ export class CurentReservationComponent implements OnInit {
           
         }
       },
-      (error) => { this.curentReservations = [] })
+      (error) => { this.curentReservations = []
+        if(error.status == 401){
+          AuthService.logout()
+        } })
   }
 
   isPossibleToCancel(start: Date){
@@ -45,6 +49,9 @@ export class CurentReservationComponent implements OnInit {
       },
       (error)=>{
         console.log(error)
+        if(error.status == 401){
+          AuthService.logout()
+        }
       }
     );
   }

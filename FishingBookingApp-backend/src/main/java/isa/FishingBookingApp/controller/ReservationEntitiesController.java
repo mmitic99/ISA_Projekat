@@ -13,9 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Base64;
 import java.util.List;
 
@@ -132,7 +130,8 @@ public class ReservationEntitiesController {
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<AdditionalService> createAdditionalService(@RequestBody AdditionalServiceDTO additionalServiceDTO, HttpServletRequest request) {
         String userMailAddress = getMailAddressOfEntityOwner(additionalServiceDTO.getReservationEntityId());
-        if (!authorizedUser(userMailAddress, request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(userMailAddress, request))
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
         AdditionalService additionalService = reservationEntitiesService.createAdditionalService(additionalServiceDTO);
         if (additionalService == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -144,7 +143,8 @@ public class ReservationEntitiesController {
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<AvailableAppointment> createAvailableAppointment(@RequestBody AvailableAppointmentDTO availableAppointmentDTO, HttpServletRequest request) {
         String userMailAddress = getMailAddressOfEntityOwner(availableAppointmentDTO.getEntityId());
-        if (!authorizedUser(userMailAddress, request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(userMailAddress, request))
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
         AvailableAppointment availableAppointment = reservationEntitiesService.createAvailableAppointment(availableAppointmentDTO);
         if (availableAppointment == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
@@ -156,8 +156,8 @@ public class ReservationEntitiesController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> getPossibleReservationEntitiesForComplaint(@PathVariable String mailAddress, HttpServletRequest request) {
         try {
-            if (!authorizedUser(mailAddress, request)) {
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(reservationEntitiesService.getPossibleReservationEntitiesForComplaint(mailAddress), HttpStatus.OK);
         } catch (Exception e) {
@@ -169,19 +169,13 @@ public class ReservationEntitiesController {
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> addComplaint(@RequestBody ComplaintDTO complaintDTO, HttpServletRequest request) {
         try {
-            if (!authorizedUser(complaintDTO.getMailAddress(), request)) {
-                return new ResponseEntity<>("Mail adresa nije u redu", HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(complaintDTO.getMailAddress(), request)) {
+                return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             }
             return new ResponseEntity<>(complaintService.addComplaint(complaintDTO), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
-    }
-
-    private boolean authorizedUser(String ownerUsername, HttpServletRequest request) {
-        String token = tokenUtils.getAuthHeaderFromHeader(request);
-        String username = tokenUtils.getUsernameFromToken(token.substring(7));
-        return username.equals(ownerUsername);
     }
 
     private String getMailAddressOfEntityOwner(Long entityId) {

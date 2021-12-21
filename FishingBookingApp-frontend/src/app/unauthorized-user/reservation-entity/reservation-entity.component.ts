@@ -39,7 +39,11 @@ export class ReservationEntityComponent implements OnInit {
     this.reservationEntitiesService.getEntity(this.id).subscribe(
       (data) => {
         this.reservationEntity = data
-      }
+      },
+      (error)=>{
+        if(error.status == 401){
+          AuthService.logout()
+        }}
     )
   }
 
@@ -52,7 +56,10 @@ export class ReservationEntityComponent implements OnInit {
             this.imageObject.push({ image: img, thumbImage: img });
           }
         }
-      }
+      },(error)=>{
+        if(error.status == 401){
+          AuthService.logout()
+        }}
     )
   }
 
@@ -86,6 +93,9 @@ export class ReservationEntityComponent implements OnInit {
       }
     }, (error) => {
       this.toastr.error(error)
+      if(error.status == 401){
+        AuthService.logout()
+      }
     });
   }
 

@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { Reservation } from 'src/app/unauthorized-user/home/reservation';
+import { AuthService } from 'src/app/unauthorized-user/service/auth.service';
 import { ReservationService } from '../service/reservation.service';
 
 @Component({
@@ -42,7 +43,9 @@ export class AdditionalServicesReservationComponent implements OnInit {
     this.reservationService.getAdditionalServiceByEntityId(this.id).subscribe((data)=>{
       this.additionalServices = data;
     },(error)=>{
-
+      if(error.status == 401){
+        AuthService.logout()
+      }
     })
   }
 
@@ -51,6 +54,9 @@ export class AdditionalServicesReservationComponent implements OnInit {
 
     }, (error) => {
       this.toastr.error(error.error.error)
+      if(error.status == 401){
+        AuthService.logout()
+      }
     })
   }
 
