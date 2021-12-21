@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class ReviewServiceImpl implements ReviewService {
@@ -36,5 +38,18 @@ public class ReviewServiceImpl implements ReviewService {
         }
         Review review = new Review(reviewDTO.getExplain(), LocalDateTime.now(), reviewDTO.getMark(), reservation);
         return reviewRepository.save(review);
+    }
+
+    @Override
+    public List<Long> getReservationIdInReviewForMailAddress(String mailAddress) {
+        List<Long> retVal = new ArrayList<>();
+
+        List<Review> reviews = reviewRepository.findReviewByReservationUserMailAddress(mailAddress);
+
+        for (Review review :
+                reviews) {
+            retVal.add(review.getReservation().getId());
+        }
+        return retVal;
     }
 }
