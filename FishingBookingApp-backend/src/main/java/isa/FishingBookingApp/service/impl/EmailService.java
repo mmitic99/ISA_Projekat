@@ -53,7 +53,7 @@ public class EmailService {
     }
 
     @Async
-    public void sendReservationInfo(Reservation reservation, List<AdditionalService> additionalServices) throws Exception {
+    public void sendReservationInfo(Reservation reservation) throws Exception {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mail = new MimeMessageHelper(message);
 
@@ -81,11 +81,11 @@ public class EmailService {
                 "<tr><td style=\"width: 20%\">Cena po danu</td><td style=\"width: 100%\">" + reservation.getReservationEntity().getPrice() + "</td></tr>" +
                 "</table><br>";
 
-        if(additionalServices !=null && additionalServices.size() != 0) {
+        if(reservation.getAdditionalServices() !=null && reservation.getAdditionalServices().size() != 0) {
             text += "Dodatne usluge:<br><table border=\"1\" style=\"width: 100%\">" +
                     "<tr><th>Naziv</th><th>Cena po danu</th></tr>";
             for (AdditionalService additionalService :
-                    additionalServices) {
+                    reservation.getAdditionalServices()) {
                 text += "<tr><td style=\"width: 80%\">" + additionalService.getName() + "</td><td style=\"width: 20%\">" + additionalService.getPrice() + "</td></tr>";
 
             }

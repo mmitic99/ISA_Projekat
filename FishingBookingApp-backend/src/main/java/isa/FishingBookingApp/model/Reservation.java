@@ -2,6 +2,7 @@ package isa.FishingBookingApp.model;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -28,7 +29,7 @@ public class Reservation {
     private int maxPeople;
 
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<AdditionalService> additionalServices;
+    private Set<AdditionalService> additionalServices = new HashSet<>();
 
     private double price;
 
