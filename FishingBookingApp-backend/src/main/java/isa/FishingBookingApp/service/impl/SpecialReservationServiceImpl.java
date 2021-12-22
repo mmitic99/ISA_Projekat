@@ -43,7 +43,7 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
 
         // provera za 4.4
         if (!reservationService.reservationEntityIsAvailable(reservationEntity, specialReservationDTO.getStartDateTime(), specialReservationDTO.getDays())) {
-            throw new Exception("Termin koji želite da zakažete je zauzet.");
+            throw new Exception("Termin koji želite da zakažete nije dostupan.");
         } else {
             specialReservationRepository.save(specialReservation);
             // TODO: poslati mejl
