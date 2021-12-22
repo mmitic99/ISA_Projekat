@@ -34,7 +34,7 @@
             <div class="columns is-multiline is-vcentered">
                 <label class="label">Datum početka tremina</label>
                 <div class="column">
-                    <input class="input" type="date" [(ngModel)]="newSpecialReservation.startDate">
+                    <input class="input" type="date" [(ngModel)]="newSpecialReservation.startDate" min="{{minDate | date:'yyyy-MM-dd'}}">
                 </div>
 
                 <div class="column">

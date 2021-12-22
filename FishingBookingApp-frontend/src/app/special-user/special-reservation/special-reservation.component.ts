@@ -17,6 +17,7 @@ export class SpecialReservationComponent implements OnInit {
   isNumberOfDaysValid = true;
   isNumberOfPeoplesValid = true;
   isPriceValid = true;
+  minDate = new Date();
 
   additionalServices: any
   reservationEntity: any;
@@ -87,7 +88,7 @@ export class SpecialReservationComponent implements OnInit {
   }
 
   isAllValid(): boolean {
-    if (this.isAllFilled() && this.isNumberOfDaysValid && this.isNumberOfPeoplesValid && this.isPriceValid) {
+    if (this.isAllFilled() && this.isNumberOfDaysValid && this.isNumberOfPeoplesValid && this.isPriceValid && this.isDatesValid()) {
       return true;
     }
     else {
@@ -105,6 +106,18 @@ export class SpecialReservationComponent implements OnInit {
     }
 
     return true;
+  }
+
+  isDatesValid() {
+    let startDateNumbers = this.newSpecialReservation.validFromDate.split("-");
+    let startTimeNumbers = this.newSpecialReservation.validFromTime.split(":");
+    let endDateNumbers = this.newSpecialReservation.validToDate.split("-");
+    let endTimeNumbers = this.newSpecialReservation.validToTime.split(":");
+
+    let startDate = new Date(parseInt(startDateNumbers[0]), parseInt(startDateNumbers[1]) - 1, parseInt(startDateNumbers[2]), parseInt(startTimeNumbers[0]), parseInt(startTimeNumbers[1]));
+    let endDate = new Date(parseInt(endDateNumbers[0]), parseInt(endDateNumbers[1]) - 1, parseInt(endDateNumbers[2]), parseInt(endTimeNumbers[0]), parseInt(endTimeNumbers[1]));
+  
+    return startDate < endDate;
   }
 
   getTimes() {

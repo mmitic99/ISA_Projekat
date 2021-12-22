@@ -24,7 +24,6 @@ public class SpecialReservation {
     private int maxPeople;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    //@JoinTable(joinColumns = @JoinColumn(name = "special_reservation_id", referencedColumnName = "id"), inverseJoinColumns = @JoinColumn(name = "additional_services_id", referencedColumnName = "id"))
     private Set<AdditionalService> additionalServices;
 
     private double price;

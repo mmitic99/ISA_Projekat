@@ -26,6 +26,14 @@ public class SpecialReservationDTO {
         this.startDateTime = getDateTimeFromStrings(startDate, startTime);
         this.validFromDateTime = getDateTimeFromStrings(validFromDate, validFromTime);
         this.validToDateTime = getDateTimeFromStrings(validToDate, validToTime);
+
+        if (validToDateTime.isBefore(validFromDateTime)) {
+            throw new Exception("Datum validnosti akcije je pogrešno podešen.");
+        }
+
+        if (startDateTime.isBefore(LocalDateTime.now())) {
+            throw new Exception("Vreme početka rezervacije je nevalidno.");
+        }
     }
 
     private LocalDateTime getDateTimeFromStrings(String dateString, String timeString) throws Exception {
