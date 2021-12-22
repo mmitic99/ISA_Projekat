@@ -21,19 +21,17 @@ public class ReservationServiceImpl implements ReservationService {
     private ReservationEntitiesRepository reservationEntitiesRepository;
     private UserRepository userRepository;
     private AdditionalServiceRepository additionalServiceRepository;
-    private AdditionalServiceReservationRepository additionalServiceReservationRepository;
     private EmailService emailService;
 
 
     @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository, SpecialReservationRepository specialReservationRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationEntitiesRepository reservationEntitiesRepository, UserRepository userRepository, AdditionalServiceRepository additionalServiceRepository, AdditionalServiceReservationRepository additionalServiceReservationRepository, EmailService emailService) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, SpecialReservationRepository specialReservationRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationEntitiesRepository reservationEntitiesRepository, UserRepository userRepository, AdditionalServiceRepository additionalServiceRepository, EmailService emailService) {
         this.reservationRepository = reservationRepository;
         this.specialReservationRepository = specialReservationRepository;
         this.availableAppointmentRepository = availableAppointmentRepository;
         this.reservationEntitiesRepository = reservationEntitiesRepository;
         this.userRepository = userRepository;
         this.additionalServiceRepository = additionalServiceRepository;
-        this.additionalServiceReservationRepository = additionalServiceReservationRepository;
         this.emailService = emailService;
     }
 
@@ -61,10 +59,10 @@ public class ReservationServiceImpl implements ReservationService {
             throw new Exception("Neko je rezervisao pre vas, pokušajte sa drugim entitetom");
         } else {
             reservationRepository.save(reservation);
-            List<AdditionalService> additionalServices = reserveAdditionalServices(reservation, reservationDTO);
-            addPriceToReservation(reservation, additionalServices);
+            reserveAdditionalServices(reservation, reservationDTO);
+            addPriceToReservation(reservation);
             reservationRepository.save(reservation);
-            emailService.sendReservationInfo(reservation, additionalServices);
+            emailService.sendReservationInfo(reservation);
             return reservation;
         }
     }
@@ -155,25 +153,22 @@ public class ReservationServiceImpl implements ReservationService {
         return retVal;
     }
 
-    private void addPriceToReservation(Reservation reservation, List<AdditionalService> additionalServices) {
+    private void addPriceToReservation(Reservation reservation) {
         reservation.setPrice(reservation.getReservationEntity().getPrice() * reservation.getDurationInHours() / 24);
-        for (AdditionalService additionalService : additionalServices) {
+        for (AdditionalService additionalService : reservation.getAdditionalServices()) {
             reservation.setPrice(reservation.getPrice() + additionalService.getPrice() * reservation.getDurationInHours() / 24);
         }
     }
 
-    private List<AdditionalService> reserveAdditionalServices(Reservation reservation, ReservationDTO reservationDTO) throws Exception {
-        List<AdditionalService> retVal = new ArrayList<>();
+    private void reserveAdditionalServices(Reservation reservation, ReservationDTO reservationDTO) throws Exception {
         for (Long id : reservationDTO.getAdditionalServicesId()) {
             AdditionalService additionalService = additionalServiceRepository.findAdditionalServiceById(id);
             if (additionalService != null) {
-                additionalServiceReservationRepository.save(new AdditionalServiceReservation(additionalService, reservation));
-                retVal.add(additionalService);
+                reservation.getAdditionalServices().add(additionalService);
             } else {
                 throw new Exception("Dodatni servis nije poznat");
             }
         }
-        return retVal;
     }
 
     private boolean reservationEntityIsAvailable(ReservationEntities reservationEntity, SearchFilterSort searchFilterSort) {
