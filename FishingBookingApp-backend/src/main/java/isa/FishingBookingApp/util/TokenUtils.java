@@ -250,7 +250,6 @@ public class TokenUtils {
         String token = getAuthHeaderFromHeader(request).substring(7);
         final String usernameFromToken = getUsernameFromToken(token);
         final Date expired = getExpirationDateFromToken(token);
-        final Date asd = getIssuedAtDateFromToken(token);
         Date date = new Date();
         // Token je validan kada:
         return (username != null // korisnicko ime nije null

@@ -40,7 +40,7 @@ public class ReservationServiceImpl implements ReservationService {
         List<ReservationEntities> retVal = new ArrayList<>();
 
         for (ReservationEntities reservationEntity : reservationEntities) {
-            if (reservationEntityIsAvailable(reservationEntity, searchFilterSort)) {
+            if (reservationEntityIsAvailable(reservationEntity, searchFilterSort.getDateTime(), searchFilterSort.getDays())) {
                 retVal.add(reservationEntity);
             }
         }
@@ -55,7 +55,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24, reservationDTO.getGuests(), 0);
 
         // provera za 4.4
-        if (!reservationEntityIsAvailable(reservationEntities, new SearchFilterSort(reservationDTO.getMailAddress(), reservationDTO.getDays(), reservationDTO.getGuests(), reservationDTO.getDateTime()))) {
+        if (!reservationEntityIsAvailable(reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays())) {
             throw new Exception("Neko je rezervisao pre vas, pokušajte sa drugim entitetom");
         } else {
             reservationRepository.save(reservation);
@@ -171,16 +171,15 @@ public class ReservationServiceImpl implements ReservationService {
         }
     }
 
-    private boolean reservationEntityIsAvailable(ReservationEntities reservationEntity, SearchFilterSort searchFilterSort) {
-        return DateTimeNotInReservations(reservationEntity, searchFilterSort) && DateTimeInAvailableAppointment(reservationEntity, searchFilterSort)
-                && DateTimeNotInSpecialReservations(reservationEntity, searchFilterSort);
+    public boolean reservationEntityIsAvailable(ReservationEntities reservationEntity, LocalDateTime start, int days) {
+        return DateTimeNotInReservations(reservationEntity, start, days) && DateTimeInAvailableAppointment(reservationEntity, start, days)
+                && DateTimeNotInSpecialReservations(reservationEntity, start, days);
     }
 
-    private boolean DateTimeNotInSpecialReservations(ReservationEntities reservationEntity, SearchFilterSort searchFilterSort) {
+    private boolean DateTimeNotInSpecialReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<SpecialReservation> reservations = specialReservationRepository.findByReservationEntityId(reservationEntity.getId());
 
-        LocalDateTime start = searchFilterSort.getDateTime();
-        LocalDateTime end = start.plusDays(searchFilterSort.getDays());
+        LocalDateTime end = start.plusDays(days);
 
         for (SpecialReservation reservation : reservations) {
             LocalDateTime startReservation = reservation.getStart();
@@ -194,11 +193,10 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
 
-    private boolean DateTimeNotInReservations(ReservationEntities reservationEntity, SearchFilterSort searchFilterSort) {
+    private boolean DateTimeNotInReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<Reservation> reservations = reservationRepository.findByReservationEntityIdAndDeletedEquals(reservationEntity.getId(), false);
 
-        LocalDateTime start = searchFilterSort.getDateTime();
-        LocalDateTime end = start.plusDays(searchFilterSort.getDays());
+        LocalDateTime end = start.plusDays(days);
 
         for (Reservation reservation : reservations) {
             LocalDateTime startReservation = reservation.getStart();
@@ -212,11 +210,10 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
 
-    private boolean DateTimeInAvailableAppointment(ReservationEntities reservationEntity, SearchFilterSort searchFilterSort) {
+    private boolean DateTimeInAvailableAppointment(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<AvailableAppointment> availableAppointments = availableAppointmentRepository.findByEntityId(reservationEntity.getId());
 
-        LocalDateTime start = searchFilterSort.getDateTime();
-        LocalDateTime end = start.plusDays(searchFilterSort.getDays());
+        LocalDateTime end = start.plusDays(days);
 
         for (AvailableAppointment availableAppointment : availableAppointments) {
             LocalDateTime startAvailableAppointment = availableAppointment.getFromTime();
