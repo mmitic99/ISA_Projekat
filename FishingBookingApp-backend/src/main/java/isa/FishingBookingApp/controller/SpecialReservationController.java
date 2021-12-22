@@ -39,7 +39,7 @@ public class SpecialReservationController {
         this.tokenUtils = tokenUtils;
     }
 
-    @PostMapping()
+    @PostMapping(value = "")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> createSpecialReservation(@RequestBody SpecialReservationDTO specialReservationDTO, HttpServletRequest request) {
         try {

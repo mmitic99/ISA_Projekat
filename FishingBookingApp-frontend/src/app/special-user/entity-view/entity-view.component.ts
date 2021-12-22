@@ -156,9 +156,6 @@ export class EntityViewComponent implements OnInit {
     this.isPriceValid = regexp.test(this.reservationEntity.price);
   }
 
-  createNewAction(): void {
-    this.toastr.show("Bice implementirano sa tackom 3.16");
-  }
   createNewReservationForClient(): void {
     this.toastr.show("Bice implementirano sa tackom 3.22");
   }
