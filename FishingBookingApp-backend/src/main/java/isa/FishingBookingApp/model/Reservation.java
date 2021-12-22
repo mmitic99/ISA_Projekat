@@ -45,6 +45,17 @@ public class Reservation {
         this.deleted = false;
     }
 
+    public Reservation(User user, ReservationEntities reservationEntity, LocalDateTime start, double durationInHours, int maxPeople, double price, Set<AdditionalService> additionalServices) {
+        this.user = user;
+        this.reservationEntity = reservationEntity;
+        this.start = start;
+        this.durationInHours = durationInHours;
+        this.maxPeople = maxPeople;
+        this.price = price;
+        this.additionalServices = additionalServices;
+        this.deleted = false;
+    }
+
     public Long getId() {
         return id;
     }
