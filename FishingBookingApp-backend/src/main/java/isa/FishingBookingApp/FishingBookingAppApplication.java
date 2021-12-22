@@ -11,6 +11,8 @@ import java.io.DataInputStream;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 @SpringBootApplication
 public class FishingBookingAppApplication implements CommandLineRunner {
@@ -26,9 +28,10 @@ public class FishingBookingAppApplication implements CommandLineRunner {
     private AvailableAppointmentRepository availableAppointmentRepository;
     private ReservationRepository reservationRepository;
     private ReviewRepository reviewRepository;
+    private SpecialReservationRepository specialReservationRepository;
 
     @Autowired
-    public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationRepository reservationRepository, ReviewRepository reviewRepository) {
+    public FishingBookingAppApplication(ReservationEntitiesRepository reservationEntitiesRepository, AddressRepository addressRepository, UserRepository userRepository, UserRoleRepository userRoleRepository, EntityImageRepository entityImageRepository, AdditionalServiceRepository additionalServiceRepository, SubscriptionRepository subscriptionRepository, RequestForDeletingAccountRepository requestForDeletingAccountRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationRepository reservationRepository, ReviewRepository reviewRepository, SpecialReservationRepository specialReservationRepository) {
         this.reservationEntitiesRepository = reservationEntitiesRepository;
         this.addressRepository = addressRepository;
         this.userRepository = userRepository;
@@ -40,6 +43,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         this.availableAppointmentRepository = availableAppointmentRepository;
         this.reservationRepository = reservationRepository;
         this.reviewRepository = reviewRepository;
+        this.specialReservationRepository = specialReservationRepository;
     }
 
     public static void main(String[] args) {
@@ -139,6 +143,16 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         // rezervacije
         Reservation reservation1 = new Reservation(regularUser2, cottage1, LocalDateTime.now().minusDays(5), 24, 1, 1000);
         reservationRepository.save(reservation1);
+
+        // brze rezevacije(akcije)
+        LocalDateTime dtSpecResStart1 = LocalDateTime.now().plusDays(10);
+        LocalDateTime dtValidFrom1 = LocalDateTime.now();
+        LocalDateTime dtValidTo1 = dtStart1.plusDays(8);
+        Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
+        additionalServices.add(additionalService1);
+        additionalServices.add(additionalService2);
+        SpecialReservation specialReservation1 = new SpecialReservation(cottageOwner1, cottage1, dtSpecResStart1, 48, 5, additionalServices, 15000, dtValidFrom1, dtValidTo1);
+        specialReservationRepository.save(specialReservation1);
 
         // ocene
         Review review = new Review("najbolja vikendica", LocalDateTime.now().plusDays(15), 10, reservation1);

@@ -5,6 +5,7 @@ import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.Reservation;
 import isa.FishingBookingApp.model.ReservationEntities;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationService {
@@ -19,4 +20,6 @@ public interface ReservationService {
     List<Reservation> getAllOldReservation(String mailAddress);
 
     List<Reservation> searchFilterSort(SearchFilterSort searchFilterSort);
+
+    boolean reservationEntityIsAvailable(ReservationEntities reservationEntity, LocalDateTime start, int days);
 }
