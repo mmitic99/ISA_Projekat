@@ -28,7 +28,7 @@ public class Reservation {
 
     private int maxPeople;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<AdditionalService> additionalServices = new HashSet<>();
 
     private double price;
