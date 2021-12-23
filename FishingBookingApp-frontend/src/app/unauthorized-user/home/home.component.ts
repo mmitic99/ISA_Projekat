@@ -240,7 +240,8 @@ export class HomeComponent implements OnInit {
       '?date=' + this.searchFilterSortModel.date +
       '&time=' + this.searchFilterSortModel.time +
       '&daysNumber=' + this.searchFilterSortModel.daysNumber +
-      '&guestsNumber=' + this.searchFilterSortModel.guestsNumber);
+      '&guestsNumber=' + this.searchFilterSortModel.guestsNumber +
+      '&isSpecial=false');
   }
 
   getMarkById(id: any) {

@@ -113,6 +113,38 @@
                     </tbody>
                 </table>
 
+            </div><br>
+            <h1 class="subtitle" *ngIf="specialReservations==null || specialReservations.length==0">Ne postoje
+                akcije za ovaj entitet</h1>
+
+            <div class="box" *ngIf="this.authService.getRole()=='ROLE_USER' && specialReservations.length!=0">
+                <h5 class="subtitle">Akcije (brze rezervacije):</h5>
+                <table class="table is-fullwidth">
+                    <thead>
+                        <tr>
+                            <th>Datum</th>
+                            <th>Trajanje[u danima]</th>
+                            <th>Maksimalan broj ljudi</th>
+                            <th>Akcijska cena[dinara]</th>
+                            <th>Akciju možete rezervisati od-do</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let specialReservation of specialReservations">
+                            <td>{{specialReservation.start | date:"dd.MM.yyyy, HH:mm"}}</td>
+                            <td>{{specialReservation.durationInHours / 24}}</td>
+                            <td>{{specialReservation.maxPeople}}</td>
+                            <td>{{specialReservation.price}}</td>
+                            <td>{{specialReservation.validFrom | date:"dd.MM.yyyy, HH:mm"}} -
+                                {{specialReservation.validTo | date:"dd.MM.yyyy, HH:mm"}}</td>
+                            <td><a (click)="reserve(specialReservation)"><span class="icon">
+                                        <i class="fas fa-info"></i>
+                                    </span></a></td>
+                        </tr>
+                    </tbody>
+                </table>
+
             </div>
         </div>
     </div>

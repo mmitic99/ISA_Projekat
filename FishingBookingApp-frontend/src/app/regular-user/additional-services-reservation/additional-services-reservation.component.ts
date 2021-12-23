@@ -5,6 +5,7 @@ import { Reservation } from 'src/app/unauthorized-user/home/reservation';
 import { AuthService } from 'src/app/unauthorized-user/service/auth.service';
 import { ReservationEntitiesService } from 'src/app/unauthorized-user/service/reservation-entities.service';
 import { ReservationService } from '../service/reservation.service';
+import { SpecialReservationService } from '../service/special-reservation.service';
 
 @Component({
   selector: 'app-additional-services-reservation',
@@ -17,16 +18,21 @@ export class AdditionalServicesReservationComponent implements OnInit {
   time = "";
   days = 0;
   guests = 0;
-  additionalServices:any
+  additionalServices: any
   reservation = new Reservation()
   reservationEntity: any
+  isSpecial: boolean | undefined
+  additionalServicesIds: any
+  price: any
+  specResId: any
 
   constructor(private activatedRoute: ActivatedRoute,
     private reservationService: ReservationService,
     private toastr: ToastrService,
     private reservationEntitiesService: ReservationEntitiesService,
-    private router: Router
-    ) { }
+    private router: Router,
+    private specialReservationService: SpecialReservationService
+  ) { }
 
   ngOnInit(): void {
     this.activatedRoute.params.subscribe(params => {
@@ -37,12 +43,23 @@ export class AdditionalServicesReservationComponent implements OnInit {
       this.time = params.time;
       this.days = params.daysNumber;
       this.guests = params.guestsNumber;
+      this.isSpecial = params.isSpecial;
+      this.price = params.price;
+      this.specResId = params.specResId;
     });
+    this.activatedRoute.queryParamMap.subscribe(params => this.additionalServicesIds = params.getAll('addSerIds'));
+
     this.getAdditionalServices()
     this.getEntity()
 
     this.reservation = new Reservation(this.date, this.time, this.days, this.guests, this.id);
 
+
+  }
+  selectSpecialAdditionalService() {
+    for (var addId of this.additionalServicesIds) {
+      this.selectAdditionalService(parseInt(addId))
+    }
   }
 
   getEntity() {
@@ -50,32 +67,49 @@ export class AdditionalServicesReservationComponent implements OnInit {
       (data) => {
         this.reservationEntity = data
       },
-      (error)=>{
-        if(error.status == 401){
+      (error) => {
+        if (error.status == 401) {
           AuthService.logout()
-        }}
+        }
+      }
     )
   }
   getAdditionalServices() {
-    this.reservationService.getAdditionalServiceByEntityId(this.id).subscribe((data)=>{
+    this.reservationService.getAdditionalServiceByEntityId(this.id).subscribe((data) => {
       this.additionalServices = data;
-    },(error)=>{
-      if(error.status == 401){
+      if (this.isSpecial) {
+        this.selectSpecialAdditionalService()
+      }
+    }, (error) => {
+      if (error.status == 401) {
         AuthService.logout()
       }
     })
   }
 
   reserveEntity() {
-    this.reservationService.reserve(this.reservation).subscribe((data) => {
-      this.router.navigate(["/curent_reservation"])
-      this.toastr.success("Uspešno ste rezervisali. Uskoro će vam na mejl stići potvrda registracije.")
-    }, (error) => {
-      this.toastr.error(error.error.error)
-      if(error.status == 401){
-        AuthService.logout()
-      }
-    })
+    if (!this.isSpecial) {
+      this.reservationService.reserve(this.reservation).subscribe((data) => {
+        this.router.navigate(["/curent_reservation"])
+        this.toastr.success("Uspešno ste rezervisali. Uskoro će vam na mejl stići potvrda rezervacije.")
+      }, (error) => {
+        this.toastr.error(error.error.error)
+        if (error.status == 401) {
+          AuthService.logout()
+        }
+      })
+    }
+    else {
+      this.specialReservationService.reserve(this.specResId).subscribe((data) => {
+        this.router.navigate(["/curent_reservation"])
+        this.toastr.success("Uspešno ste rezervisali akciju. Uskoro će vam na mejl stići potvrda rezervacije.")
+      }, (error) => {
+        this.toastr.error(error.error.error)
+        if (error.status == 401) {
+          AuthService.logout()
+        }
+      })
+    }
   }
 
   selectAdditionalService(id: number) {
@@ -86,12 +120,20 @@ export class AdditionalServicesReservationComponent implements OnInit {
     }
   }
 
-  calculatePriceSumForAdditionalServices(){
+  calculatePriceSumForAdditionalServices() {
     let retVal = 0;
-    for(let id of this.reservation.additionalServicesId){
-      var additionalService = this.additionalServices.find((a: { id: number; }) => {return a.id == id})
+    for (let id of this.reservation.additionalServicesId) {
+      var additionalService = this.additionalServices.find((a: { id: number; }) => { return a.id == id })
       retVal += additionalService.price
     }
     return retVal;
+  }
+
+  getAddServName(id: any) {
+    return this.additionalServices.find((addSer: { id: any; }) => { return addSer.id == id }).name
+  }
+
+  getAddServPrice(id: any) {
+    return this.additionalServices.find((addSer: { id: any; }) => { return addSer.id == id }).price
   }
 }
