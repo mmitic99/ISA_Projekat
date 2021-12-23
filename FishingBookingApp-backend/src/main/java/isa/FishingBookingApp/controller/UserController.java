@@ -48,7 +48,7 @@ public class UserController {
     }
 
     @PostMapping(value = "deletingRequest")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> deleteRequest(@RequestBody RequestForDeletingAccountDTO requestForDeletingAccountDTO, HttpServletRequest request){
         if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(requestForDeletingAccountDTO.getMailAddress(), request)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
