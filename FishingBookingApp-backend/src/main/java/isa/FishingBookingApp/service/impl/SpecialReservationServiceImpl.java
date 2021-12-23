@@ -56,7 +56,7 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
     @Override
     public Reservation takeSpecialReservation(Long id, String mailAddress) throws Exception {
         SpecialReservation specialReservation = specialReservationRepository.findById(id).orElse(null);
-        if (specialReservation == null) throw new Exception("Akciju koju želite da rezervišete ne postoji ili ju je neko već rezervisao.");
+        if (specialReservation == null) throw new Exception("Akcija koju želite da rezervišete ne postoji ili ju je neko već rezervisao.");
 
         User user = userRepository.findByMailAddress(mailAddress);
         if (user == null) throw new Exception("Nepostojeći korisnik.");

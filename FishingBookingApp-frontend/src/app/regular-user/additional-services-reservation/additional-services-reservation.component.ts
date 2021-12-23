@@ -93,7 +93,7 @@ export class AdditionalServicesReservationComponent implements OnInit {
         this.router.navigate(["/curent_reservation"])
         this.toastr.success("Uspešno ste rezervisali. Uskoro će vam na mejl stići potvrda rezervacije.")
       }, (error) => {
-        this.toastr.error(error.error.error)
+        this.toastr.error(error.error.message)
         if (error.status == 401) {
           AuthService.logout()
         }
@@ -104,7 +104,7 @@ export class AdditionalServicesReservationComponent implements OnInit {
         this.router.navigate(["/curent_reservation"])
         this.toastr.success("Uspešno ste rezervisali akciju. Uskoro će vam na mejl stići potvrda rezervacije.")
       }, (error) => {
-        this.toastr.error(error.error.error)
+        this.toastr.error(error.error.message)
         if (error.status == 401) {
           AuthService.logout()
         }
