@@ -5,7 +5,6 @@ import isa.FishingBookingApp.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.scheduling.annotation.Async;
@@ -13,7 +12,7 @@ import org.springframework.stereotype.Service;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.List;
+import java.time.format.DateTimeFormatter;
 
 @Service
 public class EmailService {
@@ -112,6 +111,55 @@ public class EmailService {
 
     @Async
     public void sendCreatedActionInfo(SpecialReservation specialReservation) throws Exception {
+        for (User user : subscriptionService.getUsersSubscribedToReservationEntity(specialReservation.getReservationEntity().getId())) {
+            MimeMessage message = javaMailSender.createMimeMessage();
+            MimeMessageHelper mail = new MimeMessageHelper(message);
 
+            mail.setTo(user.getMailAddress());
+            mail.setFrom(env.getProperty("spring.mail.username"));
+
+            String type = "";
+            if (specialReservation.getReservationEntity().getType().equals("cottage")) {
+                type = "vikendicu";
+                mail.setSubject("ISA-PROJEKAT Kreirana je akcija za vikendicu na koju ste pretplaćeni");
+            } else if (specialReservation.getReservationEntity().getType().equals("boat")) {
+                type = "brod";
+                mail.setSubject("ISA-PROJEKAT Kreirana je akcija za brod/čamac na koji ste pretplaćeni");
+            } else if (specialReservation.getReservationEntity().getType().equals("fishingInstructor")) {
+                type = "instruktora pecanja";
+                mail.setSubject("ISA-PROJEKAT Kreirana je akcija za instruktora pecanja na kojeg ste pretplaćeni");
+            }
+
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+
+            String text = "Pozdrav " + user.getName() + ",<br><br>" + "" +
+                    "Izašla je akcija za " + type + " <strong>" + specialReservation.getReservationEntity().getName() +
+                    "</strong> na koju ste pretplaćeni. Akcija važi od " + "<strong>" + specialReservation.getValidFrom().format(formatter) +  "</strong> do " +
+                    "<strong>" + specialReservation.getValidTo().format(formatter) + "</strong>" +
+                    "<br><br> Detalji akcije: <br>" +
+                    "<table border=\"1\" style=\"width: 100%\">" +
+                    "<tr><td style=\"width: 20%\">Naziv</td><td style=\"width: 100%\">" + specialReservation.getReservationEntity().getName() + "</td></tr>" +
+                    "<tr><td style=\"width: 20%\">Adresa</td><td style=\"width: 100%\">" + specialReservation.getReservationEntity().getAddress() + "</td></tr>" +
+                    "<tr><td style=\"width: 20%\">Ukupno dana</td><td style=\"width: 100%\">" + specialReservation.getDurationInHours() / 24 + "</td></tr>" +
+                    "<tr><td style=\"width: 20%\">Cena po danu</td><td style=\"width: 100%\">" + specialReservation.getReservationEntity().getPrice() + "</td></tr>" +
+                    "</table><br>";
+
+            if(specialReservation.getAdditionalServices() !=null && specialReservation.getAdditionalServices().size() != 0) {
+                text += "Dodatne usluge:<br><table border=\"1\" style=\"width: 100%\">" +
+                        "<tr><th>Naziv</th><th>Cena po danu</th></tr>";
+                for (AdditionalService additionalService :
+                        specialReservation.getAdditionalServices()) {
+                    text += "<tr><td style=\"width: 80%\">" + additionalService.getName() + "</td><td style=\"width: 20%\">" + additionalService.getPrice() + "</td></tr>";
+
+                }
+                text += "</table>";
+            }
+
+            text += "<h1 align=\"right\">Ukupna akcijska cena: " + specialReservation.getPrice() + "</h1>";
+
+            mail.setText(text, true);
+
+            javaMailSender.send(message);
+        }
     }
 }
