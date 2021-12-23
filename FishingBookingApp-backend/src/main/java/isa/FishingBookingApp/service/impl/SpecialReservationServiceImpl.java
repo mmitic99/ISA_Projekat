@@ -9,6 +9,7 @@ import isa.FishingBookingApp.service.ReservationService;
 import isa.FishingBookingApp.service.SpecialReservationService;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -71,6 +72,11 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
         }
 
         return createdReservation;
+    }
+
+    @Override
+    public List<SpecialReservation> getAllSpecialReservationByEntityId(Long id) {
+        return specialReservationRepository.findByReservationEntityIdAndValidFromBeforeAndValidToAfter(id, LocalDateTime.now(), LocalDateTime.now());
     }
 
     private Set<AdditionalService> getAdditionalServices(List<Long> additionalServicesIds, Long entityId) {

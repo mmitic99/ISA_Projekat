@@ -1,6 +1,8 @@
+import { DatePipe } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
+import { SpecialReservationService } from 'src/app/regular-user/service/special-reservation.service';
 import { SubscriptionService } from 'src/app/regular-user/service/subscription.service';
 import { Subscription } from 'src/app/regular-user/subscribed/Subscription';
 import { EntitiesService } from 'src/app/special-user/service/entities.service';
@@ -18,12 +20,16 @@ export class ReservationEntityComponent implements OnInit {
   reservationEntity: any;
   imageObject: Array<object> = [];
   subscription: any;
+  specialReservations: any;
 
   constructor(private route: ActivatedRoute,
     private reservationEntitiesService: ReservationEntitiesService,
     public authService: AuthService,
     private subscriptionService: SubscriptionService,
-    private toastr: ToastrService
+    private toastr: ToastrService,
+    private specialReservationService: SpecialReservationService,
+    private router: Router,
+    private datePipe: DatePipe
   ) { }
 
   ngOnInit(): void {
@@ -33,6 +39,45 @@ export class ReservationEntityComponent implements OnInit {
     this.getEntity();
     this.getEntityImages();
     this.getSubscription();
+    if (this.authService.getRole() == "ROLE_USER") {
+      this.getAllSpecialReservation();
+    }
+  }
+
+  getAllSpecialReservation() {
+    this.specialReservationService.getAllSpecialReservation(this.id).subscribe(
+      (data) => {
+        this.specialReservations = data;
+        for (let reservation of this.specialReservations) {
+          let dateTime = reservation.start
+          reservation.start = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
+          dateTime = reservation.validFrom
+          reservation.validFrom = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
+          dateTime = reservation.validTo
+          reservation.validTo = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
+        }
+      },
+      (error) => {
+        this.specialReservations = []
+      }
+    )
+  }
+
+  reserve(specialReservation: any){
+    var url = '/aditional_services_reservation/' + this.id +
+    '?date=' + this.datePipe.transform(specialReservation.start, "yyyy-MM-dd") +
+    '&time=' + this.datePipe.transform(specialReservation.start, "HH:mm") +
+    '&daysNumber=' + specialReservation.durationInHours / 24 +
+    '&guestsNumber=' + specialReservation.maxPeople +
+    '&price=' + specialReservation.price +
+    '&specResId=' + specialReservation.id +
+    '&isSpecial=true';
+
+    for(var addSer of specialReservation.additionalServices){
+      url += '&addSerIds=' + addSer.id
+    }
+
+    this.router.navigateByUrl(url);
   }
 
   getEntity() {
@@ -40,10 +85,11 @@ export class ReservationEntityComponent implements OnInit {
       (data) => {
         this.reservationEntity = data
       },
-      (error)=>{
-        if(error.status == 401){
+      (error) => {
+        if (error.status == 401) {
           AuthService.logout()
-        }}
+        }
+      }
     )
   }
 
@@ -56,10 +102,11 @@ export class ReservationEntityComponent implements OnInit {
             this.imageObject.push({ image: img, thumbImage: img });
           }
         }
-      },(error)=>{
-        if(error.status == 401){
+      }, (error) => {
+        if (error.status == 401) {
           AuthService.logout()
-        }}
+        }
+      }
     )
   }
 
@@ -87,13 +134,13 @@ export class ReservationEntityComponent implements OnInit {
         this.toastr.success("Uspešno ste se pretplatili")
         this.subscription = data
       }
-      else{
+      else {
         this.toastr.success("Uspešno ste se otkazali pretplatu")
         this.subscription = null
       }
     }, (error) => {
       this.toastr.error(error)
-      if(error.status == 401){
+      if (error.status == 401) {
         AuthService.logout()
       }
     });

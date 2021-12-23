@@ -11,6 +11,8 @@ import { AppComponent } from './app.component';
 import { HeaderComponent } from './header/header.component';
 import { CommonModule } from '@angular/common';
 
+import { DatePipe } from '@angular/common';
+
 import '@fortawesome/fontawesome-free/js/all.js';
 
 @NgModule({
@@ -28,7 +30,7 @@ import '@fortawesome/fontawesome-free/js/all.js';
     ToastrModule.forRoot(),
     NgImageSliderModule,
   ],
-  providers: [],
+  providers: [DatePipe],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
