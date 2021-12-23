@@ -47,7 +47,7 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
             throw new Exception("Termin koji želite da zakažete nije dostupan.");
         } else {
             specialReservationRepository.save(specialReservation);
-            // TODO: poslati mejl
+            emailService.sendCreatedActionInfo(specialReservation);
             return specialReservation;
         }
     }

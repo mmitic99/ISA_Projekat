@@ -58,13 +58,13 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
-    public List<String> getUsernamesOfSubscribedToReservationEntity(Long id) {
-        ArrayList<String> subscribedUsersUsername = new ArrayList<>();
+    public List<User> getUsersSubscribedToReservationEntity(Long id) {
+        ArrayList<User> subscribedUsers = new ArrayList<>();
         for(Subscription subscription : subscriptionRepository.findAllByReservationEntitiesId(id)) {
-            subscribedUsersUsername.add(subscription.getUser().getUsername());
+            subscribedUsers.add(subscription.getUser());
         }
 
-        return subscribedUsersUsername;
+        return subscribedUsers;
     }
 
     @Override

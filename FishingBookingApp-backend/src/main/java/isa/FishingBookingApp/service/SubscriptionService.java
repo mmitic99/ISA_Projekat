@@ -4,6 +4,7 @@ import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.dto.SubscriptionDTO;
 import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.model.Subscription;
+import isa.FishingBookingApp.model.User;
 import org.springframework.http.ResponseEntity;
 
 import java.util.List;
@@ -21,5 +22,5 @@ public interface SubscriptionService {
 
     Subscription getByUserAndEntity(String mailAddress, Long reservationEntityId);
 
-    List<String> getUsernamesOfSubscribedToReservationEntity(Long id);
+    List<User> getUsersSubscribedToReservationEntity(Long id);
 }
