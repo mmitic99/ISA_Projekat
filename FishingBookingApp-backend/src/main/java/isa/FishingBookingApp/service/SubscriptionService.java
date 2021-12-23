@@ -20,4 +20,6 @@ public interface SubscriptionService {
     List<Subscription> getAll();
 
     Subscription getByUserAndEntity(String mailAddress, Long reservationEntityId);
+
+    List<String> getUsernamesOfSubscribedToReservationEntity(Long id);
 }

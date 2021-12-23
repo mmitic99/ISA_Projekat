@@ -62,7 +62,7 @@ public class ReservationServiceImpl implements ReservationService {
             reserveAdditionalServices(reservation, reservationDTO);
             addPriceToReservation(reservation);
             reservationRepository.save(reservation);
-            emailService.sendReservationInfo(reservation);
+            emailService.sendReservationInfo(reservation, false);
             return reservation;
         }
     }

@@ -58,6 +58,16 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    public List<String> getUsernamesOfSubscribedToReservationEntity(Long id) {
+        ArrayList<String> subscribedUsersUsername = new ArrayList<>();
+        for(Subscription subscription : subscriptionRepository.findAllByReservationEntitiesId(id)) {
+            subscribedUsersUsername.add(subscription.getUser().getUsername());
+        }
+
+        return subscribedUsersUsername;
+    }
+
+    @Override
     public List<Subscription> searchFilterSort(SearchFilterSort searchFilterSort) {
         List<Subscription> subscriptions;
         if (searchFilterSort.getTypes().size() != 0) {

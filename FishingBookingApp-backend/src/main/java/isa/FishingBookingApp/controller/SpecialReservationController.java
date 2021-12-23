@@ -1,10 +1,7 @@
 package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.SpecialReservationDTO;
-import isa.FishingBookingApp.model.Boat;
-import isa.FishingBookingApp.model.Cottage;
-import isa.FishingBookingApp.model.ReservationEntities;
-import isa.FishingBookingApp.model.SpecialReservation;
+import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.service.BoatService;
 import isa.FishingBookingApp.service.CottageService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
@@ -59,8 +56,8 @@ public class SpecialReservationController {
         try {
             String token = tokenUtils.getAuthHeaderFromHeader(request);
             String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-            specialReservationService.takeSpecialReservation(id, mailAddress);
-            return null;
+            Reservation reservation = specialReservationService.takeSpecialReservation(id, mailAddress);
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
         }
