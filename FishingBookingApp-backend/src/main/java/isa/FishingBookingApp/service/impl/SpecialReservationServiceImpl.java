@@ -22,14 +22,16 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
     private UserRepository userRepository;
     private AdditionalServiceRepository additionalServiceRepository;
     private ReservationService reservationService;
+    private EmailService emailService;
 
-    public SpecialReservationServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, SpecialReservationRepository specialReservationRepository, ReservationRepository reservationRepository, UserRepository userRepository, AdditionalServiceRepository additionalServiceRepository, ReservationService reservationService) {
+    public SpecialReservationServiceImpl(ReservationEntitiesRepository reservationEntitiesRepository, SpecialReservationRepository specialReservationRepository, ReservationRepository reservationRepository, UserRepository userRepository, AdditionalServiceRepository additionalServiceRepository, ReservationService reservationService, EmailService emailService) {
         this.reservationEntitiesRepository = reservationEntitiesRepository;
         this.specialReservationRepository = specialReservationRepository;
         this.reservationRepository = reservationRepository;
         this.userRepository = userRepository;
         this.additionalServiceRepository = additionalServiceRepository;
         this.reservationService = reservationService;
+        this.emailService = emailService;
     }
 
 
@@ -62,6 +64,7 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
         Reservation createdReservation = reservationRepository.save(reservation);
         if (createdReservation != null) {
             specialReservationRepository.delete(specialReservation);
+            emailService.sendReservationInfo(createdReservation, true);
         }
         else {
             throw new Exception("Neuspešno rezervisanje akcije.");

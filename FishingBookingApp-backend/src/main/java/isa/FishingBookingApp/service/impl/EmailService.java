@@ -1,8 +1,7 @@
 package isa.FishingBookingApp.service.impl;
 
-import isa.FishingBookingApp.model.AdditionalService;
-import isa.FishingBookingApp.model.Reservation;
-import isa.FishingBookingApp.model.User;
+import isa.FishingBookingApp.model.*;
+import isa.FishingBookingApp.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
@@ -20,11 +19,13 @@ import java.util.List;
 public class EmailService {
     private JavaMailSender javaMailSender;
     private Environment env;
+    private SubscriptionService subscriptionService;
 
     @Autowired
-    public EmailService(JavaMailSender javaMailSender, Environment env) {
+    public EmailService(JavaMailSender javaMailSender, Environment env, SubscriptionService subscriptionService) {
         this.javaMailSender = javaMailSender;
         this.env = env;
+        this.subscriptionService = subscriptionService;
     }
 
     @Async
@@ -53,13 +54,19 @@ public class EmailService {
     }
 
     @Async
-    public void sendReservationInfo(Reservation reservation) throws Exception {
+    public void sendReservationInfo(Reservation reservation, Boolean isAction) throws Exception {
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mail = new MimeMessageHelper(message);
 
         mail.setTo(reservation.getUser().getMailAddress());
         mail.setFrom(env.getProperty("spring.mail.username"));
-        mail.setSubject("ISA-PROJEKAT Potvrda rezervacije");
+        if (isAction) {
+            mail.setSubject("ISA-PROJEKAT Potvrda rezervacije akcije");
+        }
+        else {
+            mail.setSubject("ISA-PROJEKAT Potvrda rezervacije");
+        }
+
 
         String type = "";
         if (reservation.getReservationEntity().getType().equals("cottage")) {
@@ -92,10 +99,19 @@ public class EmailService {
             text += "</table>";
         }
 
-        text += "<h1 align=\"right\">Ukupna cena: " + reservation.getPrice() + "</h1>";
+        if (isAction) {
+            text += "<h1 align=\"right\">Ukupna akcijska cena: " + reservation.getPrice() + "</h1>";
+        } else {
+            text += "<h1 align=\"right\">Ukupna cena: " + reservation.getPrice() + "</h1>";
+        }
 
         mail.setText(text, true);
 
         javaMailSender.send(message);
+    }
+
+    @Async
+    public void sendCreatedActionInfo(SpecialReservation specialReservation) throws Exception {
+
     }
 }
