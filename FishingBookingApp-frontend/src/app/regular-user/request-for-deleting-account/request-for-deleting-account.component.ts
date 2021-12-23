@@ -30,7 +30,7 @@ export class RequestForDeletingAccountComponent implements OnInit {
       }
     },
     (error)=>{
-      this.toastr.success(error)
+      this.toastr.error(error.error.message)
       if(error.status == 401){
         AuthService.logout()
       }
