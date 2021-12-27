@@ -43,7 +43,12 @@ export class AdditionalServicesReservationComponent implements OnInit {
       this.time = params.time;
       this.days = params.daysNumber;
       this.guests = params.guestsNumber;
-      this.isSpecial = params.isSpecial;
+      if (params.isSpecial == "false") {
+        this.isSpecial = false;
+      }
+      else {
+        this.isSpecial = true;
+      }
       this.price = params.price;
       this.specResId = params.specResId;
     });

@@ -7,6 +7,7 @@ import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -14,6 +15,7 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
+@Transactional(readOnly = true)
 public class ReservationServiceImpl implements ReservationService {
     private ReservationRepository reservationRepository;
     private SpecialReservationRepository specialReservationRepository;
@@ -36,7 +38,7 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
-    public List<ReservationEntities> checkIsReservationEntitiesIsAvailable(List<ReservationEntities> reservationEntities, SearchFilterSort searchFilterSort) {
+    public List<ReservationEntities> checkReservationEntitiesIsAvailable(List<ReservationEntities> reservationEntities, SearchFilterSort searchFilterSort) {
         List<ReservationEntities> retVal = new ArrayList<>();
 
         for (ReservationEntities reservationEntity : reservationEntities) {
@@ -49,19 +51,18 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception {
-        ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesById(reservationDTO.getReservationEntitiesId());
+        ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(reservationDTO.getReservationEntitiesId());
         User user = userRepository.findByMailAddress(reservationDTO.getMailAddress());
         Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24, reservationDTO.getGuests(), 0);
 
-        // provera za 4.4
         if (!reservationEntityIsAvailable(reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays())) {
             throw new Exception("Neko je rezervisao pre vas, pokušajte sa drugim entitetom");
         } else {
-            reservationRepository.save(reservation);
-            reserveAdditionalServices(reservation, reservationDTO);
             addPriceToReservation(reservation);
             reservationRepository.save(reservation);
+            reserveAdditionalServices(reservation, reservationDTO);
             emailService.sendReservationInfo(reservation, false);
             return reservation;
         }

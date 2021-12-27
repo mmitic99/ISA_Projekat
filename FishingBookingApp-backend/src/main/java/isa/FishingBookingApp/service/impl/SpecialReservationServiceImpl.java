@@ -8,6 +8,7 @@ import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.ReservationService;
 import isa.FishingBookingApp.service.SpecialReservationService;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -54,8 +55,9 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Reservation takeSpecialReservation(Long id, String mailAddress) throws Exception {
-        SpecialReservation specialReservation = specialReservationRepository.findById(id).orElse(null);
+        SpecialReservation specialReservation = specialReservationRepository.findSpecialReservationsById(id);
         if (specialReservation == null) throw new Exception("Akcija koju želite da rezervišete ne postoji ili ju je neko već rezervisao.");
 
         User user = userRepository.findByMailAddress(mailAddress);

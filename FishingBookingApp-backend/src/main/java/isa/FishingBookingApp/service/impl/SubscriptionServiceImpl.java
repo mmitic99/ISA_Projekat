@@ -11,6 +11,7 @@ import isa.FishingBookingApp.repository.UserRepository;
 import isa.FishingBookingApp.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -41,8 +42,9 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Subscription subscribe(SubscriptionDTO subscriptionDTO) {
-        User user = userRepository.findByMailAddress(subscriptionDTO.getMailAddress());
+        User user = userRepository.findByMailAddressTransactional(subscriptionDTO.getMailAddress());
         ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesById(subscriptionDTO.getReservationEntityId());
         return subscriptionRepository.save(new Subscription(user, reservationEntities));
     }

@@ -46,7 +46,7 @@ public class ReservationController {
         try {
             SearchFilterSort searchFilterSort = new SearchFilterSort(sort, types, search, date, time, days, guests);
             List<ReservationEntities> reservationEntities = reservationEntitiesService.searchFilterSort(searchFilterSort);
-            return new ResponseEntity<>(reservationService.checkIsReservationEntitiesIsAvailable(reservationEntities, searchFilterSort), HttpStatus.OK);
+            return new ResponseEntity<>(reservationService.checkReservationEntitiesIsAvailable(reservationEntities, searchFilterSort), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
