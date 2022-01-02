@@ -1,5 +1,8 @@
 package isa.FishingBookingApp.model;
 
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
+
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.HashSet;
@@ -29,6 +32,7 @@ public class Reservation {
     private int maxPeople;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<AdditionalService> additionalServices = new HashSet<>();
 
     private double price;

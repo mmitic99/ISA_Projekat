@@ -1,0 +1,124 @@
+<button class="button is-link" routerLink="../../viewEntity/{{reservationEntity.id}}">Nazad</button>
+
+<h1 class="title has-text-grey has-text-centered">Kreiranje rezervacije za korisnika</h1>
+
+<div *ngIf="!userExist">
+    <p>Ne postoji ni jedna trenutna rezervacija.</p>
+</div>
+
+<div *ngIf="userExist">
+    <h4 class="title is-4 has-text-grey">Korisnik za kojeg trenutno traje rezervacija:</h4>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Ime</th>
+                <th>Prezime</th>
+                <th>Mejl adresa</th>
+                <th>Broj telefona</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr>
+                <td>{{user.name}}</td>
+                <td>{{user.surname}}</td>
+                <td>{{user.mailAddress}}</td>
+                <td>{{user.mobileNumber}}</td>
+            </tr>
+        </tfoot>
+    </table>
+
+
+    <div class="columns has-background-link-light">
+        <div class="column is-6">
+            <div class="hero-body ">
+                <h4 class="title is-4 has-text-grey">Informacije o novoj rezervaciji</h4>
+                <div class="columns is-multiline is-vcentered">
+                    <label class="label">Datum početka tremina</label>
+                    <div class="column">
+                        <input class="input" type="date" [(ngModel)]="newReservation.startDate"
+                            min="{{minDate | date:'yyyy-MM-dd'}}">
+                    </div>
+
+                    <div class="column">
+                        <div class="select is-fullwidth">
+                            <select [(ngModel)]="newReservation.startTime">
+                                <option value="">Vreme</option>
+                                <option *ngFor="let time of times" [ngValue]="time">{{time}}</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="field">
+                    <label class="label">Broj dana</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Broj dana" name="days"
+                            (focusout)="onFocusOutNumberOfDays()" [(ngModel)]="newReservation.days">
+                    </div>
+                    <p class="is-danger help" *ngIf="isNumberOfDaysValid == false">Broj dana mora biti cifra.</p>
+                </div>
+
+                <div class="field">
+                    <label class="label">Maksimalno ljudi</label>
+                    <div class="control">
+                        <input class="input" type="number" placeholder="Maksimalno ljudi" name="maxPeople"
+                            (focusout)="onFocusOutNumberOfPeoples()" [(ngModel)]="newReservation.maxPeople">
+                    </div>
+                    <p class="is-danger help" *ngIf="isNumberOfPeoplesValid == false">Broj ljudi mora biti cifra.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <hr />
+
+    <br>
+    <div class="container">
+        <h1 class="subtitle">Odaberite dodatne usluge koje idu uz rezervaciju:</h1>
+        <table class="table is-hoverable is-fullwidth">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Naziv dodatne usluge</th>
+                    <th>Cena po danu[dinara]</th>
+                </tr>
+            </thead>
+
+            <tfoot>
+                <tr *ngFor="let additionalService of additionalServices">
+                    <td><input type="checkbox" class="checkbox" (click)="selectAdditionalService(additionalService.id)">
+                    </td>
+                    <td>{{additionalService.name}}</td>
+                    <td>{{additionalService.price}}</td>
+                </tr>
+                <tr><br></tr>
+                <tr>
+                    <td></td>
+                    <th>Ukupna cena dodatnih usluga po danu</th>
+                    <td>{{calculatePriceSumForAdditionalServices()}}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <th>Ukupna cena dodatnih usluga za {{newReservation.days}} dan/a</th>
+                    <td>{{calculatePriceSumForAdditionalServices() * newReservation.days}}</td>
+                </tr>
+            </tfoot>
+        </table>
+    </div>
+
+    <hr>
+
+    <div class="has-background-success-light">
+        <div class="has-text-left">
+            <h5 class="title is-5">Ukupna cena rezervacije sa svim dodatnim uslugama:
+                {{(reservationEntity.price + calculatePriceSumForAdditionalServices()) *
+                newReservation.days}}</h5>
+        </div>
+    </div>
+
+    <div class="has-text-centered mr-6">
+        <a class="button is-success mb-6" (click)="createReservationForUser()">Potvrdi rezervaciju</a>
+    </div>
+
+</div>

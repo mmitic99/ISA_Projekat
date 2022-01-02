@@ -93,6 +93,14 @@ public class ReservationEntitiesController {
         return new ResponseEntity<>(availableAppointments, HttpStatus.OK);
     }
 
+    @GetMapping(value = "/currentReservation/{entityId}")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<Reservation> getCurrentReservationOfEntity(@PathVariable Long entityId){
+        Reservation reservation = reservationEntitiesService.getCurrentReservationOfEntity(entityId);
+
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
+
     @PostMapping(value = "/imageUpload/{entityId}")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<EntityImageDTO> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId) {

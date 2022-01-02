@@ -2,6 +2,7 @@ package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.CancelReservationDTO;
 import isa.FishingBookingApp.dto.ReservationDTO;
+import isa.FishingBookingApp.dto.ReservationForClientDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.Reservation;
 import isa.FishingBookingApp.model.ReservationEntities;
@@ -61,6 +62,21 @@ public class ReservationController {
             }
             reservationDTO.setDateTimeFromStrings();
             Reservation reservation = reservationService.reserveEntity(reservationDTO);
+            return new ResponseEntity<>(reservation, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @PostMapping(value = "reserveForClient")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<Object> reserveForClient(@RequestBody ReservationForClientDTO reservationForClientDTO, HttpServletRequest request) {
+        try {
+            ReservationEntities reservationEntity = reservationEntitiesService.get(reservationForClientDTO.getReservationEntityId());
+            if (reservationEntity == null)  return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+            if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(reservationForClientDTO.getOwnerMailAddress(), request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
+            reservationForClientDTO.setDateTimesFromStrings();
+            Reservation reservation = reservationService.reserveEntityForClient(reservationForClientDTO);
             return new ResponseEntity<>(reservation, HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e, HttpStatus.BAD_REQUEST);

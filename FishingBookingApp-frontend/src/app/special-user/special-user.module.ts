@@ -19,6 +19,7 @@ import { NewBoatComponent } from './new-boat/new-boat.component';
 import { BoatViewComponent } from './boat-view/boat-view.component';
 import { NewAvailableAppointmentComponent } from './new-available-appointment/new-free-appointment.component';
 import { SpecialReservationComponent } from './special-reservation/special-reservation.component';
+import { NewReservationForUserComponent } from './new-reservation-for-user/new-reservation-for-user.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -37,7 +38,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NewBoatComponent,
     BoatViewComponent,
     NewAvailableAppointmentComponent,
-    SpecialReservationComponent
+    SpecialReservationComponent,
+    NewReservationForUserComponent
   ],
   imports: [
     CommonModule,

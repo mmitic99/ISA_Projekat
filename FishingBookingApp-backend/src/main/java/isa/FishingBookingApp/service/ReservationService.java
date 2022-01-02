@@ -1,6 +1,7 @@
 package isa.FishingBookingApp.service;
 
 import isa.FishingBookingApp.dto.ReservationDTO;
+import isa.FishingBookingApp.dto.ReservationForClientDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.Reservation;
 import isa.FishingBookingApp.model.ReservationEntities;
@@ -12,6 +13,8 @@ public interface ReservationService {
     List<ReservationEntities> checkReservationEntitiesIsAvailable(List<ReservationEntities> reservationEntities, SearchFilterSort searchFilterSort);
 
     Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception;
+
+    Reservation reserveEntityForClient(ReservationForClientDTO reservationForClientDTO) throws Exception;
 
     List<Reservation> getCurrentReservationForUser(String mailAddress);
 
