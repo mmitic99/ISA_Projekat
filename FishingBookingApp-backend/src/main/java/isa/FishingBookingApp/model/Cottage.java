@@ -12,8 +12,8 @@ public class Cottage extends ReservationEntities {
         this.setType("cottage");
     }
 
-    public Cottage(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, CottageOwner cottageOwner, int numberOfRooms, int bedsPerRoom, double price) {
-        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "cottage", price);
+    public Cottage(String name, Address address, String promotionalDescription, String rulesOfConduct, CottageOwner cottageOwner, int numberOfRooms, int bedsPerRoom, double price) {
+        super(name, address, promotionalDescription, rulesOfConduct, "cottage", price);
         this.cottageOwner = cottageOwner;
         this.numberOfRooms = numberOfRooms;
         this.bedsPerRoom = bedsPerRoom;

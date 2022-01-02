@@ -89,14 +89,14 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         userRepository.save(boatOwner1);
 
         // Inicijalizacija vikendica
-        Cottage cottage1 = new Cottage("Sunce", address3, "Budite se uz najlepsi izlazak sunca.", null, "Zabranjeno pusenje. Zabranjeno dovodjenje zivotinja.", null, cottageOwner1, 3, 2, 2000);
-        Cottage cottage2 = new Cottage("Snezna dolina", address4, "Uzivajte u prelepom pogledu.", null, "Zabranjeno pusenje. Zabranjeno dovodjenje zivotinja.", null, cottageOwner1, 4, 2, 3000);
+        Cottage cottage1 = new Cottage("Sunce", address3, "Budite se uz najlepsi izlazak sunca.", "Zabranjeno pusenje. Zabranjeno dovodjenje zivotinja.", cottageOwner1, 3, 2, 2000);
+        Cottage cottage2 = new Cottage("Snezna dolina", address4, "Uzivajte u prelepom pogledu.", "Zabranjeno pusenje. Zabranjeno dovodjenje zivotinja.", cottageOwner1, 4, 2, 3000);
         reservationEntitiesRepository.save(cottage1);
         reservationEntitiesRepository.save(cottage2);
 
         // Inicijalizacija brodova tj camaca
-        Boat boat1 = new Boat("Sofija", addressOfBoat1, "Uzivajte u pecanju na sred mora sa profesionalnim lokalnim ribolovcem.", null, "Poštovati sva uputstva i pravila vodiča i ribolovca.", null, boatOwner1, "čamac za pecanje", 6, 1, 70, 80, "GPS, radar, VHF radio, fishFinder", "- Profesionalni štapovi i oprema za pecanje morskih riba", 5, "Besplatno otkazivanje.", 8000);
-        Boat boat2 = new Boat("Brzi Gonzales", addressOfBoat2, "Uzivajte u brzoj voznji po moru.", null, "Poštovati sva uputstva i pravila vodiča.", null, boatOwner1, "gliser", 6, 3, 100, 250, "GPS, radar", "", 4, "Prilikom otkazivanja rezervacije vlasnik zadržava 20%.", 10000);
+        Boat boat1 = new Boat("Sofija", addressOfBoat1, "Uzivajte u pecanju na sred mora sa profesionalnim lokalnim ribolovcem.", "Poštovati sva uputstva i pravila vodiča i ribolovca.", boatOwner1, "čamac za pecanje", 6, 1, 70, 80, "GPS, radar, VHF radio, fishFinder", "- Profesionalni štapovi i oprema za pecanje morskih riba", 5, "Besplatno otkazivanje.", 8000);
+        Boat boat2 = new Boat("Brzi Gonzales", addressOfBoat2, "Uzivajte u brzoj voznji po moru.", "Poštovati sva uputstva i pravila vodiča.", boatOwner1, "gliser", 6, 3, 100, 250, "GPS, radar", "", 4, "Prilikom otkazivanja rezervacije vlasnik zadržava 20%.", 10000);
         reservationEntitiesRepository.save(boat1);
         reservationEntitiesRepository.save(boat2);
 
