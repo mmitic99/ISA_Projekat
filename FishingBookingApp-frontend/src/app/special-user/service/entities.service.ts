@@ -73,6 +73,15 @@ export class EntitiesService {
     return this.http.get<any>(serverPortApi + "reservationEntities/currentReservation/" + entityId, header);
   }
 
+  getAllReservationsOfEntity(entityId: string) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+
+    return this.http.get<any>(serverPortApi + "reservation/getAllReservationsOfEntity/" + entityId, header);
+  }
+
   // DEO METODA VEZAN ZA VIKENDICE //////////////////////////
 
   getAllUserCottages() {

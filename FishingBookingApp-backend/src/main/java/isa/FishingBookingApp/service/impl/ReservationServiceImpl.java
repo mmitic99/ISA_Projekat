@@ -101,6 +101,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public List<Reservation> getAllReservationsOfEntity(Long entityId) {
+        return reservationRepository.findByReservationEntityIdAndDeletedEquals(entityId, false);
+    }
+
+    @Override
     public List<Reservation> getAllOldReservation(String mailAddress) {
         List<Reservation> retval = reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
         return retval;

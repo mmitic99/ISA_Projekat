@@ -11,6 +11,9 @@ import { EntitiesService } from '../service/entities.service';
 export class EntityReservationComponent implements OnInit {
 
   reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+  reservationsOfEntity: any;
+  reservationsOfEntityToShow: any;
+  reservationsType = 'all';
   private id: any;
   constructor(private route: ActivatedRoute, private entitiesService: EntitiesService) { }
 
@@ -18,7 +21,8 @@ export class EntityReservationComponent implements OnInit {
     this.route.params.subscribe(params => {
       this.id = +params['id'];
     })
-    this.getEntity();;
+    this.getEntity();
+    this.getEntityReservations();
   }
 
   getEntity() {
@@ -30,6 +34,48 @@ export class EntityReservationComponent implements OnInit {
           data.address.country, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
       }
     )
+  }
+
+  getEntityReservations() {
+    this.entitiesService.getAllReservationsOfEntity(this.id).subscribe(
+      (data) => {
+        this.reservationsOfEntity = data;
+        this.reservationsOfEntityToShow = [];
+        for (let reservation of this.reservationsOfEntity) {
+          let dateTime = reservation.start
+          reservation.start = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
+          this.reservationsOfEntityToShow.push(reservation)
+        }
+      }
+    )
+  }
+
+  reservationsToShow() {
+    this.reservationsOfEntityToShow = []
+    if (this.reservationsType == 'all') {
+      for (let reservation of this.reservationsOfEntity) {
+        this.reservationsOfEntityToShow.push(reservation)
+      }
+    } else if (this.reservationsType == 'future') {
+      for (let reservation of this.reservationsOfEntity) {
+        if (reservation.start > Date.now()) {
+          this.reservationsOfEntityToShow.push(reservation)
+        }
+      }
+    } else if (this.reservationsType == 'past') {
+      for (let reservation of this.reservationsOfEntity) {
+        let reservationEndTime = new Date(new Date(reservation.start).setHours(reservation.start.getHours() + reservation.durationInHours));
+        if (reservationEndTime.getTime() < Date.now()) {
+          this.reservationsOfEntityToShow.push(reservation)
+        }
+      }
+    } else {
+      for (let reservation of this.reservationsOfEntity) {
+        if (reservation.start < Date.now()) {
+          this.reservationsOfEntityToShow.push(reservation)
+        }
+      }
+    }
   }
 
 }

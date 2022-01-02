@@ -1,14 +1,21 @@
+<button class="button is-link" routerLink="../../viewEntity/{{reservationEntity.id}}">Nazad</button>
 <h1 class="title has-text-centered">Rezervacije za {{reservationEntity.name}}</h1>
 <div class="container">
     <br>
     <nav class="panel">
-
+        <div class="select level-right">
+            <select [(ngModel)]="reservationsType" (change)="reservationsToShow()">
+                <option value="all">Sve</option>
+                <option value="future">Buduće</option>
+                <option value="current">Trenutne</option>
+                <option value="past">Završene</option>
+            </select>
+        </div>
     </nav>
     <table class="table is-hoverable is-fullwidth">
         <thead>
             <tr>
-                <th>Datum kreiranja rezervacije</th>
-                <th>Pocetak</th>
+                <th>Početak</th>
                 <th>Trajanje[u danima]</th>
                 <th>Cena[dinara]</th>
                 <th>Otkazana</th>
@@ -16,47 +23,14 @@
             </tr>
         </thead>
 
-        <!--dummy data-->
-        <tfoot>
+        <tfoot *ngFor="let reservation of reservationsOfEntityToShow">
             <tr>
-                <td>10.12.2021.</td>
-                <td>29.12.2021. 12h</td>
-                <td>9</td>
-                <td>12 158</td>
-                <td>Ne</td>
-                <td><a routerLink="../../../basicProfileView">Ivo Ivić</a></td>
-            </tr>
-            <tr>
-                <td>11.12.2021.</td>
-                <td>19.12.2021. 12h</td>
-                <td>6</td>
-                <td>73 387</td>
-                <td>Ne</td>
-                <td><a routerLink="../../../basicProfileView">Pero Perić</a></td>
-            </tr>
-            <tr>
-                <td>05.12.2021.</td>
-                <td>11.12.2021. 12h</td>
-                <td>3</td>
-                <td>14 503</td>
-                <td>Da</td>
-                <td><a routerLink="../../../basicProfileView">Damir Dakić</a></td>
-            </tr>
-            <tr>
-                <td>29.11.2021.</td>
-                <td>23.12.2021. 10h</td>
-                <td>4</td>
-                <td>13 275</td>
-                <td>Ne</td>
-                <td><a routerLink="../../../basicProfileView">Lazar Lazić</a></td>
-            </tr>
-            <tr>
-                <td>01.12.2021.</td>
-                <td>10.12.2021. 10h</td>
-                <td>3</td>
-                <td>35 085</td>
-                <td>Da</td>
-                <td><a routerLink="../../../basicProfileView">Bojan Bokić</a></td>
+                <td>{{reservation.start | date:"dd.MM.yyyy, HH:mm"}}</td>
+                <td>{{reservation.durationInHours/24}}</td>
+                <td>{{reservation.price}}</td>
+                <td *ngIf="reservation.deleted">Da</td>
+                <td *ngIf="!reservation.deleted">Ne</td>
+                <td><a routerLink="../../../basicProfileView">{{reservation.user.name}} {{reservation.user.surname}}</a></td>
             </tr>
         </tfoot>
     </table>
