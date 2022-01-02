@@ -20,6 +20,8 @@ public interface ReservationService {
 
     Reservation cancelReservation(Long id) throws Exception;
 
+    List<Reservation> getAllReservationsOfEntity(Long entityId);
+
     List<Reservation> getAllOldReservation(String mailAddress);
 
     List<Reservation> searchFilterSort(SearchFilterSort searchFilterSort);

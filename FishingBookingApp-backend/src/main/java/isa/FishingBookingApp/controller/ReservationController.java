@@ -132,4 +132,15 @@ public class ReservationController {
         }
     }
 
+    @GetMapping(value = "getAllReservationsOfEntity/{entityId}")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<Object> getAllReservationsOfEntity(@PathVariable Long entityId) {
+        try {
+            List<Reservation> allReservationsOfEntity = reservationService.getAllReservationsOfEntity(entityId);
+            return new ResponseEntity<>(allReservationsOfEntity, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }
