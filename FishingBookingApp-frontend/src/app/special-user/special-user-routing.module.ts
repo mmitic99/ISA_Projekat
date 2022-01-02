@@ -12,6 +12,7 @@ import { NewAvailableAppointmentComponent } from './new-available-appointment/ne
 import { ProfileComponent } from './profile/profile.component';
 import { SuHomeComponent } from './su-home/su-home.component';
 import { SpecialReservationComponent } from './special-reservation/special-reservation.component';
+import { NewReservationForUserComponent } from './new-reservation-for-user/new-reservation-for-user.component';
 
 const routes: Routes = [
     { path: '', component: SuHomeComponent},
@@ -24,7 +25,8 @@ const routes: Routes = [
     { path: 'additionalServices/:id', component: AdditionalServicesComponent},
     { path: 'availableAppointments/:id', component: NewAvailableAppointmentComponent},
     { path: 'entityBusyness', component: EntityBusynessComponent},
-    { path: 'createSpecialReservation/:id', component: SpecialReservationComponent}
+    { path: 'createSpecialReservation/:id', component: SpecialReservationComponent},
+    { path: 'createReservationForUser/:id', component: NewReservationForUserComponent}
 ];
 
 @NgModule({

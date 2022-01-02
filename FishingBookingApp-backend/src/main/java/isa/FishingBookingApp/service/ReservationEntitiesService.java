@@ -5,6 +5,7 @@ import isa.FishingBookingApp.dto.AvailableAppointmentDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.AdditionalService;
 import isa.FishingBookingApp.model.AvailableAppointment;
+import isa.FishingBookingApp.model.Reservation;
 import isa.FishingBookingApp.model.ReservationEntities;
 
 import java.util.List;
@@ -18,6 +19,8 @@ public interface ReservationEntitiesService {
     List<AdditionalService> getAdditionalServices(Long id);
 
     List<AvailableAppointment> getAvailableAppointmentsOfEntity(Long id);
+
+    Reservation getCurrentReservationOfEntity(Long id);
 
     AdditionalService createAdditionalService(AdditionalServiceDTO additionalServiceDTO);
 

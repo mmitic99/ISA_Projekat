@@ -17,7 +17,7 @@
                         routerLink="../../createSpecialReservation/{{reservationEntity.id}}">Kreiranje akcija za
                         brzu rezervaciju</a>
                     <hr />
-                    <a class="button is-info is-light" (click)="createNewReservationForClient()">Kreirajte novu
+                    <a class="button is-info is-light" routerLink="../../createReservationForUser/{{reservationEntity.id}}">Kreirajte novu
                         rezervaciju za klijenta</a>
                     <hr />
                     <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_cottageOwner'"

@@ -130,19 +130,23 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         LocalDateTime dtStart1 = LocalDateTime.now();
         LocalDateTime dtEnd1 = dtStart1.plusDays(10);
         AvailableAppointment appointment1 = new AvailableAppointment(cottage1, dtStart1, dtEnd1);
+        AvailableAppointment appointment2 = new AvailableAppointment(cottage2, dtStart1, dtEnd1);
         LocalDateTime dtStart2 = LocalDateTime.now().minusDays(10);
         LocalDateTime dtEnd2 = dtStart1.plusDays(30);
-        AvailableAppointment appointment2 = new AvailableAppointment(boat1, dtStart2, dtEnd2);
+        AvailableAppointment appointment3 = new AvailableAppointment(boat1, dtStart2, dtEnd2);
         LocalDateTime dtStart3 = LocalDateTime.now().minusDays(5);
         LocalDateTime dtEnd3 = dtStart1.plusDays(70);
-        AvailableAppointment appointment3 = new AvailableAppointment(boat2, dtStart3, dtEnd3);
+        AvailableAppointment appointment4 = new AvailableAppointment(boat2, dtStart3, dtEnd3);
         availableAppointmentRepository.save(appointment1);
         availableAppointmentRepository.save(appointment2);
         availableAppointmentRepository.save(appointment3);
+        availableAppointmentRepository.save(appointment4);
 
         // rezervacije
         Reservation reservation1 = new Reservation(regularUser2, cottage1, LocalDateTime.now().minusDays(5), 24, 1, 1000);
+        Reservation reservation2 = new Reservation(regularUser2, cottage2, LocalDateTime.now().minusDays(2), 96, 3, 22000);
         reservationRepository.save(reservation1);
+        reservationRepository.save(reservation2);
 
         // brze rezevacije(akcije)
         LocalDateTime dtSpecResStart1 = LocalDateTime.now().plusDays(10);

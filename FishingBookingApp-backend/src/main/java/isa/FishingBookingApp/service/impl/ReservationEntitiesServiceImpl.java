@@ -17,6 +17,7 @@ import isa.FishingBookingApp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -55,6 +56,20 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
     @Override
     public List<AvailableAppointment> getAvailableAppointmentsOfEntity(Long id) {
         return availableAppointmentRepository.findByEntityId(id);
+    }
+
+    @Override
+    public Reservation getCurrentReservationOfEntity(Long id) {
+        List<Reservation> reservationsOfEntity = reservationRepository.findByReservationEntityIdAndDeletedEquals(id, false);
+        LocalDateTime now = LocalDateTime.now();
+        for (Reservation reservation : reservationsOfEntity) {
+            LocalDateTime reservationEnd = reservation.getStart().plusHours(Double.valueOf(reservation.getDurationInHours()).longValue());
+            if ((reservation.getStart().isBefore(now) || reservation.getStart().isEqual(now)) && (reservationEnd.isAfter(now))) {
+                return reservation;
+            }
+        }
+
+        return null;
     }
 
     @Override

@@ -1,9 +1,11 @@
 package isa.FishingBookingApp.service.impl;
 
 import isa.FishingBookingApp.dto.ReservationDTO;
+import isa.FishingBookingApp.dto.ReservationForClientDTO;
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.*;
+import isa.FishingBookingApp.service.ReservationEntitiesService;
 import isa.FishingBookingApp.service.ReservationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -24,10 +26,11 @@ public class ReservationServiceImpl implements ReservationService {
     private UserRepository userRepository;
     private AdditionalServiceRepository additionalServiceRepository;
     private EmailService emailService;
+    private ReservationEntitiesService reservationEntitiesService;
 
 
     @Autowired
-    public ReservationServiceImpl(ReservationRepository reservationRepository, SpecialReservationRepository specialReservationRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationEntitiesRepository reservationEntitiesRepository, UserRepository userRepository, AdditionalServiceRepository additionalServiceRepository, EmailService emailService) {
+    public ReservationServiceImpl(ReservationRepository reservationRepository, SpecialReservationRepository specialReservationRepository, AvailableAppointmentRepository availableAppointmentRepository, ReservationEntitiesRepository reservationEntitiesRepository, UserRepository userRepository, AdditionalServiceRepository additionalServiceRepository, EmailService emailService, ReservationEntitiesService reservationEntitiesService) {
         this.reservationRepository = reservationRepository;
         this.specialReservationRepository = specialReservationRepository;
         this.availableAppointmentRepository = availableAppointmentRepository;
@@ -35,6 +38,7 @@ public class ReservationServiceImpl implements ReservationService {
         this.userRepository = userRepository;
         this.additionalServiceRepository = additionalServiceRepository;
         this.emailService = emailService;
+        this.reservationEntitiesService = reservationEntitiesService;
     }
 
     @Override
@@ -58,7 +62,7 @@ public class ReservationServiceImpl implements ReservationService {
         Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24, reservationDTO.getGuests(), 0);
 
         if (!reservationEntityIsAvailable(reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays())) {
-            throw new Exception("Neko je rezervisao pre vas, pokušajte sa drugim entitetom");
+            throw new Exception("Entitet koji želite da rezervišete nije dostupan za uneto vreme.");
         } else {
             addPriceToReservation(reservation);
             reservationRepository.save(reservation);
@@ -66,6 +70,15 @@ public class ReservationServiceImpl implements ReservationService {
             emailService.sendReservationInfo(reservation, false);
             return reservation;
         }
+    }
+
+    @Override
+    @Transactional(readOnly = false)
+    public Reservation reserveEntityForClient(ReservationForClientDTO reservationForClientDTO) throws Exception {
+        Reservation currentReservation = reservationEntitiesService.getCurrentReservationOfEntity(reservationForClientDTO.getReservationEntityId());
+        if (currentReservation == null || !currentReservation.getUser().getMailAddress().equals(reservationForClientDTO.getUserMailAddress())) return null;
+        ReservationDTO reservationDTO = new ReservationDTO(reservationForClientDTO.getUserMailAddress(), reservationForClientDTO.getDays(), reservationForClientDTO.getMaxPeople(), reservationForClientDTO.getStartDate(), reservationForClientDTO.getStartTime(), reservationForClientDTO.getStartDateTime(), reservationForClientDTO.getReservationEntityId(), reservationForClientDTO.getAdditionalServicesId());
+        return reserveEntity(reservationDTO);
     }
 
     @Override
