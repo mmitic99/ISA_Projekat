@@ -12,11 +12,16 @@
                     <a class="button is-info is-light" routerLink="../../availableAppointments/{{boat.id}}">Periodi
                         dostupnosti</a>
                     <hr />
-                    <a class="button is-info is-light" routerLink="../../createSpecialReservation/{{boat.id}}">Kreiranje akcija za
+                    <a class="button is-info is-light" routerLink="../../createSpecialReservation/{{boat.id}}">Kreiranje
+                        akcija za
                         brzu rezervaciju</a>
                     <hr />
-                    <a class="button is-info is-light" (click)="createNewReservationForClient()">Kreirajte novu
+                    <a class="button is-info is-light" routerLink="../../createReservationForUser/{{boat.id}}">Kreirajte
+                        novu
                         rezervaciju za klijenta</a>
+                    <hr />
+                    <a class="button is-info is-light" routerLink="../../entityBusyness/{{boat.id}}">Kalendar
+                        dostupnosti broda/čamca</a>
                     <hr />
                     <a class="button is-danger is-light" (click)="deleteBoat()">Brisanje broda/čamca</a>
                 </div>
@@ -142,7 +147,8 @@
                                     <label class="label">Uslovi otkazivanja rezervacije</label>
                                     <div class="control">
                                         <textarea class="textarea" placeholder="Uslovi otkazivanja rezervacije"
-                                            name="cancellationConditions" [(ngModel)]="boat.cancellationConditions"></textarea>
+                                            name="cancellationConditions"
+                                            [(ngModel)]="boat.cancellationConditions"></textarea>
                                     </div>
                                 </div>
 

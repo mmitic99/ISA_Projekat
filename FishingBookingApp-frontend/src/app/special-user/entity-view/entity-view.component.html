@@ -17,12 +17,15 @@
                         routerLink="../../createSpecialReservation/{{reservationEntity.id}}">Kreiranje akcija za
                         brzu rezervaciju</a>
                     <hr />
-                    <a class="button is-info is-light" routerLink="../../createReservationForUser/{{reservationEntity.id}}">Kreirajte novu
+                    <a class="button is-info is-light"
+                        routerLink="../../createReservationForUser/{{reservationEntity.id}}">Kreirajte novu
                         rezervaciju za klijenta</a>
+                    <hr />
+                    <a class="button is-info is-light"
+                        routerLink="../../entityBusyness/{{reservationEntity.id}}">Kalendar dostupnosti vikendice</a>
                     <hr />
                     <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_cottageOwner'"
                         (click)="deleteCottage()">Brisanje vikendice</a>
-                    <a class="button is-danger is-light" *ngIf="userRole == 'ROLE_boatOwner'">Brisanje broda/čamca</a>
                 </div>
             </div>
         </section>

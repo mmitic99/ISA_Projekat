@@ -24,7 +24,7 @@ const routes: Routes = [
     { path: 'entityReservations/:id', component: EntityReservationComponent},
     { path: 'additionalServices/:id', component: AdditionalServicesComponent},
     { path: 'availableAppointments/:id', component: NewAvailableAppointmentComponent},
-    { path: 'entityBusyness', component: EntityBusynessComponent},
+    { path: 'entityBusyness/:id', component: EntityBusynessComponent},
     { path: 'createSpecialReservation/:id', component: SpecialReservationComponent},
     { path: 'createReservationForUser/:id', component: NewReservationForUserComponent}
 ];
