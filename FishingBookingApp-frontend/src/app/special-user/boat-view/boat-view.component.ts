@@ -76,14 +76,16 @@ export class BoatViewComponent implements OnInit {
   }
 
   deleteBoat() {
-    this.entitiesService.deleteBoat(this.boat.id).subscribe(
-      () => {
-        this.toastr.success("Uspešno ste izbisali brod/čamac.", "", { timeOut: 100000 })
-      },
-      () => {
-        this.toastr.error("Neuspešno brisanje broda/čamca")
-      }
-    )
+    if (confirm('Da li ste sigurni da želite da obrišete brod/čamac?')) {
+      this.entitiesService.deleteBoat(this.boat.id).subscribe(
+        () => {
+          this.toastr.success("Uspešno ste izbisali brod/čamac.", "", { timeOut: 100000 })
+        },
+        () => {
+          this.toastr.error("Neuspešno brisanje broda/čamca")
+        }
+      )
+    }
   }
 
   uploadImage(ev: Event) {
@@ -167,7 +169,4 @@ export class BoatViewComponent implements OnInit {
     this.isPostalCodeValid = regexp.test(this.boat.postalCode);
   }
 
-  createNewReservationForClient(): void {
-    this.toastr.show("Bice implementirano sa tackom 3.22");
-  }
 }

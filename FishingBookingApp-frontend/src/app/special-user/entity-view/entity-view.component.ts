@@ -74,14 +74,16 @@ export class EntityViewComponent implements OnInit {
   }
 
   deleteCottage() {
-    this.entitiesService.deleteCottage(this.reservationEntity.id).subscribe(
-      () => {
-        this.toastr.success("Uspešno ste izbisali vikendicu.", "", { timeOut: 100000 })
-      },
-      () => {
-        this.toastr.error("Neuspešno brisanje vikendice")
-      }
-    )
+    if (confirm('Da li ste sigurni da želite da obrišete vikendicu?')) {
+      this.entitiesService.deleteCottage(this.reservationEntity.id).subscribe(
+        () => {
+          this.toastr.success("Uspešno ste izbisali vikendicu.", "", { timeOut: 100000 })
+        },
+        () => {
+          this.toastr.error("Neuspešno brisanje vikendice")
+        }
+      )
+    }
   }
 
   updateBoat() {

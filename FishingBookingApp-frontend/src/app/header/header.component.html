@@ -49,10 +49,6 @@
           *ngIf="this.authService.getRole() == 'ROLE_boatOwner'">
           Kreiraj brod/čamac
         </a>
-        <a class="navbar-item" [routerLink]="['/specialUser/entityBusyness']"
-          *ngIf="this.authService.getRole() == 'ROLE_cottageOwner'">
-          Zauzetost vikendica
-        </a>
       </span>
 
 
