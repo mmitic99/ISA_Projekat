@@ -11,10 +11,10 @@ public class Boat extends ReservationEntities {
         this.setType("boat");
     }
 
-    public Boat(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, BoatOwner boatOwner,
+    public Boat(String name, Address address, String promotionalDescription, String rulesOfConduct, BoatOwner boatOwner,
                 String boatType, double boatLength, int numberOfEngines, int enginePower, int maxSpeed, String navigationEquipment,
                 String fishingEquipment, int capacity, String cancellationConditions, double price) {
-        super(name, address, promotionalDescription, preDefinedReservations, rulesOfConduct, additionalServices, "boat", price);
+        super(name, address, promotionalDescription, rulesOfConduct, "boat", price);
         this.boatOwner = boatOwner;
         this.boatType = boatType;
         this.boatLength = boatLength;

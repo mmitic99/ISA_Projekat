@@ -22,9 +22,6 @@ public class ReservationEntities {
 
     private String promotionalDescription;
 
-    @OneToMany(mappedBy = "reservationEntity")
-    private Set<SpecialReservation> preDefinedReservations;
-
     private String rulesOfConduct;
 
     private String type;
@@ -34,11 +31,10 @@ public class ReservationEntities {
     public ReservationEntities() {
     }
 
-    public ReservationEntities(String name, Address address, String promotionalDescription, Set<SpecialReservation> preDefinedReservations, String rulesOfConduct, Set<AdditionalService> additionalServices, String type, double price) {
+    public ReservationEntities(String name, Address address, String promotionalDescription, String rulesOfConduct, String type, double price) {
         this.name = name;
         this.address = address;
         this.promotionalDescription = promotionalDescription;
-        this.preDefinedReservations = preDefinedReservations;
         this.rulesOfConduct = rulesOfConduct;
         this.type = type;
         this.price = price;
