@@ -6,15 +6,13 @@ import { RegistrationComponent } from './registration/registration.component';
 import { ReservationEntityComponent } from './reservation-entity/reservation-entity.component';
 import { ToastrModule } from 'ngx-toastr';
 import { SpecialRegistrationComponent } from './special-registration/special-registration.component';
-import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-view.component';
 
 const routes: Routes = [
   { path: '', component: HomeComponent },
   { path: 'reservationEntity/:id', component: ReservationEntityComponent },
   { path: 'login', component: LoginComponent },
   { path: 'registration', component: RegistrationComponent },
-  { path: 'specialRegistration', component: SpecialRegistrationComponent},
-  { path: 'basicProfileView', component: BasicProfileViewComponent}
+  { path: 'specialRegistration', component: SpecialRegistrationComponent}
 ];
 
 @NgModule({

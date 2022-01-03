@@ -30,7 +30,7 @@
                 <td>{{reservation.price}}</td>
                 <td *ngIf="reservation.deleted">Da</td>
                 <td *ngIf="!reservation.deleted">Ne</td>
-                <td><a routerLink="../../../basicProfileView">{{reservation.user.name}} {{reservation.user.surname}}</a></td>
+                <td><a routerLink="../../basicProfileView/{{reservation.user.mailAddress}}">{{reservation.user.name}} {{reservation.user.surname}}</a></td>
             </tr>
         </tfoot>
     </table>
