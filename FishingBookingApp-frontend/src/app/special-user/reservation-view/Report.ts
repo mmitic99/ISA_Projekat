@@ -4,6 +4,7 @@ export class Report {
         public description: string = "",
         public type: string = "good",
         public customerAppeared: boolean = true,
-        public requestForPenalty: boolean = false
+        public requestForPenalty: boolean = false,
+        public approved: boolean = false
     ) { }
 }

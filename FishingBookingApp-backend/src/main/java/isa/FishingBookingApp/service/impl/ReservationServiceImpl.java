@@ -107,7 +107,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getAllReservationsOfEntity(Long entityId) {
-        return reservationRepository.findByReservationEntityIdAndDeletedEquals(entityId, false);
+        return reservationRepository.findAllByReservationEntityId(entityId);
     }
 
     @Override
