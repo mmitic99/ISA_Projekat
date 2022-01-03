@@ -8,6 +8,8 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ReservationRepository extends JpaRepository<Reservation, Long> {
+    List<Reservation> findAllByReservationEntityId(Long id);
+
     List<Reservation> findByReservationEntityIdAndDeletedEquals(Long id, boolean deleted);
 
     List<Reservation> findReservationByUserMailAddressAndStartGreaterThanEqualAndDeletedEquals(String mailAddress, LocalDateTime start, boolean deleted);

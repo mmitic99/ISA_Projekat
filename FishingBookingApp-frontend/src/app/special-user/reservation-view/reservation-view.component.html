@@ -52,7 +52,6 @@
     <table class="table is-hoverable is-fullwidth">
         <thead>
             <tr>
-                <th></th>
                 <th>Naziv dodatne usluge</th>
                 <th>Cena po danu[dinara]</th>
             </tr>
@@ -65,14 +64,12 @@
             </tr>
             <tr><br></tr>
             <tr>
-                <td></td>
                 <th>Ukupna cena dodatnih usluga po danu</th>
                 <td>{{priceOfAdditionalServicesPerDay}}</td>
             </tr>
             <tr>
-                <td></td>
-                <th>Ukupna cena dodatnih usluga za {{reservation.days}} dan/a</th>
-                <td>{{priceOfAdditionalServicesPerDay * reservation.days}}</td>
+                <th>Ukupna cena dodatnih usluga za {{reservation.durationInHours/24}} dan/a</th>
+                <td>{{priceOfAdditionalServicesPerDay * reservation.durationInHours/24}}</td>
             </tr>
         </tfoot>
     </table>
@@ -89,7 +86,7 @@
 
 <hr />
 
-<div #reportView id="reportView">
+<div #reportView id="reportView" *ngIf="!reportExists">
     <h3 class="title is-3 has-text-centered">Izvestaj</h3>
     <nav class="panel has-text-centered column is-6 is-offset-3">
         <div class="control">
@@ -131,5 +128,51 @@
 
         <br>
         <button class="button is-info is-large is-fullwidth" (click)="createReport()">Kreiraj izveštaj</button>
+    </nav>
+</div>
+
+<!-- Ako vec postoji izvestaj -->
+<div #reportView id="reportView" *ngIf="reportExists">
+    <h3 class="title is-3 has-text-centered">Izvestaj</h3>
+    <nav class="panel has-text-centered column is-6 is-offset-3">
+        <div class="control">
+            <label>Vrsta komentara: </label>
+            <label class="radio">
+                <input type="radio" name="reportType" value="good" [(ngModel)]="report.type" disabled>
+                Dobar
+            </label>
+            <label class="radio">
+                <input type="radio" name="reportType" value="bad" [(ngModel)]="report.type" disabled>
+                Loš
+            </label>
+        </div>
+
+        <div *ngIf="report.type == 'bad'">
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" (click)="cbCustomerAppeared()" [checked]="!report.customerAppeared" disabled>
+                    Korisnik se nije pojavio
+                </label>
+            </div>
+
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" (click)="cbRequestForPenalty()" [checked]="report.requestForPenalty"
+                        disabled>
+                    Zahtev da korisnik dobije 1 penal
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Opis</label>
+            <div class="control">
+                <textarea class="textarea" placeholder="Opis za izveštaj" name="description"
+                    [(ngModel)]="report.description" disabled></textarea>
+            </div>
+        </div>
+
+        <br>
+        <p *ngIf="!report.approved" style="color: red;">Izveštaj još nije odobren od strane administratora.</p>
     </nav>
 </div>
