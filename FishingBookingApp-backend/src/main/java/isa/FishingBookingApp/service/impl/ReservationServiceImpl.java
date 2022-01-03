@@ -55,6 +55,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     @Override
+    public Reservation getById(Long id) {
+        return reservationRepository.findById(id).orElse(null);
+    }
+
+    @Override
     @Transactional(readOnly = false)
     public Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception {
         ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(reservationDTO.getReservationEntitiesId());

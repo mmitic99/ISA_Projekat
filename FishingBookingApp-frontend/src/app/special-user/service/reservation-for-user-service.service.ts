@@ -10,6 +10,14 @@ export class ReservationForUserServiceService {
 
   constructor(private http: HttpClient) { }
 
+  getReservationById(reservationId : string) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.get(serverPortApi + 'reservation/' + reservationId, header);
+  }
+
   createReservationForUser(newReservation : ReservationForUser) {
     var header = {
       headers: new HttpHeaders()

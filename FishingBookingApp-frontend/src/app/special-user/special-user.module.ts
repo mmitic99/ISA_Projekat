@@ -21,6 +21,7 @@ import { NewAvailableAppointmentComponent } from './new-available-appointment/ne
 import { SpecialReservationComponent } from './special-reservation/special-reservation.component';
 import { NewReservationForUserComponent } from './new-reservation-for-user/new-reservation-for-user.component';
 import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-view.component';
+import { ReservationViewComponent } from './reservation-view/reservation-view.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -41,7 +42,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     NewAvailableAppointmentComponent,
     SpecialReservationComponent,
     NewReservationForUserComponent,
-    BasicProfileViewComponent
+    BasicProfileViewComponent,
+    ReservationViewComponent
   ],
   imports: [
     CommonModule,

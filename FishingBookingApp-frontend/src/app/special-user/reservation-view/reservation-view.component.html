@@ -1,0 +1,135 @@
+<button class="button is-link" (click)="backClicked()">Nazad</button>
+
+<h1 class="title has-text-grey has-text-centered">Pregled rezervacije:</h1>
+<button class="button is-warning" *ngIf="reservationPast" (click)="moveToReportView()">Napišite izveštaj</button>
+
+<hr />
+
+<table class="table is-hoverable is-fullwidth">
+    <tr>
+        <th *ngIf="reservation.reservationEntity.type == 'cottage'">Naziv vikendice</th>
+        <th *ngIf="reservation.reservationEntity.type == 'boat'">Naziv broda</th>
+        <td>{{reservation.reservationEntity.name}}</td>
+    </tr>
+    <tr>
+        <th *ngIf="reservation.reservationEntity.type == 'cottage'">Adresa vikendice</th>
+        <th *ngIf="reservation.reservationEntity.type == 'boat'">Adresa broda</th>
+        <td>{{reservation.reservationEntity.address.street}} {{reservation.reservationEntity.address.number}},
+            {{reservation.reservationEntity.address.city}}, {{reservation.reservationEntity.address.country}}</td>
+    </tr>
+    <tr>
+        <th>Ime i prezime klijenta</th>
+        <td>{{reservation.user.name}} {{reservation.user.surname}}</td>
+    </tr>
+    <tr>
+        <th *ngIf="reservation.reservationEntity.type == 'cottage'">Cena vikendice po danu</th>
+        <th *ngIf="reservation.reservationEntity.type == 'boat'">Cena broda po danu</th>
+        <td>{{reservation.reservationEntity.price}}</td>
+    </tr>
+    <tr>
+        <th>Početak rezervacije</th>
+        <td>{{reservation.start | date:"dd.MM.yyyy, HH:mm"}}</td>
+    </tr>
+    <tr>
+        <th>Trajanje [u danima]</th>
+        <td>{{reservation.durationInHours/24}}</td>
+    </tr>
+    <tr>
+        <th>Broj ljudi</th>
+        <td>{{reservation.maxPeople}}</td>
+    </tr>
+    <tr>
+        <th>Otkazana</th>
+        <td *ngIf="reservation.deleted">Da</td>
+        <td *ngIf="!reservation.deleted">Ne</td>
+    </tr>
+</table>
+
+<br>
+<div class="container" *ngIf="reservation.additionalServices.length != 0">
+    <hr />
+    <h1 class="subtitle">Dodatne usluge koje idu uz rezervaciju:</h1>
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th></th>
+                <th>Naziv dodatne usluge</th>
+                <th>Cena po danu[dinara]</th>
+            </tr>
+        </thead>
+
+        <tfoot>
+            <tr *ngFor="let additionalService of reservation.additionalServices">
+                <td>{{additionalService.name}}</td>
+                <td>{{additionalService.price}}</td>
+            </tr>
+            <tr><br></tr>
+            <tr>
+                <td></td>
+                <th>Ukupna cena dodatnih usluga po danu</th>
+                <td>{{priceOfAdditionalServicesPerDay}}</td>
+            </tr>
+            <tr>
+                <td></td>
+                <th>Ukupna cena dodatnih usluga za {{reservation.days}} dan/a</th>
+                <td>{{priceOfAdditionalServicesPerDay * reservation.days}}</td>
+            </tr>
+        </tfoot>
+    </table>
+    <hr />
+</div>
+
+<div class="has-background-success-light">
+    <div class="column is-8 has-text-left">
+        <h4 class="title is-4 has-text-danger-dark">Cena celokupne rezervacije (uključujući dodatne usluge):
+            {{reservation.price}} dinara
+        </h4>
+    </div>
+</div>
+
+<hr />
+
+<div #reportView id="reportView">
+    <h3 class="title is-3 has-text-centered">Izvestaj</h3>
+    <nav class="panel has-text-centered column is-6 is-offset-3">
+        <div class="control">
+            <label>Vrsta komentara: </label>
+            <label class="radio">
+                <input type="radio" name="reportType" value="good" [(ngModel)]="report.type">
+                Dobar
+            </label>
+            <label class="radio">
+                <input type="radio" name="reportType" value="bad" [(ngModel)]="report.type">
+                Loš
+            </label>
+        </div>
+
+        <div *ngIf="report.type == 'bad'">
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" (click)="cbCustomerAppeared()" [checked]="!report.customerAppeared">
+                    Korisnik se nije pojavio
+                </label>
+            </div>
+
+            <div class="control">
+                <label class="checkbox">
+                    <input type="checkbox" (click)="cbRequestForPenalty()" [checked]="report.requestForPenalty"
+                        [disabled]="!report.customerAppeared ? true : null">
+                    Zahtev da korisnik dobije 1 penal
+                </label>
+            </div>
+        </div>
+
+        <div class="field">
+            <label class="label">Opis</label>
+            <div class="control">
+                <textarea class="textarea" placeholder="Opis za izveštaj" name="description"
+                    [(ngModel)]="report.description"></textarea>
+            </div>
+        </div>
+
+        <br>
+        <button class="button is-info is-large is-fullwidth" (click)="createReport()">Kreiraj izveštaj</button>
+    </nav>
+</div>
