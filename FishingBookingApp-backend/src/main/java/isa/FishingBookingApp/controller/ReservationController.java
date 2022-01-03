@@ -53,6 +53,12 @@ public class ReservationController {
         }
     }
 
+    @GetMapping(value = "/{id}")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<Reservation> getReservationById(@PathVariable Long id) {
+        return new ResponseEntity<>(reservationService.getById(id), HttpStatus.OK);
+    }
+
     @PostMapping(value = "/reserve", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
     public ResponseEntity<Object> reserve(@RequestBody ReservationDTO reservationDTO, HttpServletRequest request) {

@@ -12,6 +12,8 @@ import java.util.List;
 public interface ReservationService {
     List<ReservationEntities> checkReservationEntitiesIsAvailable(List<ReservationEntities> reservationEntities, SearchFilterSort searchFilterSort);
 
+    Reservation getById(Long id);
+
     Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception;
 
     Reservation reserveEntityForClient(ReservationForClientDTO reservationForClientDTO) throws Exception;

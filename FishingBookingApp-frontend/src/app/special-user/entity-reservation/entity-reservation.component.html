@@ -20,6 +20,7 @@
                 <th>Cena[dinara]</th>
                 <th>Otkazana</th>
                 <th>Korisnik</th>
+                <th></th>
             </tr>
         </thead>
 
@@ -31,6 +32,7 @@
                 <td *ngIf="reservation.deleted">Da</td>
                 <td *ngIf="!reservation.deleted">Ne</td>
                 <td><a routerLink="../../basicProfileView/{{reservation.user.mailAddress}}">{{reservation.user.name}} {{reservation.user.surname}}</a></td>
+                <td><button class="button is-small" routerLink="../../reservationView/{{reservation.id}}">Pregled</button></td>
             </tr>
         </tfoot>
     </table>
