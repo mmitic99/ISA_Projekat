@@ -15,6 +15,7 @@ import { SpecialReservationComponent } from './special-reservation/special-reser
 import { NewReservationForUserComponent } from './new-reservation-for-user/new-reservation-for-user.component';
 import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-view.component';
 import { ReservationViewComponent } from './reservation-view/reservation-view.component';
+import { BusinessReportComponent } from './business-report/business-report.component';
 
 const routes: Routes = [
     { path: '', component: SuHomeComponent},
@@ -30,7 +31,8 @@ const routes: Routes = [
     { path: 'createSpecialReservation/:id', component: SpecialReservationComponent},
     { path: 'createReservationForUser/:id', component: NewReservationForUserComponent},
     { path: 'basicProfileView/:mailAddress', component: BasicProfileViewComponent},
-    { path: 'reservationView/:id', component: ReservationViewComponent}
+    { path: 'reservationView/:id', component: ReservationViewComponent},
+    { path: 'businessReport', component: BusinessReportComponent}
 ];
 
 @NgModule({

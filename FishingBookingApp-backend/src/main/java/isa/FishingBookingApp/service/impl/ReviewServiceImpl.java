@@ -2,12 +2,8 @@ package isa.FishingBookingApp.service.impl;
 
 import isa.FishingBookingApp.dto.MarksDTO;
 import isa.FishingBookingApp.dto.ReviewDTO;
-import isa.FishingBookingApp.model.Reservation;
-import isa.FishingBookingApp.model.ReservationEntities;
-import isa.FishingBookingApp.model.Review;
-import isa.FishingBookingApp.repository.ReservationEntitiesRepository;
-import isa.FishingBookingApp.repository.ReservationRepository;
-import isa.FishingBookingApp.repository.ReviewRepository;
+import isa.FishingBookingApp.model.*;
+import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,24 +17,30 @@ public class ReviewServiceImpl implements ReviewService {
     private ReviewRepository reviewRepository;
     private ReservationRepository reservationRepository;
     private ReservationEntitiesRepository reservationEntitiesRepository;
+    private CottageRepository cottageRepository;
+    private BoatRepository boatRepository;
+    private UserRepository userRepository;
 
     @Autowired
-    public ReviewServiceImpl(ReviewRepository reviewRepository, ReservationRepository reservationRepository, ReservationEntitiesRepository reservationEntitiesRepository) {
+    public ReviewServiceImpl(ReviewRepository reviewRepository, ReservationRepository reservationRepository, ReservationEntitiesRepository reservationEntitiesRepository, CottageRepository cottageRepository, BoatRepository boatRepository, UserRepository userRepository) {
         this.reviewRepository = reviewRepository;
         this.reservationRepository = reservationRepository;
         this.reservationEntitiesRepository = reservationEntitiesRepository;
+        this.cottageRepository = cottageRepository;
+        this.boatRepository = boatRepository;
+        this.userRepository = userRepository;
     }
 
     @Override
     public Review createReview(ReviewDTO reviewDTO) throws Exception {
         Reservation reservation = reservationRepository.findReservationById(reviewDTO.getReservationId());
-        if(reservation == null){
+        if (reservation == null) {
             throw new Exception("Nepoznata rezervacija");
         }
-        if(reviewDTO.getMark() < 1 || reviewDTO.getMark() > 10){
+        if (reviewDTO.getMark() < 1 || reviewDTO.getMark() > 10) {
             throw new Exception("Ocena mora biti izmedju 1 i 10");
         }
-        if(reviewRepository.findReviewById(reviewDTO.getReservationId()) != null){
+        if (reviewRepository.findReviewById(reviewDTO.getReservationId()) != null) {
             throw new Exception("Rezervacija vec postoji");
         }
         Review review = new Review(reviewDTO.getExplain(), LocalDateTime.now(), reviewDTO.getMark(), reservation);
@@ -71,8 +73,31 @@ public class ReviewServiceImpl implements ReviewService {
     }
 
     @Override
+    public List<MarksDTO> getMarksForReservationEntitiesOfOwner(Long userId) {
+        List<MarksDTO> retVal = new ArrayList<>();
+        User user = userRepository.findUserById(userId);
+        String userRole = user.getRole().getName();
+
+        if (userRole.equals("ROLE_cottageOwner")) {
+            for (Cottage cottage : cottageRepository.getAllCottagesOfUser(userId)) {
+                retVal.add(new MarksDTO(cottage.getId(), reviewRepository.getAverageMarksByReservationEntitiesId(cottage.getId()), reviewRepository.getNumberOfMarksByReservationEntitiesId(cottage.getId())));
+            }
+        }
+        else if (userRole.equals("ROLE_boatOwner")) {
+            for (Boat boat : boatRepository.getAllBoatsOfUser(userId)) {
+                retVal.add(new MarksDTO(boat.getId(), reviewRepository.getAverageMarksByReservationEntitiesId(boat.getId()), reviewRepository.getNumberOfMarksByReservationEntitiesId(boat.getId())));
+            }
+        }
+        else {
+            return null;
+        }
+
+        return retVal;
+    }
+
+    @Override
     public Double getAvgMarksForEntity(Long id) {
-        if(reviewRepository.getAverageMarksByReservationEntitiesId(id) == null){
+        if (reviewRepository.getAverageMarksByReservationEntitiesId(id) == null) {
             return 0.0;
         }
         return reviewRepository.getAverageMarksByReservationEntitiesId(id);

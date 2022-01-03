@@ -213,4 +213,14 @@ public class ReservationEntitiesController {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
     }
+
+    @GetMapping(value = "/getMarksForReservationEntitiesOfUser/{userId}")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<Object> getMarksForReservationEntitiesOfUser(@PathVariable Long userId) {
+        try {
+            return new ResponseEntity<>(reviewService.getMarksForReservationEntitiesOfOwner(userId), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
 }

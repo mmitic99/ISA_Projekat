@@ -14,4 +14,7 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("SELECT AVG(r.mark) FROM Review r WHERE r.reservation.reservationEntity.id = ?1")
     Double getAverageMarksByReservationEntitiesId(Long id);
+
+    @Query("select count(r.mark) from Review r where r.reservation.reservationEntity.id = ?1")
+    int getNumberOfMarksByReservationEntitiesId(Long id);
 }

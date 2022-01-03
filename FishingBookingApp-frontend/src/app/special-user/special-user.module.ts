@@ -22,6 +22,7 @@ import { SpecialReservationComponent } from './special-reservation/special-reser
 import { NewReservationForUserComponent } from './new-reservation-for-user/new-reservation-for-user.component';
 import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-view.component';
 import { ReservationViewComponent } from './reservation-view/reservation-view.component';
+import { BusinessReportComponent } from './business-report/business-report.component';
 
 FullCalendarModule.registerPlugins([ // register FullCalendar plugins
   dayGridPlugin,
@@ -43,7 +44,8 @@ FullCalendarModule.registerPlugins([ // register FullCalendar plugins
     SpecialReservationComponent,
     NewReservationForUserComponent,
     BasicProfileViewComponent,
-    ReservationViewComponent
+    ReservationViewComponent,
+    BusinessReportComponent
   ],
   imports: [
     CommonModule,
