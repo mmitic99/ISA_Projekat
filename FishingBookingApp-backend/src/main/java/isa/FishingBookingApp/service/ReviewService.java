@@ -13,5 +13,7 @@ public interface ReviewService {
 
     List<MarksDTO> getMarksForReservationEntities();
 
+    List<MarksDTO> getMarksForReservationEntitiesOfOwner(Long userId);
+
     Double getAvgMarksForEntity(Long id);
 }

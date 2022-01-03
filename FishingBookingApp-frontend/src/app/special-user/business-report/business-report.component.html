@@ -1,0 +1,21 @@
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <th>Naziv</th>
+            <th>Adresa</th>
+            <th>Broj ocena</th>
+            <th>Prosečna ocena</th>
+        </tr>
+    </thead>
+
+    <tfoot *ngFor="let reservationEntity of reservationEntities">
+        <tr>
+            <td>{{reservationEntity.name}}</td>
+            <td>{{reservationEntity.address.street}} {{reservationEntity.address.number}},
+                {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</td>
+            <td>{{getNumOfMarksById(reservationEntity.id)}}</td>
+            <td *ngIf="getNumOfMarksById(reservationEntity.id) != 0">{{getMarkById(reservationEntity.id)}}/10</td>
+            <td *ngIf="getNumOfMarksById(reservationEntity.id) == 0">/</td>
+        </tr>
+    </tfoot>
+</table>
