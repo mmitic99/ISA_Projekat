@@ -16,6 +16,14 @@ export class UserService {
     }
     return this.http.get(serverPortApi + 'users/getUser', header);
   }
+
+  getUserByMailAddress(mailAddress : string) {
+    var header = {
+      headers: new HttpHeaders()
+        .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+    }
+    return this.http.get(serverPortApi + 'users/getUser/' + mailAddress, header);
+  }
   
   editProfile(editUser: any) {
     var header = {

@@ -13,6 +13,7 @@ import { ProfileComponent } from './profile/profile.component';
 import { SuHomeComponent } from './su-home/su-home.component';
 import { SpecialReservationComponent } from './special-reservation/special-reservation.component';
 import { NewReservationForUserComponent } from './new-reservation-for-user/new-reservation-for-user.component';
+import { BasicProfileViewComponent } from './basic-profile-view/basic-profile-view.component';
 
 const routes: Routes = [
     { path: '', component: SuHomeComponent},
@@ -26,7 +27,8 @@ const routes: Routes = [
     { path: 'availableAppointments/:id', component: NewAvailableAppointmentComponent},
     { path: 'entityBusyness/:id', component: EntityBusynessComponent},
     { path: 'createSpecialReservation/:id', component: SpecialReservationComponent},
-    { path: 'createReservationForUser/:id', component: NewReservationForUserComponent}
+    { path: 'createReservationForUser/:id', component: NewReservationForUserComponent},
+    { path: 'basicProfileView/:mailAddress', component: BasicProfileViewComponent}
 ];
 
 @NgModule({

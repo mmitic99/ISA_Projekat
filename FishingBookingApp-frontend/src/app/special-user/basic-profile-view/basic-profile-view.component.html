@@ -1,0 +1,88 @@
+<button class="button is-link" (click)="backClicked()">Nazad</button>
+<div class="columns">
+    <div class="column is-one-fifth">
+    </div>
+    <div class="column ">
+        <section class="hero is-fullheight">
+            <div class="hero-body ">
+                <div class="container has-text-centered">
+                    <div class="column is-8 is-offset-0">
+                        <h3 class="title has-text-black">Pregled profila korisnika</h3>
+                        <div class="box">
+                            <form>
+                                <div class="field">
+                                    <label class="label">Email adresa</label>
+                                    <div class="control">
+                                        <input class="input" type="email" placeholder="Email adresa" name="mailAddress"
+                                            [(ngModel)]="user.mailAddress" disabled required>
+                                    </div>
+                                </div>
+                                <hr>
+                                <div class="field">
+                                    <label class="label">Ime</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Ime" name="name"
+                                            [(ngModel)]="user.name" disabled required>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Prezime</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Prezime" name="surname"
+                                            [(ngModel)]="user.surname" disabled required>
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Broj telefona</label>
+                                    <div class="control">
+                                        <input class="input" type="tel" placeholder="+123456789" name="mobileNumber"
+                                            [(ngModel)]="user.mobileNumber" disabled required>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="field">
+                                    <label class="label">Ulica</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Ulica" name="street"
+                                            [(ngModel)]="user.street">
+                                    </div>
+                                </div>
+                                <div class="field">
+                                    <label class="label">Broj</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Broj" name="number"
+                                            [(ngModel)]="user.number">
+                                    </div>
+                                </div>
+                                -->
+                                <div class="field">
+                                    <label class="label">Grad</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Grad" name="city"
+                                            [(ngModel)]="user.city" disabled required>
+                                    </div>
+                                </div>
+                                <!--
+                                <div class="field">
+                                    <label class="label">Poštanski broj</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="12345" name="postalCode"
+                                            [(ngModel)]="user.postalCode">
+                                    </div>
+                                </div>
+                                -->
+                                <div class="field">
+                                    <label class="label">Država</label>
+                                    <div class="control">
+                                        <input class="input" type="text" placeholder="Država" name="country"
+                                            [(ngModel)]="user.country" disabled required>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+</div>

@@ -38,6 +38,12 @@ public class UserController {
         return new UserDTO(userService.findByMailAddress(mailAddress));
     }
 
+    @GetMapping(value = "getUser/{userMailAddress}")
+    @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public UserDTO getUserById(@PathVariable String userMailAddress) {
+        return new UserDTO(userService.findByMailAddress(userMailAddress));
+    }
+
     @PutMapping(value="editUser")
     @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> editUser(@RequestBody UserDTO user, HttpServletRequest request){
