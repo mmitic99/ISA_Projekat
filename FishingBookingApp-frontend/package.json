@@ -21,9 +21,11 @@
     "@fortawesome/fontawesome-free": "^5.15.4",
     "@fullcalendar/angular": "^5.10.1",
     "@fullcalendar/daygrid": "^5.10.1",
+    "@types/ol": "^6.5.3",
     "bulma": "^0.9.3",
     "ng-image-slider": "^2.8.0",
     "ngx-toastr": "^14.2.1",
+    "ol": "^6.10.0",
     "rxjs": "~6.6.0",
     "tslib": "^2.3.0",
     "zone.js": "~0.11.4"

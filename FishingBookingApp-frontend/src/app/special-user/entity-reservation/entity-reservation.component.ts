@@ -10,7 +10,7 @@ import { EntitiesService } from '../service/entities.service';
 })
 export class EntityReservationComponent implements OnInit {
 
-  reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+  reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", 0, 0, "", "", "");
   reservationsOfEntity: any;
   reservationsOfEntityToShow: any;
   reservationsType = 'all';
@@ -31,7 +31,7 @@ export class EntityReservationComponent implements OnInit {
         this.reservationEntity = new ReservationEntity(data.id, data.name, data.numberOfRooms, data.bedsPerRoom, data.price,
           data.promotionalDescription, data.rulesOfConduct, data.address.street,
           data.address.number, data.address.city, data.address.postalCode,
-          data.address.country, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
+          data.address.country, data.address.longitude, data.address.latitude, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
       }
     )
   }

@@ -4,6 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { ReservationEntity } from '../new-entity/ReservationEntity';
 import { EntitiesService } from '../service/entities.service';
 
+import { View, Feature, Map, Tile } from 'ol';
+import VectorLayer from 'ol/layer/Vector';
+import { fromLonLat, get as GetProjection, toLonLat } from 'ol/proj'
+import TileLayer from 'ol/layer/Tile';
+import OSM, { ATTRIBUTION } from 'ol/source/OSM';
+import Point from 'ol/geom/Point';
+import VectorSource from 'ol/source/Vector';
+
 @Component({
   selector: 'app-entity-view',
   templateUrl: './entity-view.component.html',
@@ -11,10 +19,12 @@ import { EntitiesService } from '../service/entities.service';
 })
 export class EntityViewComponent implements OnInit {
 
+  map: Map | undefined;
+  selectedPoint: any = null;
   isNumberOfRoomsValid = true;
   isNumberOfBedsValid = true;
   isPriceValid = true;
-  reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+  reservationEntity = new ReservationEntity("", "", "", "", "", "", "", "", "", "", "", "", 0, 0, "", "", "");
   isPostalCodeValid = true;
   userRole: any;
   image: any;
@@ -39,7 +49,8 @@ export class EntityViewComponent implements OnInit {
         this.reservationEntity = new ReservationEntity(data.id, data.name, data.numberOfRooms, data.bedsPerRoom, data.price,
           data.promotionalDescription, data.rulesOfConduct, data.address.street,
           data.address.number, data.address.city, data.address.postalCode,
-          data.address.country, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
+          data.address.country, data.address.longitude, data.address.latitude, this.reservationEntity.userId, this.reservationEntity.username, data.address.address_id);
+        this.initializeMap();
       }
     )
   }
@@ -55,6 +66,57 @@ export class EntityViewComponent implements OnInit {
         }
       }
     )
+  }
+
+  initializeMap() {
+    const features = [];
+    features.push(new Feature({
+      geometry: new Point(fromLonLat([this.reservationEntity.longitude, this.reservationEntity.latitude]))
+    }))
+    const vectorSource = new VectorSource({
+      features
+    });
+    const vectorLayer = new VectorLayer({
+      source: vectorSource
+    });
+    this.selectedPoint = vectorLayer;
+
+    this.map = new Map({
+      target: 'map',
+      layers: [
+        new TileLayer({
+          source: new OSM({})
+        }),
+        vectorLayer
+      ],
+      view: new View({
+        center: fromLonLat([this.reservationEntity.longitude, this.reservationEntity.latitude]),
+        zoom: 15
+      })
+    });
+
+    this.map.on('click', (evt) => {
+      var coord = toLonLat(evt.coordinate);   // OVDE SE TACNO NALAZE KOORDINATE
+      this.reservationEntity.longitude = coord[0];
+      this.reservationEntity.latitude = coord[1];
+
+      const features = [];
+      features.push(new Feature({
+        geometry: new Point(fromLonLat([this.reservationEntity.longitude, this.reservationEntity.latitude]))
+      }))
+      const vectorSource = new VectorSource({
+        features
+      });
+      const vectorLayer = new VectorLayer({
+        source: vectorSource
+      });
+
+      if (this.selectedPoint != null) {
+        this.map?.removeLayer(this.selectedPoint);
+      }
+      this.map?.addLayer(vectorLayer)
+      this.selectedPoint = vectorLayer;
+    });
   }
 
   updateCottage() {

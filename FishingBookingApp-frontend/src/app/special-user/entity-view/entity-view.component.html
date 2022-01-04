@@ -158,6 +158,24 @@
                                     </div>
                                 </div>
 
+                                <div class="field is-vcentered">
+                                    <label class="label">Lokacija</label>
+
+                                    <div class="container has-text-centered">
+                                        <div class="column is-0 is-offset-3">
+                                            <div id="map" class="map"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="column">
+                                        <p><b>Koordinate (odaberite na mapi ukoliko želite da izmenite):</b></p>
+                                        <p *ngIf="reservationEntity.longitude == -100" class="is-selected" style="color: red;">Nije
+                                            selektovana lokacija na mapi</p>
+                                        <p *ngIf="reservationEntity.longitude != -100">
+                                            {{reservationEntity.longitude}}, {{reservationEntity.latitude}}</p>
+                                    </div>
+
+                                </div>
 
                                 <br>
                                 <button class="button is-block is-info is-large is-fullwidth" (click)="updateCottage()"

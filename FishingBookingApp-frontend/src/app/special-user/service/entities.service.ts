@@ -143,13 +143,13 @@ export class EntitiesService {
 
   private createCottageObjectForCreating(entity : ReservationEntity) : Cottage {
     return new Cottage(null, entity.name, entity.numberOfRooms, entity.bedsPerRoom, entity.price, entity.promotionalDescription,
-                       entity.rulesOfConduct, entity.street, entity.number, entity.city, entity.postalCode, entity.country,
+                       entity.rulesOfConduct, entity.street, entity.number, entity.city, entity.postalCode, entity.country, entity.longitude, entity.latitude,
                        entity.userId, entity.username, null);
   }
 
   private createCottageObjectForUpdate(entity : ReservationEntity) : Cottage {
     return new Cottage(entity.id, entity.name, entity.numberOfRooms, entity.bedsPerRoom, entity.price, entity.promotionalDescription,
-                       entity.rulesOfConduct, entity.street, entity.number, entity.city, entity.postalCode, entity.country,
+                       entity.rulesOfConduct, entity.street, entity.number, entity.city, entity.postalCode, entity.country, entity.longitude, entity.latitude,
                        entity.userId, entity.username, entity.addressId);
   }
 
