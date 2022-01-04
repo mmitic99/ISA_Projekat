@@ -28,9 +28,10 @@ public class ReservationEntitiesController {
     private BoatService boatService;
     private ComplaintService complaintService;
     private ReviewService reviewService;
+    private BusinessReportService businessReportService;
 
     @Autowired
-    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, ReservationService reservationService, TokenUtils tokenUtils, BoatService boatService, ComplaintService complaintService, ReviewService reviewService) {
+    public ReservationEntitiesController(ReservationEntitiesService reservationEntitiesService, EntityImageService entityImageService, CottageService cottageService, ReservationService reservationService, TokenUtils tokenUtils, BoatService boatService, ComplaintService complaintService, ReviewService reviewService, BusinessReportService businessReportService) {
         this.reservationEntitiesService = reservationEntitiesService;
         this.entityImageService = entityImageService;
         this.cottageService = cottageService;
@@ -39,6 +40,7 @@ public class ReservationEntitiesController {
         this.boatService = boatService;
         this.complaintService = complaintService;
         this.reviewService = reviewService;
+        this.businessReportService = businessReportService;
     }
 
 
@@ -221,6 +223,18 @@ public class ReservationEntitiesController {
             return new ResponseEntity<>(reviewService.getMarksForReservationEntitiesOfOwner(userId), HttpStatus.OK);
         } catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
+    @GetMapping(value = "/getIncomesForReservationEntitiesOfUser/{userId}")
+    @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
+    public ResponseEntity<Object> getIncomesFromReservationEntitiesOfUser(@PathVariable Long userId, @RequestParam String startDate, @RequestParam String startTime, @RequestParam String endDate, @RequestParam String endTime) {
+        try {
+            TimeRangeDTO timeRangeDTO = new TimeRangeDTO(startDate, startTime, endDate, endTime);
+            timeRangeDTO.setDateTimesFromStrings();
+            return new ResponseEntity<>(businessReportService.getIncomeReportForOwnerInTimeRange(userId, timeRangeDTO), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
     }
 }
