@@ -1,3 +1,6 @@
+<h2 class="title has-text-centered" *ngIf="ownerRole == 'ROLE_cottageOwner'">Prosečne ocene vaših vikendica:</h2>
+<h2 class="title has-text-centered" *ngIf="ownerRole == 'ROLE_boatOwner'">Prosečne ocene vaših brodova/čamaca:</h2>
+
 <table class="table is-hoverable is-fullwidth">
     <thead>
         <tr>
@@ -14,8 +17,76 @@
             <td>{{reservationEntity.address.street}} {{reservationEntity.address.number}},
                 {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</td>
             <td>{{getNumOfMarksById(reservationEntity.id)}}</td>
-            <td *ngIf="getNumOfMarksById(reservationEntity.id) != 0">{{getMarkById(reservationEntity.id)}}/10</td>
+            <td *ngIf="getNumOfMarksById(reservationEntity.id) != 0">{{getMarkById(reservationEntity.id)}}/10
+            </td>
             <td *ngIf="getNumOfMarksById(reservationEntity.id) == 0">/</td>
         </tr>
     </tfoot>
 </table>
+
+<div *ngIf="ownerRole == 'ROLE_cottageOwner'">
+    <p *ngIf="avgOfAllEntities != -1"><strong>Prosek ocena svih vikendica: {{avgOfAllEntities}}</strong></p>
+    <p *ngIf="avgOfAllEntities == -1"><strong>Prosek ocena svih vikendica: /</strong></p>
+</div>
+
+<div *ngIf="ownerRole == 'ROLE_boatOwner'">
+    <p *ngIf="avgOfAllEntities != -1"><strong>Prosek ocena svih brodova/čamaca: {{avgOfAllEntities}}</strong></p>
+    <p *ngIf="avgOfAllEntities == -1"><strong>Prosek ocena svih brodova/čamaca: /</strong></p>
+</div>
+
+<hr />
+<h2 class="title has-text-centered">Prihodi u određenom vremenskom periodu:</h2>
+
+<div class="column has-background-link-light">
+    <div class="hero-body">
+        <h4 class="title is-4 has-text-grey">Odaberite vremenski period</h4>
+        <div class="columns is-multiline is-vcentered">
+            <label class="label">Datum početka</label>
+            <div class="column is-2">
+                <input class="input" type="date" [(ngModel)]="timeRange.startDate">
+            </div>
+
+            <label class="label">Datum kraja</label>
+            <div class="column is-2">
+                <input class="input" type="date" [(ngModel)]="timeRange.endDate">
+            </div>
+
+            <div class="column is-1">
+                <button class="button is-primary" (click)="showIncome()">Prikaži</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div *ngIf="booleanShowIncome">
+    <table class="table is-hoverable is-fullwidth">
+        <thead>
+            <tr>
+                <th>Naziv</th>
+                <th>Adresa</th>
+                <th>Broj rezervacija</th>
+                <th>Prihodi [din]</th>
+            </tr>
+        </thead>
+
+        <tfoot *ngFor="let reservationEntity of reservationEntities">
+            <tr>
+                <td>{{reservationEntity.name}}</td>
+                <td>{{reservationEntity.address.street}} {{reservationEntity.address.number}},
+                    {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</td>
+                <td>{{getNumOfReservationsById(reservationEntity.id)}}</td>
+                <td *ngIf="getNumOfReservationsById(reservationEntity.id) != 0">{{getIncomeById(reservationEntity.id)}}
+                </td>
+                <td *ngIf="getNumOfReservationsById(reservationEntity.id) == 0">/</td>
+            </tr>
+        </tfoot>
+    </table>
+
+    <div *ngIf="ownerRole == 'ROLE_cottageOwner'">
+        <p><strong>Prihodi svih vikendica: {{sumOfIncomes}} din</strong></p>
+    </div>
+    
+    <div *ngIf="ownerRole == 'ROLE_boatOwner'">
+        <p><strong>Prihodi svih brodova/čamaca: {{sumOfIncomes}} din</strong></p>
+    </div>
+</div>

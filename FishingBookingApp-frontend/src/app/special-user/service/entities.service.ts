@@ -1,7 +1,8 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { serverPortApi } from 'src/app/app.consts';
 import { AdditionalService } from '../additional-services/AdditionalService';
+import { TimeRange } from '../business-report/TimeRange';
 import { AvailableAppointment } from '../new-available-appointment/AvailableAppointment';
 import { Boat } from '../new-boat/Boat';
 import { Cottage } from '../new-entity/Cottage';
@@ -89,6 +90,19 @@ export class EntitiesService {
     }
 
     return this.http.get(serverPortApi + "reservationEntities/getMarksForReservationEntitiesOfUser/" + ownerId, header);
+  }
+
+  getIncomesForEntitiesOfOwner(ownerId: string, timeRange : TimeRange) {
+    var header = new HttpHeaders()
+      .set('Authorization', `Bearer ${localStorage.getItem('accessToken')}`)
+
+    var params = new HttpParams();
+    params = params.append('startDate', timeRange.startDate);
+    params = params.append('startTime', timeRange.startTime);
+    params = params.append('endDate', timeRange.endDate);
+    params = params.append('endTime', timeRange.endTime);
+
+    return this.http.get<any>(serverPortApi + "reservationEntities/getIncomesForReservationEntitiesOfUser/" + ownerId, {params : params, headers : header});
   }
 
   // DEO METODA VEZAN ZA VIKENDICE //////////////////////////
