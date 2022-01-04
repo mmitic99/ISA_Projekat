@@ -14,7 +14,8 @@
                         <h2 class="title has-text-grey" *ngIf="userRole == 'ROLE_cottageOwner'">Kreiranje vikendice</h2>
                         <div class="box">
                             <form>
-                                <p *ngIf="userRole == 'ROLE_cottageOwner'">Slike možete postaviti nakon kreiranja vikendice</p>
+                                <p *ngIf="userRole == 'ROLE_cottageOwner'">Slike možete postaviti nakon kreiranja
+                                    vikendice</p>
                                 <hr />
 
                                 <div class="field">
@@ -33,25 +34,26 @@
                                             (focusout)="onFocusOutNumberOfRooms()"
                                             [(ngModel)]="newReservationEntity.numberOfRooms">
                                     </div>
-                                    <p class="is-danger help" *ngIf="isNumberOfRoomsValid == false">Broj soba mora biti cifra.</p>
+                                    <p class="is-danger help" *ngIf="isNumberOfRoomsValid == false">Broj soba mora biti
+                                        cifra.</p>
                                 </div>
 
                                 <div class="field">
                                     <label class="label">Broj kreveta po sobi</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Broj kreveta po sobi"
-                                            (focusout)="onFocusOutNumberOfBeds()"
-                                            name="bedsPerRoom" [(ngModel)]="newReservationEntity.bedsPerRoom">
+                                            (focusout)="onFocusOutNumberOfBeds()" name="bedsPerRoom"
+                                            [(ngModel)]="newReservationEntity.bedsPerRoom">
                                     </div>
-                                    <p class="is-danger help" *ngIf="isNumberOfBedsValid == false">Broj kreveta mora biti cifra.</p>
+                                    <p class="is-danger help" *ngIf="isNumberOfBedsValid == false">Broj kreveta mora
+                                        biti cifra.</p>
                                 </div>
 
                                 <div class="field">
                                     <label class="label">Cena noćenja</label>
                                     <div class="control">
                                         <input class="input" type="number" placeholder="Cena noćenja" name="price"
-                                            (focusout)="onFocusOutPrice()"
-                                            [(ngModel)]="newReservationEntity.price">
+                                            (focusout)="onFocusOutPrice()" [(ngModel)]="newReservationEntity.price">
                                     </div>
                                     <p class="is-danger help" *ngIf="isPriceValid == false">Cena mora biti cifra.</p>
                                 </div>
@@ -117,6 +119,24 @@
                                     </div>
                                 </div>
 
+                                <div class="field is-vcentered">
+                                    <label class="label">Lokacija</label>
+
+                                    <div class="container has-text-centered">
+                                        <div class="column is-0 is-offset-3">
+                                            <div id="map" class="map"></div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="column">
+                                        <p><b>Koordinate (odaberite na mapi):</b></p>
+                                        <p *ngIf="newReservationEntity.longitude == -100" class="is-selected" style="color: red;">Nije
+                                            selektovana lokacija na mapi</p>
+                                        <p *ngIf="newReservationEntity.longitude != -100">
+                                            {{newReservationEntity.longitude}}, {{newReservationEntity.latitude}}</p>
+                                    </div>
+
+                                </div>
 
                                 <br>
                                 <button class="button is-block is-info is-large is-fullwidth" (click)="createCottage()"

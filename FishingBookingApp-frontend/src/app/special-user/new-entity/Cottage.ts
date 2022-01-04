@@ -12,6 +12,8 @@ export class Cottage {
         public city: string,
         public postalCode: string,
         public country: string,
+        public longitude: number,
+        public latitude: number,
         public cottageOwnerId: string,
         public cottageOwnerUsername: string,
         public addressId: any
