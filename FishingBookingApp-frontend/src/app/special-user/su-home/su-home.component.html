@@ -12,30 +12,43 @@
         </div>
     </nav>
 
-    <article class="message" style="height: 25%;" *ngFor="let reservationEntity of reservationEntitiesToShow">
-        <a routerLink="{{entityViewRouterLink}}/{{reservationEntity.id}}">
-            <div class="message-header">
+    <article style="height: 25%;" *ngFor="let reservationEntity of reservationEntitiesToShow"
+        class="message {{reservationEntity.articleClass}}">
+        <div class="message-header">
+            <a routerLink="../reservationEntity/{{reservationEntity.id}}" style="text-decoration: none">
                 <p>{{reservationEntity.name}}</p>
-            </div>
-            <div class="message-body">
-                <div class="columns">
-                    <div class="column is-one-quarter">
-                        <img height="100%" width="100%"
-                            src="{{reservationEntity.base64Image}}"
+            </a>
+        </div>
+        <div class="message-body">
+            <div class="columns">
+                <div class="column is-one-quarter">
+                    <a routerLink="../reservationEntity/{{reservationEntity.id}}" style="text-decoration: none">
+                        <img height="100%" width="100%" src="{{reservationEntity.base64Image}}"
                             alt="Nije učitana slika">
-                    </div>
-                    <div class="column">
-                        <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}}
-                            {{reservationEntity.address.city}} {{reservationEntity.address.country}}</p>
-                        <p class="cut-text" style="height: 50%;">
-                            Opis: {{reservationEntity.promotionalDescription}}
-                        </p>
-                        <p>Vrsta: viasd</p>
-                        <span class="level-right">10/10</span>
-                    </div>
+                    </a>
+                </div>
+                <div class="column">
+                    <a routerLink="../reservationEntity/{{reservationEntity.id}}" style="text-decoration: none">
+                        <div>
+                            <p>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}},
+                                {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</p>
+                            <br>
+                            <p class="cut-text2" style="height: Auto;">
+                                Opis: {{reservationEntity.promotionalDescription}}
+                            </p>
+                            <br>
+                            <p class="cut-text1" style="height: Auto;">
+                                Pravila ponašanja: {{reservationEntity.rulesOfConduct}}
+                            </p>
+                            <br>
+                            <p *ngIf="reservationEntity.type == 'cottage'">Vrsta: vikendica</p>
+                            <p *ngIf="reservationEntity.type == 'boat'">Vrsta: brod</p>
+                            <p *ngIf="reservationEntity.type == 'fishingInstructor'">Vrsta: instruktor pecanja</p>
+                        </div>
+                    </a>
                 </div>
             </div>
-        </a>
+        </div>
     </article>
 
 </div>
