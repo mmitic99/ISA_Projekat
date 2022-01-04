@@ -29,4 +29,6 @@ public interface ReservationEntitiesService {
     List<ReservationEntities> searchFilterSort(SearchFilterSort searchFilterSort);
 
     Set<ReservationEntities> getPossibleReservationEntitiesForComplaint(String mailAddress);
+
+    boolean isReservationEntityHavingFutureReservations(Long entityId);
 }

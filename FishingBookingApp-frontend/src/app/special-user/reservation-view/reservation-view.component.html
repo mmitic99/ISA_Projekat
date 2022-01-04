@@ -86,7 +86,7 @@
 
 <hr />
 
-<div #reportView id="reportView" *ngIf="!reportExists">
+<div #reportView id="reportView" *ngIf="!reportExists && reservationPast">
     <h3 class="title is-3 has-text-centered">Izvestaj</h3>
     <nav class="panel has-text-centered column is-6 is-offset-3">
         <div class="control">

@@ -132,6 +132,13 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
         return retVal;
     }
 
+    @Override
+    public boolean isReservationEntityHavingFutureReservations(Long entityId) {
+        List<Reservation> futureReservations = reservationRepository.findAllByReservationEntityIdAndStartGreaterThanAndDeletedEquals(entityId, LocalDateTime.now(), false);
+
+        return futureReservations.size() > 0;
+    }
+
     private List<ReservationEntities> search(SearchFilterSort searchFilterSort, List<ReservationEntities> reservationEntities) {
         List<ReservationEntities> reservationEntitiesRetVal = new ArrayList<ReservationEntities>();
 

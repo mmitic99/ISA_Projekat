@@ -105,9 +105,12 @@ public class ReservationEntitiesController {
 
     @PostMapping(value = "/imageUpload/{entityId}")
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
-    public ResponseEntity<EntityImageDTO> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId) {
+    public ResponseEntity<EntityImageDTO> uploadEntityImage(@RequestParam MultipartFile multipartImage, @PathVariable Long entityId, HttpServletRequest request) {
         ReservationEntities entity = reservationEntitiesService.get(entityId);
         if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        String ownerMailAddress = getMailAddressOfEntityOwner(entityId);
+        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(ownerMailAddress, request))
+            return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
 
         EntityImage image = new EntityImage();
         image.setName(multipartImage.getName());

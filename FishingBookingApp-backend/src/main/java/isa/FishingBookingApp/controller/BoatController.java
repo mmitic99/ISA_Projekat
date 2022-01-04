@@ -6,6 +6,7 @@ import isa.FishingBookingApp.model.Boat;
 import isa.FishingBookingApp.model.Cottage;
 import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.service.BoatService;
+import isa.FishingBookingApp.service.ReservationEntitiesService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,12 +26,14 @@ public class BoatController {
     private BoatService boatService;
     private UserService userService;
     private TokenUtils tokenUtils;
+    private ReservationEntitiesService reservationEntitiesService;
 
     @Autowired
-    public BoatController(BoatService boatService, TokenUtils tokenUtils, UserService userService) {
+    public BoatController(BoatService boatService, TokenUtils tokenUtils, UserService userService, ReservationEntitiesService reservationEntitiesService) {
         this.boatService = boatService;
         this.tokenUtils = tokenUtils;
         this.userService = userService;
+        this.reservationEntitiesService = reservationEntitiesService;
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -58,7 +61,10 @@ public class BoatController {
         if (!boatService.exists(boatDTO.getId())){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        // TODO: uraditi proveru da li je moguce izmeniti brod (ne sme biti rezervisan)
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(boatDTO.getId())) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         Boat updatedBoat = boatService.saveOrUpdate(boatDTO);
         return new ResponseEntity<>(updatedBoat, HttpStatus.OK);
     }
@@ -86,7 +92,10 @@ public class BoatController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        // TODO: uraditi proveru da li je moguce obrisati brod (ne sme biti rezervisan)
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(id)) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         if (boatService.delete(id)){
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
