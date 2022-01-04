@@ -4,6 +4,7 @@ import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.Cottage;
 import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.service.CottageService;
+import isa.FishingBookingApp.service.ReservationEntitiesService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,12 +24,14 @@ public class CottageController {
     private CottageService cottageService;
     private UserService userService;
     private TokenUtils tokenUtils;
+    private ReservationEntitiesService reservationEntitiesService;
 
     @Autowired
-    public CottageController(CottageService cottageService, TokenUtils tokenUtils, UserService userService) {
+    public CottageController(CottageService cottageService, TokenUtils tokenUtils, UserService userService, ReservationEntitiesService reservationEntitiesService) {
         this.cottageService = cottageService;
         this.tokenUtils = tokenUtils;
         this.userService = userService;
+        this.reservationEntitiesService = reservationEntitiesService;
     }
 
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -56,7 +59,11 @@ public class CottageController {
         if (!cottageService.exists(cottageDTO.getId())){
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
         }
-        // TODO: uraditi proveru da li je moguce izmeniti vikendicu (ne sme biti rezervisana)
+
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(cottageDTO.getId())) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         Cottage updatedCottage = cottageService.saveOrUpdate(cottageDTO);
         return new ResponseEntity<>(updatedCottage, HttpStatus.OK);
     }
@@ -84,7 +91,10 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        // TODO: uraditi proveru da li je moguce obrisati vikendicu (ne sme biti rezervisana)
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(id)) {
+            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
+        }
+
         if (cottageService.delete(id)){
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
