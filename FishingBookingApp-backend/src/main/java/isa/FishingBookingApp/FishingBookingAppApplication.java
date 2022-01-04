@@ -65,10 +65,10 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         // inicijalizacija adresa
         Address address1 = new Address(0, 0, "Glavna ulica", "15", "Beograd", "21100", "Srbija");
         Address address2 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", "Srbija");
-        Address address3 = new Address(0, 0, "Periceva ulica", "bb", "Zlatibor", "24555", "Srbija");
-        Address address4 = new Address(0, 0, "Tornjoški put", "5а", "Senta", "11100", "Srbija");
-        Address addressOfBoat1 = new Address(0, 0, "Adresa reke", "bb", "Beograd", "88888", "Srbija");
-        Address addressOfBoat2 = new Address(0, 0, "Muo", "bb", "Kotor", "15151", "Crna gora");
+        Address address3 = new Address(43.71881497806544, 19.69865620896269, "Srebrna pahulja", "5a", "Zlatibor", "24555", "Srbija");
+        Address address4 = new Address(43.28496170828387, 20.804868872788767, "Jovana Cvijića", "15", "Kopaonik", "11100", "Srbija");
+        Address addressOfBoat1 = new Address(44.82340663049456, 20.445556122854804, "Adresa reke", "bb", "Beograd", "88888", "Srbija");
+        Address addressOfBoat2 = new Address(42.43471617825651, 18.757104427091786, "Muo", "125", "Kotor", "15151", "Crna gora");
         addressRepository.save(address1);
         addressRepository.save(address2);
         addressRepository.save(address3);
