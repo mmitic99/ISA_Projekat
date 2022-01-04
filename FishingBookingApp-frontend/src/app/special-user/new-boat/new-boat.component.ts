@@ -4,6 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { EntitiesService } from '../service/entities.service';
 import { Boat } from './Boat';
 
+import { View, Feature, Map, Tile } from 'ol';
+import VectorLayer from 'ol/layer/Vector';
+import { fromLonLat, get as GetProjection, toLonLat } from 'ol/proj'
+import TileLayer from 'ol/layer/Tile';
+import OSM, { ATTRIBUTION } from 'ol/source/OSM';
+import Point from 'ol/geom/Point';
+import VectorSource from 'ol/source/Vector';
+
 @Component({
   selector: 'app-new-boat',
   templateUrl: './new-boat.component.html',
@@ -11,6 +19,8 @@ import { Boat } from './Boat';
 })
 export class NewBoatComponent implements OnInit {
 
+  map: Map | undefined;
+  selectedPoint: any = null;
   isBoatLengthValid = true;
   isNumberOfEnginesValid = true;
   isEnginePowerValid = true;
@@ -18,12 +28,51 @@ export class NewBoatComponent implements OnInit {
   isCapacityValid = true;
   isPriceValid = true;
   isPostalCodeValid = true;
-  newBoat = new Boat("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
+  newBoat = new Boat("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", -100, -100, "", "", "");
   constructor(private entityService: EntitiesService, private toastr: ToastrService, private router: Router) { }
 
   ngOnInit(): void {
     this.newBoat.boatOwnerId = localStorage.getItem('userId');
     this.newBoat.boatOwnerUsername = localStorage.getItem('mailAddress');
+    this.initializeMap();
+  }
+
+  initializeMap() {
+    this.map = new Map({
+      target: 'map',
+      layers: [
+        new TileLayer({
+          source: new OSM({})
+        })
+      ],
+      view: new View({
+        center: fromLonLat([20.36, 44.55]),
+        zoom: 6.5
+      })
+    });
+
+    this.map.on('click', (evt) => {
+      var coord = toLonLat(evt.coordinate);   // OVDE SE TACNO NALAZE KOORDINATE
+      this.newBoat.longitude = coord[0];
+      this.newBoat.latitude = coord[1];
+
+      const features = [];
+      features.push(new Feature({
+        geometry: new Point(fromLonLat([this.newBoat.longitude, this.newBoat.latitude]))
+      }))
+      const vectorSource = new VectorSource({
+        features
+      });
+      const vectorLayer = new VectorLayer({
+        source: vectorSource
+      });
+
+      if (this.selectedPoint != null) {
+        this.map?.removeLayer(this.selectedPoint);
+      }
+      this.map?.addLayer(vectorLayer)
+      this.selectedPoint = vectorLayer;
+    });
   }
 
   createBoat(): void {
@@ -53,7 +102,6 @@ export class NewBoatComponent implements OnInit {
   }
 
   isAllFilled(): boolean {
-    // Provera polja koja poseduju svi entiteti
     if (this.newBoat.name == "" || this.newBoat.promotionalDescription == ""
       || this.newBoat.rulesOfConduct == "" || this.newBoat.street == "" 
       || this.newBoat.number == "" || this.newBoat.city == ""
@@ -62,7 +110,8 @@ export class NewBoatComponent implements OnInit {
       || this.newBoat.numberOfEngines == "" || this.newBoat.enginePower == ""
       || this.newBoat.maxSpeed == "" || this.newBoat.navigationEquipment == ""
       || this.newBoat.fishingEquipment == "" || this.newBoat.capacity == ""
-      || this.newBoat.cancellationConditions == "" || this.newBoat.price == "") {
+      || this.newBoat.cancellationConditions == "" || this.newBoat.price == ""
+      || this.newBoat.longitude == -100 || this.newBoat.latitude == -100) {
       return false;
     }
 
