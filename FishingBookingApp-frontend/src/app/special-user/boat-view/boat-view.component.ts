@@ -4,6 +4,14 @@ import { ToastrService } from 'ngx-toastr';
 import { Boat } from '../new-boat/Boat';
 import { EntitiesService } from '../service/entities.service';
 
+import { View, Feature, Map, Tile } from 'ol';
+import VectorLayer from 'ol/layer/Vector';
+import { fromLonLat, get as GetProjection, toLonLat } from 'ol/proj'
+import TileLayer from 'ol/layer/Tile';
+import OSM, { ATTRIBUTION } from 'ol/source/OSM';
+import Point from 'ol/geom/Point';
+import VectorSource from 'ol/source/Vector';
+
 @Component({
   selector: 'app-boat-view',
   templateUrl: './boat-view.component.html',
@@ -11,6 +19,8 @@ import { EntitiesService } from '../service/entities.service';
 })
 export class BoatViewComponent implements OnInit {
 
+  map: Map | undefined;
+  selectedPoint: any = null;
   isBoatLengthValid = true;
   isNumberOfEnginesValid = true;
   isEnginePowerValid = true;
@@ -18,8 +28,8 @@ export class BoatViewComponent implements OnInit {
   isCapacityValid = true;
   isPriceValid = true;
   isPostalCodeValid = true;
-  boat = new Boat("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "");
-  image : any;
+  boat = new Boat("", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", "", -100, -100, "", "", "");
+  image: any;
   private id: any;
   imageObject: Array<object> = [];
   constructor(private route: ActivatedRoute, private entitiesService: EntitiesService, private toastr: ToastrService) { }
@@ -38,10 +48,11 @@ export class BoatViewComponent implements OnInit {
     this.entitiesService.getEntity(this.id).subscribe(
       (data) => {
         this.boat = new Boat(data.id, data.name, data.boatType, data.boatLength, data.numberOfEngines,
-          data.enginePower, data.maxSpeed, data.navigationEquipment, data.fishingEquipment, data.capacity, 
+          data.enginePower, data.maxSpeed, data.navigationEquipment, data.fishingEquipment, data.capacity,
           data.cancellationConditions, data.price, data.promotionalDescription, data.rulesOfConduct, data.address.street,
           data.address.number, data.address.city, data.address.postalCode,
-          data.address.country, this.boat.boatOwnerId, this.boat.boatOwnerUsername, data.address.address_id);
+          data.address.country, data.address.longitude, data.address.latitude, this.boat.boatOwnerId, this.boat.boatOwnerUsername, data.address.address_id);
+        this.initializeMap();
       }
     )
   }
@@ -57,6 +68,57 @@ export class BoatViewComponent implements OnInit {
         }
       }
     )
+  }
+
+  initializeMap() {
+    const features = [];
+    features.push(new Feature({
+      geometry: new Point(fromLonLat([this.boat.longitude, this.boat.latitude]))
+    }))
+    const vectorSource = new VectorSource({
+      features
+    });
+    const vectorLayer = new VectorLayer({
+      source: vectorSource
+    });
+    this.selectedPoint = vectorLayer;
+
+    this.map = new Map({
+      target: 'map',
+      layers: [
+        new TileLayer({
+          source: new OSM({})
+        }),
+        vectorLayer
+      ],
+      view: new View({
+        center: fromLonLat([this.boat.longitude, this.boat.latitude]),
+        zoom: 15
+      })
+    });
+
+    this.map.on('click', (evt) => {
+      var coord = toLonLat(evt.coordinate);   // OVDE SE TACNO NALAZE KOORDINATE
+      this.boat.longitude = coord[0];
+      this.boat.latitude = coord[1];
+
+      const features = [];
+      features.push(new Feature({
+        geometry: new Point(fromLonLat([this.boat.longitude, this.boat.latitude]))
+      }))
+      const vectorSource = new VectorSource({
+        features
+      });
+      const vectorLayer = new VectorLayer({
+        source: vectorSource
+      });
+
+      if (this.selectedPoint != null) {
+        this.map?.removeLayer(this.selectedPoint);
+      }
+      this.map?.addLayer(vectorLayer)
+      this.selectedPoint = vectorLayer;
+    });
   }
 
   updateBoat() {
@@ -120,7 +182,7 @@ export class BoatViewComponent implements OnInit {
   isAllFilled(): boolean {
     // Provera polja koja poseduju svi entiteti
     if (this.boat.name == "" || this.boat.promotionalDescription == ""
-      || this.boat.rulesOfConduct == "" || this.boat.street == "" 
+      || this.boat.rulesOfConduct == "" || this.boat.street == ""
       || this.boat.number == "" || this.boat.city == ""
       || this.boat.postalCode == "" || this.boat.country == ""
       || this.boat.boatType == "" || this.boat.boatLength == ""

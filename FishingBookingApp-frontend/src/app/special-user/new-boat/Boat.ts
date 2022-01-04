@@ -19,6 +19,8 @@ export class Boat {
         public city: string,
         public postalCode: string,
         public country: string,
+        public longitude: number,
+        public latitude: number,
         public boatOwnerId: any,
         public boatOwnerUsername: any,
         public addressId: any
