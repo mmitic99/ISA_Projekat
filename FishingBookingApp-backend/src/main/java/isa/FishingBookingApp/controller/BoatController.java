@@ -58,14 +58,11 @@ public class BoatController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        if (!boatService.exists(boatDTO.getId())){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(boatDTO.getId())) {
+        Boat updatedBoat = boatService.updateTransactional(boatDTO);
+        if (updatedBoat == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        Boat updatedBoat = boatService.saveOrUpdate(boatDTO);
         return new ResponseEntity<>(updatedBoat, HttpStatus.OK);
     }
 
@@ -92,15 +89,11 @@ public class BoatController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(id)) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-
         if (boatService.delete(id)){
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     private boolean authorizedUser(String cottageOwnerUsername, HttpServletRequest request) {

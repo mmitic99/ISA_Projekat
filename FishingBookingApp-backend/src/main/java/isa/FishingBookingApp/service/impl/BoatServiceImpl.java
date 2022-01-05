@@ -7,7 +7,10 @@ import isa.FishingBookingApp.model.Boat;
 import isa.FishingBookingApp.model.BoatOwner;
 import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.BoatService;
+import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,9 +25,10 @@ public class BoatServiceImpl implements BoatService {
     private EntityImageRepository entityImageRepository;
     private SubscriptionRepository subscriptionRepository;
     private SpecialReservationRepository specialReservationRepository;
+    private ReservationEntitiesService reservationEntitiesService;
 
     @Autowired
-    public BoatServiceImpl(BoatRepository boatRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository) {
+    public BoatServiceImpl(BoatRepository boatRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository, ReservationEntitiesService reservationEntitiesService) {
         this.boatRepository = boatRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
@@ -32,6 +36,7 @@ public class BoatServiceImpl implements BoatService {
         this.entityImageRepository = entityImageRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.specialReservationRepository = specialReservationRepository;
+        this.reservationEntitiesService = reservationEntitiesService;
     }
 
     @Override
@@ -55,6 +60,7 @@ public class BoatServiceImpl implements BoatService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Boat saveOrUpdate(BoatDTO newBoatDTO) {
         Address address = saveOrUpdateAddress(newBoatDTO);
         Boat boat = new Boat();
@@ -82,10 +88,26 @@ public class BoatServiceImpl implements BoatService {
     }
 
     @Override
+    @Transactional(readOnly = false)
+    public Boat updateTransactional(BoatDTO boatDTO) {
+        Boat boat = boatRepository.findBoatByIdTransactional(boatDTO.getId());
+        if (boat == null)   return null;
+
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(boatDTO.getId())) {
+            return null;
+        }
+
+        return saveOrUpdate(boatDTO);
+    }
+
+    @Override
     @Transactional
     public boolean delete(Long id) {
         Boat boat = boatRepository.findById(id).orElse(null);
         if (boat == null)   return false;
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(id)) {
+            return false;
+        }
         availableAppointmentRepository.deleteAllByEntityId(id);
         entityImageRepository.deleteAllByEntityId(id);
         subscriptionRepository.deleteAllByReservationEntitiesId(id);

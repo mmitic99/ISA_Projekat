@@ -18,5 +18,7 @@ public interface BoatService {
 
     Boat saveOrUpdate(BoatDTO newBoatDTO);
 
+    Boat updateTransactional(BoatDTO boatDTO);
+
     boolean delete(Long id);
 }
