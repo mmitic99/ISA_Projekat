@@ -1,4 +1,5 @@
 [![CircleCI](https://circleci.com/gh/mmitic99/ISA_Projekat/tree/develop.svg?style=svg)](https://circleci.com/gh/mmitic99/ISA_Projekat/tree/develop)
+[![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=mmitic99_ISA_Projekat&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=mmitic99_ISA_Projekat)
 
 # ISA_Projekat
 

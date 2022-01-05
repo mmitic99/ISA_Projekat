@@ -2,12 +2,13 @@ version: 2.1
 orbs:
   node: circleci/node@4.7     # Used for the Frontend tests
   python: circleci/maven@1.2.0 # Used for the Backend tests
+  sonarcloud: sonarsource/sonarcloud@1.0.3
 
 parameters:
   run-frontend:
     type: boolean
     default: false
-  run-backend:
+  run-backend: 
     type: boolean
     default: false
 
@@ -36,6 +37,9 @@ jobs:
       #- run:
       #    name: Test
       #    command: mvn test
+      - run:
+          name: Analyze on SonarCloud
+          command: mvn verify sonar:sonar -Dsonar.projectKey=mmitic99_ISA_Projekat
 
 workflows:
   frontend-test:
