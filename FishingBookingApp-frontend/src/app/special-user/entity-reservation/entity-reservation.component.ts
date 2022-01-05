@@ -71,7 +71,8 @@ export class EntityReservationComponent implements OnInit {
       }
     } else {
       for (let reservation of this.reservationsOfEntity) {
-        if (reservation.start < Date.now()) {
+        let reservationEndTime = new Date(new Date(reservation.start).setHours(reservation.start.getHours() + reservation.durationInHours));
+        if (reservation.start < Date.now() && reservationEndTime.getTime() > Date.now()) {
           this.reservationsOfEntityToShow.push(reservation)
         }
       }
