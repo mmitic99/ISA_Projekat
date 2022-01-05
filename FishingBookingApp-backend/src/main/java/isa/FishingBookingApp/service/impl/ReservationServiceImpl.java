@@ -69,9 +69,9 @@ public class ReservationServiceImpl implements ReservationService {
         if (!reservationEntityIsAvailable(reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays())) {
             throw new Exception("Entitet koji želite da rezervišete nije dostupan za uneto vreme.");
         } else {
+            reserveAdditionalServices(reservation, reservationDTO);
             addPriceToReservation(reservation);
             reservationRepository.save(reservation);
-            reserveAdditionalServices(reservation, reservationDTO);
             emailService.sendReservationInfo(reservation, false);
             return reservation;
         }
