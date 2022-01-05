@@ -38,13 +38,13 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
 
 
     @Override
+    @Transactional(readOnly = false)
     public SpecialReservation createSpecialReservation(SpecialReservationDTO specialReservationDTO) throws Exception {
-        ReservationEntities reservationEntity = reservationEntitiesRepository.findReservationEntitiesById(specialReservationDTO.getReservationEntityId());
+        ReservationEntities reservationEntity = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(specialReservationDTO.getReservationEntityId());
         User user = userRepository.findByMailAddress(specialReservationDTO.getMailAddress());
         Set<AdditionalService> additionalServices = getAdditionalServices(specialReservationDTO.getAdditionalServicesId(), reservationEntity.getId());
         SpecialReservation specialReservation = new SpecialReservation(user, reservationEntity, specialReservationDTO.getStartDateTime(), specialReservationDTO.getDays() * 24, specialReservationDTO.getMaxPeople(), additionalServices, specialReservationDTO.getPrice(), specialReservationDTO.getValidFromDateTime(), specialReservationDTO.getValidToDateTime());
 
-        // provera za 4.4
         if (!reservationService.reservationEntityIsAvailable(reservationEntity, specialReservationDTO.getStartDateTime(), specialReservationDTO.getDays())) {
             throw new Exception("Termin koji želite da zakažete nije dostupan.");
         } else {

@@ -78,8 +78,6 @@ public class ReservationController {
     @PreAuthorize("hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> reserveForClient(@RequestBody ReservationForClientDTO reservationForClientDTO, HttpServletRequest request) {
         try {
-            ReservationEntities reservationEntity = reservationEntitiesService.get(reservationForClientDTO.getReservationEntityId());
-            if (reservationEntity == null)  return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
             if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(reservationForClientDTO.getOwnerMailAddress(), request)) return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
             reservationForClientDTO.setDateTimesFromStrings();
             Reservation reservation = reservationService.reserveEntityForClient(reservationForClientDTO);
