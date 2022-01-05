@@ -56,15 +56,11 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        if (!cottageService.exists(cottageDTO.getId())){
-            return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
-        }
-
-        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(cottageDTO.getId())) {
+        Cottage updatedCottage = cottageService.updateTransactional(cottageDTO);
+        if (updatedCottage == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         }
 
-        Cottage updatedCottage = cottageService.saveOrUpdate(cottageDTO);
         return new ResponseEntity<>(updatedCottage, HttpStatus.OK);
     }
 
@@ -81,7 +77,7 @@ public class CottageController {
 
     @DeleteMapping(value = "/{id}")
     @PreAuthorize("hasRole('cottageOwner')")
-    public ResponseEntity<Cottage> deleteCottage(@PathVariable Long id, HttpServletRequest request) {
+    public ResponseEntity<Object> deleteCottage(@PathVariable Long id, HttpServletRequest request) {
         Cottage cottage = cottageService.get(id);
         if (cottage == null) {
             return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
@@ -91,15 +87,11 @@ public class CottageController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(id)) {
-            return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
-        }
-
         if (cottageService.delete(id)){
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
 
-        return new ResponseEntity<>(null, HttpStatus.NOT_FOUND);
+        return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
     }
 
     private boolean authorizedUser(String cottageOwnerUsername, HttpServletRequest request) {

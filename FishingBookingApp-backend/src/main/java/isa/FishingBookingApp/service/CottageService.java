@@ -16,6 +16,8 @@ public interface CottageService {
 
     Cottage saveOrUpdate(CottageDTO newCottageDTO);
 
+    Cottage updateTransactional(CottageDTO cottageDTO);
+
     boolean delete(Long id);
 
 }

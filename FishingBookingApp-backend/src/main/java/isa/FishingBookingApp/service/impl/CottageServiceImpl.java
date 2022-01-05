@@ -4,7 +4,10 @@ import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.CottageService;
+import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +24,10 @@ public class CottageServiceImpl implements CottageService {
     private EntityImageRepository entityImageRepository;
     private SubscriptionRepository subscriptionRepository;
     private SpecialReservationRepository specialReservationRepository;
+    private ReservationEntitiesService reservationEntitiesService;
 
     @Autowired
-    public CottageServiceImpl(CottageRepository cottageRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository) {
+    public CottageServiceImpl(CottageRepository cottageRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository, ReservationEntitiesService reservationEntitiesService) {
         this.cottageRepository = cottageRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
@@ -31,6 +35,7 @@ public class CottageServiceImpl implements CottageService {
         this.entityImageRepository = entityImageRepository;
         this.subscriptionRepository = subscriptionRepository;
         this.specialReservationRepository = specialReservationRepository;
+        this.reservationEntitiesService = reservationEntitiesService;
     }
 
     @Override
@@ -54,6 +59,7 @@ public class CottageServiceImpl implements CottageService {
     }
 
     @Override
+    @Transactional(readOnly = false)
     public Cottage saveOrUpdate(CottageDTO newCottageDTO) {
         Address address = saveOrUpdateAddress(newCottageDTO);
         Cottage cottage = new Cottage();
@@ -74,10 +80,26 @@ public class CottageServiceImpl implements CottageService {
     }
 
     @Override
+    @Transactional(readOnly = false)
+    public Cottage updateTransactional(CottageDTO cottageDTO) {
+        Cottage cottage = cottageRepository.findCottageByIdTransactional(cottageDTO.getId());
+        if (cottage == null)    return null;
+
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(cottageDTO.getId())) {
+            return null;
+        }
+
+        return saveOrUpdate(cottageDTO);
+    }
+
+    @Override
     @Transactional
     public boolean delete(Long id) {
         Cottage cottage = cottageRepository.findById(id).orElse(null);
         if (cottage == null)   return false;
+        if (reservationEntitiesService.isReservationEntityHavingFutureReservations(id)) {
+            return false;
+        }
         availableAppointmentRepository.deleteAllByEntityId(id);
         entityImageRepository.deleteAllByEntityId(id);
         subscriptionRepository.deleteAllByReservationEntitiesId(id);
