@@ -28,8 +28,4 @@ public interface BoatRepository extends JpaRepository<Boat, Long> {
     @Query("select b from Boat b where b.boatOwner.id = ?1 and b.deleted = false")
     List<Boat> getAllBoatsOfUser(Long id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select b from Boat b where b.id = :id and b.deleted = false")
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
-    Boat findBoatByIdTransactional(Long id);
 }

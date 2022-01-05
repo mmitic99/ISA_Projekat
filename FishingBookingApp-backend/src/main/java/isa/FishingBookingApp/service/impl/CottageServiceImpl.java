@@ -25,9 +25,10 @@ public class CottageServiceImpl implements CottageService {
     private SubscriptionRepository subscriptionRepository;
     private SpecialReservationRepository specialReservationRepository;
     private ReservationEntitiesService reservationEntitiesService;
+    private ReservationEntitiesRepository reservationEntitiesRepository;
 
     @Autowired
-    public CottageServiceImpl(CottageRepository cottageRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository, ReservationEntitiesService reservationEntitiesService) {
+    public CottageServiceImpl(CottageRepository cottageRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository, ReservationEntitiesService reservationEntitiesService, ReservationEntitiesRepository reservationEntitiesRepository) {
         this.cottageRepository = cottageRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
@@ -36,6 +37,7 @@ public class CottageServiceImpl implements CottageService {
         this.subscriptionRepository = subscriptionRepository;
         this.specialReservationRepository = specialReservationRepository;
         this.reservationEntitiesService = reservationEntitiesService;
+        this.reservationEntitiesRepository = reservationEntitiesRepository;
     }
 
     @Override
@@ -82,8 +84,8 @@ public class CottageServiceImpl implements CottageService {
     @Override
     @Transactional(readOnly = false)
     public Cottage updateTransactional(CottageDTO cottageDTO) {
-        Cottage cottage = cottageRepository.findCottageByIdTransactional(cottageDTO.getId());
-        if (cottage == null)    return null;
+        ReservationEntities reservationEntity = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(cottageDTO.getId());
+        if (reservationEntity == null)    return null;
 
         if (reservationEntitiesService.isReservationEntityHavingFutureReservations(cottageDTO.getId())) {
             return null;

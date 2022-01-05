@@ -28,8 +28,4 @@ public interface CottageRepository extends JpaRepository<Cottage, Long> {
     @Query("select c from Cottage c where c.cottageOwner.id = ?1 and c.deleted = false")
     List<Cottage> getAllCottagesOfUser(Long id);
 
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select c from Cottage c where c.id = :id and c.deleted = false")
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
-    Cottage findCottageByIdTransactional(Long id);
 }
