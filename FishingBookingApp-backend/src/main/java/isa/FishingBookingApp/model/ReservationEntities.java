@@ -28,7 +28,10 @@ public class ReservationEntities {
 
     private double price;
 
+    private boolean deleted;
+
     public ReservationEntities() {
+        this.deleted = false;
     }
 
     public ReservationEntities(String name, Address address, String promotionalDescription, String rulesOfConduct, String type, double price) {
@@ -38,6 +41,7 @@ public class ReservationEntities {
         this.rulesOfConduct = rulesOfConduct;
         this.type = type;
         this.price = price;
+        this.deleted = false;
     }
 
     public Long getId() {
@@ -94,5 +98,13 @@ public class ReservationEntities {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public boolean isDeleted() {
+        return deleted;
+    }
+
+    public void setDeleted(boolean deleted) {
+        this.deleted = deleted;
     }
 }

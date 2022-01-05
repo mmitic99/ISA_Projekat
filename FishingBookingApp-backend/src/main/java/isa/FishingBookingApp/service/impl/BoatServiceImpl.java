@@ -5,12 +5,11 @@ import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.Address;
 import isa.FishingBookingApp.model.Boat;
 import isa.FishingBookingApp.model.BoatOwner;
-import isa.FishingBookingApp.repository.AddressRepository;
-import isa.FishingBookingApp.repository.BoatRepository;
-import isa.FishingBookingApp.repository.UserRepository;
+import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.BoatService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,12 +18,20 @@ public class BoatServiceImpl implements BoatService {
     private BoatRepository boatRepository;
     private UserRepository userRepository;
     private AddressRepository addressRepository;
+    private AvailableAppointmentRepository availableAppointmentRepository;
+    private EntityImageRepository entityImageRepository;
+    private SubscriptionRepository subscriptionRepository;
+    private SpecialReservationRepository specialReservationRepository;
 
     @Autowired
-    public BoatServiceImpl(BoatRepository boatRepository, UserRepository userRepository, AddressRepository addressRepository) {
+    public BoatServiceImpl(BoatRepository boatRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository) {
         this.boatRepository = boatRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
+        this.availableAppointmentRepository = availableAppointmentRepository;
+        this.entityImageRepository = entityImageRepository;
+        this.subscriptionRepository = subscriptionRepository;
+        this.specialReservationRepository = specialReservationRepository;
     }
 
     @Override
@@ -34,7 +41,7 @@ public class BoatServiceImpl implements BoatService {
 
     @Override
     public boolean exists(Long id) {
-        return boatRepository.existsById(id);
+        return boatRepository.findById(id).orElse(null) != null;
     }
 
     @Override
@@ -75,9 +82,17 @@ public class BoatServiceImpl implements BoatService {
     }
 
     @Override
+    @Transactional
     public boolean delete(Long id) {
-        boatRepository.deleteById(id);
-        return !exists(id);
+        Boat boat = boatRepository.findById(id).orElse(null);
+        if (boat == null)   return false;
+        availableAppointmentRepository.deleteAllByEntityId(id);
+        entityImageRepository.deleteAllByEntityId(id);
+        subscriptionRepository.deleteAllByReservationEntitiesId(id);
+        specialReservationRepository.deleteAllByReservationEntityId(id);
+        boat.setDeleted(true);
+        boatRepository.save(boat);
+        return true;
     }
 
     private Address saveOrUpdateAddress(BoatDTO boatDTO) {

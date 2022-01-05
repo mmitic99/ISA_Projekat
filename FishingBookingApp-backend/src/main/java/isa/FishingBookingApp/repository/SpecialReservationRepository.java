@@ -18,4 +18,6 @@ public interface SpecialReservationRepository extends JpaRepository<SpecialReser
     @Lock(LockModeType.PESSIMISTIC_WRITE)
     @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
     SpecialReservation findSpecialReservationsById(Long id);
+
+    void deleteAllByReservationEntityId(Long id);
 }

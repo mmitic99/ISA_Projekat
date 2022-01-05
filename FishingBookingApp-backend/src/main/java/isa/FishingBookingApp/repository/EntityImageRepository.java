@@ -9,4 +9,6 @@ import java.util.List;
 public interface EntityImageRepository extends JpaRepository<EntityImage, Long> {
     @Query("select img from EntityImage img where img.entity.id = ?1")
     List<EntityImage> getImagesOfReservationEntity(Long entityId);
+
+    void deleteAllByEntityId(Long id);
 }

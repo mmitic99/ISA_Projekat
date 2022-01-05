@@ -12,4 +12,6 @@ public interface SubscriptionRepository extends JpaRepository<Subscription, Long
     Subscription findByUserMailAddressAndReservationEntitiesId(String mailAddress, Long id);
 
     List<Subscription> findAllByReservationEntitiesId(Long id);
+
+    void deleteAllByReservationEntitiesId(Long id);
 }
