@@ -7,4 +7,6 @@ import java.util.List;
 
 public interface AvailableAppointmentRepository extends JpaRepository<AvailableAppointment, Long> {
     List<AvailableAppointment> findByEntityId(Long id);
+
+    void deleteAllByEntityId(Long id);
 }
