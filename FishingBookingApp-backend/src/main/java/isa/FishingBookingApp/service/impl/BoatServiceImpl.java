@@ -5,6 +5,7 @@ import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.Address;
 import isa.FishingBookingApp.model.Boat;
 import isa.FishingBookingApp.model.BoatOwner;
+import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.BoatService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
@@ -26,9 +27,10 @@ public class BoatServiceImpl implements BoatService {
     private SubscriptionRepository subscriptionRepository;
     private SpecialReservationRepository specialReservationRepository;
     private ReservationEntitiesService reservationEntitiesService;
+    private ReservationEntitiesRepository reservationEntitiesRepository;
 
     @Autowired
-    public BoatServiceImpl(BoatRepository boatRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository, ReservationEntitiesService reservationEntitiesService) {
+    public BoatServiceImpl(BoatRepository boatRepository, UserRepository userRepository, AddressRepository addressRepository, AvailableAppointmentRepository availableAppointmentRepository, EntityImageRepository entityImageRepository, SubscriptionRepository subscriptionRepository, SpecialReservationRepository specialReservationRepository, ReservationEntitiesService reservationEntitiesService, ReservationEntitiesRepository reservationEntitiesRepository) {
         this.boatRepository = boatRepository;
         this.userRepository = userRepository;
         this.addressRepository = addressRepository;
@@ -37,6 +39,7 @@ public class BoatServiceImpl implements BoatService {
         this.subscriptionRepository = subscriptionRepository;
         this.specialReservationRepository = specialReservationRepository;
         this.reservationEntitiesService = reservationEntitiesService;
+        this.reservationEntitiesRepository = reservationEntitiesRepository;
     }
 
     @Override
@@ -90,8 +93,8 @@ public class BoatServiceImpl implements BoatService {
     @Override
     @Transactional(readOnly = false)
     public Boat updateTransactional(BoatDTO boatDTO) {
-        Boat boat = boatRepository.findBoatByIdTransactional(boatDTO.getId());
-        if (boat == null)   return null;
+        ReservationEntities reservationEntity = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(boatDTO.getId());
+        if (reservationEntity == null)   return null;
 
         if (reservationEntitiesService.isReservationEntityHavingFutureReservations(boatDTO.getId())) {
             return null;
