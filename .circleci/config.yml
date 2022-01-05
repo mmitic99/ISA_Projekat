@@ -1,0 +1,18 @@
+version: 2.1
+orbs:
+  path-filtering: circleci/path-filtering@0.0.2
+
+# This allows you to use CircleCI's dynamic configuration feature
+setup: true
+
+workflows:
+  run-filter:
+    jobs:
+      - path-filtering/filter:
+          # Compare files on main
+          base-revision: develop
+          # 3-column space-separated table for mapping; `path-to-test parameter-to-set value-for-parameter` for each row
+          mapping: |
+            FishingBookingApp-frontend/.* run-frontend true
+            FishingBookingApp-backend/.* run-backend true
+          config-path: ".circleci/dynamic_config.yml"

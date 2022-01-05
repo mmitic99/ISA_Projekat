@@ -1,3 +1,5 @@
+[![CircleCI](https://circleci.com/gh/mmitic99/ISA_Projekat/tree/develop.svg?style=svg)](https://circleci.com/gh/mmitic99/ISA_Projekat/tree/develop)
+
 # ISA_Projekat
 
 ## Korišćene tehnologije
