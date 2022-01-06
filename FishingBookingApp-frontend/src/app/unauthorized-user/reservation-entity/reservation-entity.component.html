@@ -24,23 +24,18 @@
                 <div class="has-text-centered">
                     <ng-image-slider [images]="imageObject" [imageSize]="{width: 250, height: 200}" #nav>
                     </ng-image-slider>
-
-                    <!--
-                    <img height="20%" width="20%"
-                        src="https://upload.wikimedia.org/wikipedia/commons/thumb/b/b6/Image_created_with_a_mobile_phone.png/220px-Image_created_with_a_mobile_phone.png"
-                        alt="image not loaded">-->
                 </div>
 
                 <div class="column is-16 has-text-centered">
                     <label class="label">Lokacija</label>
                     <div class="container has-text-centered">
-                        <div class="column is-0 is-offset-4">
+                        <div class="column is-12 is-offset-0">
                             <div id="map" class="map"></div>
                         </div>
                     </div>
                 </div>
 
-                <table class="table is-fullwidth">
+                <table class="table is-fullwidth" *ngIf="reservationEntity.type=='cottage'">
                     <tbody>
                         <tr>
                             <td>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}},
@@ -55,6 +50,52 @@
                         </tr>
                         <tr>
                             <td>Cena noćenja po osobi: {{reservationEntity.price}}</td>
+                        </tr>
+                        <tr class="cut-text" style="height: 50%;">
+                            <td>
+                                Opis: {{reservationEntity.promotionalDescription}}</td>
+                        </tr>
+                        <tr>
+                            <td>Pravila ponašanja: {{reservationEntity.rulesOfConduct}}</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <table class="table is-fullwidth" *ngIf="reservationEntity.type=='boat'">
+                    <tbody>
+                        <tr>
+                            <td>Adresa: {{reservationEntity.address.street}} {{reservationEntity.address.number}},
+                                {{reservationEntity.address.city}}, {{reservationEntity.address.country}}</td>
+                        </tr>
+
+                        <tr>
+                            <td>Tip broda: {{reservationEntity.boatType}}</td>
+                        </tr>
+                        <tr>
+                            <td>Dužina broda: {{reservationEntity.boatLength}}</td>
+                        </tr>
+                        <tr>
+                            <td>Jačina motora: {{reservationEntity.enginePower}}</td>
+                        </tr>
+                        <tr>
+                            <td>Broj motora: {{reservationEntity.numberOfEngines}}</td>
+                        </tr>
+                        <tr>
+                            <td>Maksimalna brzina: {{reservationEntity.maxSpeed}}</td>
+                        </tr>
+                        <tr>
+                            <td>Kapacitet: {{reservationEntity.capacity}}</td>
+                        </tr>
+                        <tr>
+                            <td>Oprema za pecanje: {{reservationEntity.fishingEquipment}}</td>
+                        </tr>
+                        <tr>
+                            <td>Navigaciona oprema: {{reservationEntity.navigationEquipment}}</td>
+                        </tr>
+                        <tr>
+                            <td>Uslovi otkazivanja: {{reservationEntity.cancellationConditions}}</td>
+                        </tr>
+                        <tr>
+                            <td>Cena po osobi: {{reservationEntity.price}}</td>
                         </tr>
                         <tr class="cut-text" style="height: 50%;">
                             <td>
@@ -124,7 +165,7 @@
                 </table>
 
             </div><br>
-            <h1 class="subtitle" *ngIf="specialReservations==null || specialReservations.length==0">Ne postoje
+            <h1 class="subtitle" *ngIf="this.authService.getRole()=='ROLE_USER' && (specialReservations==null || specialReservations.length==0)">Ne postoje
                 akcije za ovaj entitet</h1>
 
             <div class="box" *ngIf="this.authService.getRole()=='ROLE_USER' && specialReservations.length!=0">
