@@ -55,12 +55,12 @@ public class SearchFilterSort {
 
     private LocalDateTime getDateTimeFromStrings(String dateString, String timeString) {
         try {
-            String dateNumbers[] = dateString.split("-");
+            String[] dateNumbers = dateString.split("-");
             int year = Integer.parseInt(dateNumbers[0]);
             int month = Integer.parseInt(dateNumbers[1]);
             int day = Integer.parseInt(dateNumbers[2]);
 
-            String timeNumbers[] = timeString.split(":");
+            String[] timeNumbers = timeString.split(":");
 
             int hour = Integer.parseInt(timeNumbers[0]);
             int minute = Integer.parseInt(timeNumbers[1]);

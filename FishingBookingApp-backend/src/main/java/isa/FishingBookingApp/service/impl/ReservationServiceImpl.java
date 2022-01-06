@@ -64,7 +64,7 @@ public class ReservationServiceImpl implements ReservationService {
     public Reservation reserveEntity(ReservationDTO reservationDTO) throws Exception {
         ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(reservationDTO.getReservationEntitiesId());
         User user = userRepository.findByMailAddress(reservationDTO.getMailAddress());
-        Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24, reservationDTO.getGuests(), 0);
+        Reservation reservation = new Reservation(user, reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays() * 24.0, reservationDTO.getGuests(), 0);
 
         if (!reservationEntityIsAvailable(reservationEntities, reservationDTO.getDateTime(), reservationDTO.getDays())) {
             throw new Exception("Entitet koji želite da rezervišete nije dostupan za uneto vreme.");
@@ -207,7 +207,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         for (SpecialReservation reservation : reservations) {
             LocalDateTime startReservation = reservation.getStart();
-            LocalDateTime endReservation = startReservation.plusHours(Double.valueOf(reservation.getDurationInHours()).longValue());
+            LocalDateTime endReservation = startReservation.plusHours((long)reservation.getDurationInHours());
             if ((start.isBefore(startReservation) && end.isBefore(startReservation)) || (start.isAfter(endReservation) && end.isAfter(endReservation))) {
                 continue;
             } else {
@@ -224,7 +224,7 @@ public class ReservationServiceImpl implements ReservationService {
 
         for (Reservation reservation : reservations) {
             LocalDateTime startReservation = reservation.getStart();
-            LocalDateTime endReservation = startReservation.plusHours(Double.valueOf(reservation.getDurationInHours()).longValue());
+            LocalDateTime endReservation = startReservation.plusHours((long)reservation.getDurationInHours());
             if ((start.isBefore(startReservation) && end.isBefore(startReservation)) || (start.isAfter(endReservation) && end.isAfter(endReservation))) {
                 continue;
             } else {

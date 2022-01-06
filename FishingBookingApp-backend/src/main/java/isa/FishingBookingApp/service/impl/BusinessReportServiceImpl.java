@@ -82,7 +82,7 @@ public class BusinessReportServiceImpl implements BusinessReportService {
         List<Reservation> filteredReservations = new ArrayList<>();
         for (Reservation reservation : reservations) {
             LocalDateTime startReservation = reservation.getStart();
-            LocalDateTime endReservation = startReservation.plusHours(Double.valueOf(reservation.getDurationInHours()).longValue());
+            LocalDateTime endReservation = startReservation.plusHours((long)reservation.getDurationInHours());
             if (endReservation.isAfter(timeRangeDTO.getStartDateTime()) && startReservation.isBefore(timeRangeDTO.getEndDateTime())) {
                 filteredReservations.add(reservation);
             }

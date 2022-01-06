@@ -1,10 +1,5 @@
 package isa.FishingBookingApp.dto;
 
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
-import java.time.LocalDateTime;
-
 public class ReviewDTO {
     private String mailAddress;
     private String explain;

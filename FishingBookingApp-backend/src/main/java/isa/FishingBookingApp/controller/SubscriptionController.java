@@ -2,7 +2,6 @@ package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.dto.SubscriptionDTO;
-import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.model.Subscription;
 import isa.FishingBookingApp.service.SubscriptionService;
 import isa.FishingBookingApp.util.TokenUtils;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.util.List;
 
 @RestController
@@ -66,14 +64,9 @@ public class SubscriptionController {
     }
 
     @GetMapping(value="/getByUserAndEntity", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getByUserAndEntity(@RequestParam String mailAddress, @RequestParam Long reservationEntityId, HttpServletRequest request) throws UnsupportedEncodingException {
+    public ResponseEntity<Object> getByUserAndEntity(@RequestParam String mailAddress, @RequestParam Long reservationEntityId, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress1 = tokenUtils.getUsernameFromToken(token.substring(7));
-
-        /*if(subscriptionService.getByUserAndEntity(mailAddress, reservationEntityId) != null){
-            return new ResponseEntity<>(true, HttpStatus.OK);
-        }
-        return new ResponseEntity<>(false, HttpStatus.OK);*/
         return new ResponseEntity<>(subscriptionService.getByUserAndEntity(mailAddress1, reservationEntityId), HttpStatus.OK);
     }
 }

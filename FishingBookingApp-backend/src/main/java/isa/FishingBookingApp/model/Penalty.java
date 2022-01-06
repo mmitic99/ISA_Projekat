@@ -21,7 +21,6 @@ public class Penalty {
     public Penalty() { }
 
     public Penalty(User user, LocalDateTime receivingDateTime) {
-        this.id = id;
         this.user = user;
         this.receivingDateTime = receivingDateTime;
     }

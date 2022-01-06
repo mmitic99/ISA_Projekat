@@ -67,9 +67,9 @@ public class ReservationEntitiesController {
         if (entity == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
 
         List<EntityImage> images = entityImageService.getImagesOfReservationEntity(entityId);
-        if (images == null) return new ResponseEntity<>(new ArrayList<String>(), HttpStatus.OK);
+        if (images == null) return new ResponseEntity<>(new ArrayList<>(), HttpStatus.OK);
 
-        ArrayList<String> base64Images = new ArrayList<String>();
+        ArrayList<String> base64Images = new ArrayList<>();
         for (EntityImage image : images) {
             base64Images.add(Base64.getEncoder().encodeToString(image.getContent()));
         }
@@ -125,7 +125,6 @@ public class ReservationEntitiesController {
         EntityImageDTO imageDTO = new EntityImageDTO();
         imageDTO.setBase64Image(Base64.getEncoder().encodeToString(image.getContent()));
 
-        if (image == null) return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
         return new ResponseEntity<>(imageDTO, HttpStatus.OK);
     }
 

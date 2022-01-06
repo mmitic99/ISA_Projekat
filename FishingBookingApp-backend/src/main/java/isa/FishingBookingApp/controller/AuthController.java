@@ -78,7 +78,10 @@ public class AuthController {
             else {
                 newUser = userService.saveNewUser(userDTO);
             }
-        } catch (Exception e) {
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }catch (Exception e) {
             return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
         }
 
@@ -101,14 +104,14 @@ public class AuthController {
         HttpHeaders responseHeaders = new HttpHeaders();
         responseHeaders.setContentType(MediaType.TEXT_HTML);
 
-        return new ResponseEntity<String>(retVal, responseHeaders, HttpStatus.OK);
+        return new ResponseEntity<>(retVal, responseHeaders, HttpStatus.OK);
     }
     @PutMapping("/changePassword")
     @PreAuthorize("hasRole('USER')" + "|| hasRole('cottageOwner')" + "|| hasRole('boatOwner')")
     public ResponseEntity<Object> changePassword(@RequestBody ChangePasswordDTO changePasswordDto, HttpServletRequest request) {
         String token = tokenUtils.getAuthHeaderFromHeader(request);
         String mailAddress = tokenUtils.getUsernameFromToken(token.substring(7));
-        if (!tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request)) {
+        if (Boolean.FALSE.equals(tokenUtils.isUserAuthorizedAndTokenNotExpired(mailAddress, request))) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         if (!changePasswordDto.getNewPassword1().equals(changePasswordDto.getNewPassword2())) {

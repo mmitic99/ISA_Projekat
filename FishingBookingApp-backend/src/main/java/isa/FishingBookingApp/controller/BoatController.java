@@ -1,9 +1,7 @@
 package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.BoatDTO;
-import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.Boat;
-import isa.FishingBookingApp.model.Cottage;
 import isa.FishingBookingApp.model.User;
 import isa.FishingBookingApp.service.BoatService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
@@ -39,7 +37,7 @@ public class BoatController {
     @PostMapping(value = "/create", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<Boat> createBoat(@RequestBody BoatDTO newBoatDTO, HttpServletRequest request) {
-        if (!authorizedUser(newBoatDTO.getBoatOwnerUsername(), request)){
+        if (!authorizedUser(newBoatDTO.getBoatOwnerUsername(), request)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
@@ -54,7 +52,7 @@ public class BoatController {
     @PutMapping(value = "/update", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<Boat> updateBoat(@RequestBody BoatDTO boatDTO, HttpServletRequest request) {
-        if (!authorizedUser(boatDTO.getBoatOwnerUsername(), request)){
+        if (!authorizedUser(boatDTO.getBoatOwnerUsername(), request)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
@@ -69,7 +67,7 @@ public class BoatController {
     @GetMapping(value = "/{username}/allBoats", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('boatOwner')")
     public ResponseEntity<List<Boat>> getBoatsOfUser(@PathVariable String username, HttpServletRequest request) {
-        if (!authorizedUser(username, request)){
+        if (!authorizedUser(username, request)) {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
         User user = userService.findByMailAddress(username);
@@ -89,7 +87,7 @@ public class BoatController {
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
 
-        if (boatService.delete(id)){
+        if (boatService.delete(id)) {
             return new ResponseEntity<>(null, HttpStatus.OK);
         }
 
