@@ -3,6 +3,7 @@ package isa.FishingBookingApp.service.impl;
 import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.service.SubscriptionService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.MailException;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -19,6 +20,9 @@ public class EmailService {
     private JavaMailSender javaMailSender;
     private Environment env;
     private SubscriptionService subscriptionService;
+
+    @Value("${backend_url}")
+    private String backendUrl;
 
     @Autowired
     public EmailService(JavaMailSender javaMailSender, Environment env, SubscriptionService subscriptionService) {
@@ -38,7 +42,7 @@ public class EmailService {
         mail.setFrom(env.getProperty("spring.mail.username"));
         mail.setSubject("ISA-PROJEKAT Verifikacija email-a");
 
-        String url = "http://localhost:8080/auth/verify/" + user.getId();
+        String url = backendUrl + "/auth/verify/" + user.getId();
 
         String text = "Pozdrav " + user.getName() + ",<br>"
                 + "Da bi ste verifikovali svoj nalog, posetite sledeću stranicu:<br>"
