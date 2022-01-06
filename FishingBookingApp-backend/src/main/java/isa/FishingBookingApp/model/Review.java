@@ -55,7 +55,7 @@ public class Review {
     }
 
     public void setCreationDateTime(LocalDateTime creationDateTime) throws Exception {
-        if (reservation.getStart().plusHours(Double.valueOf(reservation.getDurationInHours()).longValue()).isBefore(creationDateTime)) {
+        if (reservation.getStart().plusHours(((long)reservation.getDurationInHours())).isBefore(creationDateTime)) {
             this.creationDateTime = creationDateTime;
         }
         else{

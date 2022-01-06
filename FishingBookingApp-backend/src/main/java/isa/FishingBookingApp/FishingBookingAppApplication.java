@@ -62,12 +62,14 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         userRoleRepository.save(boatOwnerRole);
         userRoleRepository.save(adminRole);
 
+        String country_name = "Srbija";
+
         // inicijalizacija adresa
-        Address address1 = new Address(0, 0, "Glavna ulica", "15", "Beograd", "21100", "Srbija");
-        Address address2 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", "Srbija");
-        Address address3 = new Address(43.71881497806544, 19.69865620896269, "Srebrna pahulja", "5a", "Zlatibor", "24555", "Srbija");
-        Address address4 = new Address(43.28496170828387, 20.804868872788767, "Jovana Cvijića", "15", "Kopaonik", "11100", "Srbija");
-        Address addressOfBoat1 = new Address(44.82340663049456, 20.445556122854804, "Adresa reke", "bb", "Beograd", "88888", "Srbija");
+        Address address1 = new Address(0, 0, "Glavna ulica", "15", "Beograd", "21100", country_name);
+        Address address2 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", country_name);
+        Address address3 = new Address(43.71881497806544, 19.69865620896269, "Srebrna pahulja", "5a", "Zlatibor", "24555", country_name);
+        Address address4 = new Address(43.28496170828387, 20.804868872788767, "Jovana Cvijića", "15", "Kopaonik", "11100", country_name);
+        Address addressOfBoat1 = new Address(44.82340663049456, 20.445556122854804, "Adresa reke", "bb", "Beograd", "88888", country_name);
         Address addressOfBoat2 = new Address(42.43471617825651, 18.757104427091786, "Muo", "125", "Kotor", "15151", "Crna gora");
         addressRepository.save(address1);
         addressRepository.save(address2);
@@ -76,12 +78,14 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         addressRepository.save(addressOfBoat1);
         addressRepository.save(addressOfBoat2);
 
+        String userPassword = "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu";
+
         // inicijalizacija korisnika (LOZINKA ZA SVE: 123)
-        RegularUser regularUser1 = new RegularUser("isaproject.tim27+1@gmail.com", "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu", "Pero", "Peric", "+3816011111", address1, regUserRole, true, false);
-        RegularUser regularUser2 = new RegularUser("isaproject.tim27+2@gmail.com", "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu", "Milica", "Miletic", "+3816022222", address2, regUserRole, true, true);
-        CottageOwner cottageOwner1 = new CottageOwner("isaproject.tim27+3@gmail.com", "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu", "Damir", "Dakic", "+3816033333", address1, cottageOwnerRole, true, true, "Da ponudim korisnicima udoban provod u mojim vikendicama");
-        CottageOwner cottageOwner2 = new CottageOwner("isaproject.tim27+4@gmail.com", "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu", "Lazar", "Lazic", "+3816044444", address1, cottageOwnerRole, true, false, "Da zaradim");
-        BoatOwner boatOwner1 = new BoatOwner("isaproject.tim27+5@gmail.com", "$2a$10$HQxGxmNa2CaiQQfxR24f2u/OqEnP9goOWuwBUkKc7T2xvTsC9Lriu", "Bojan", "Bokic", "+3816055555", address2, boatOwnerRole, true, true, "Da pruzim ljudima dozivljaj brzog glisera");
+        RegularUser regularUser1 = new RegularUser("isaproject.tim27+1@gmail.com", userPassword, "Pero", "Peric", "+3816011111", address1, regUserRole, true, false);
+        RegularUser regularUser2 = new RegularUser("isaproject.tim27+2@gmail.com", userPassword, "Milica", "Miletic", "+3816022222", address2, regUserRole, true, true);
+        CottageOwner cottageOwner1 = new CottageOwner("isaproject.tim27+3@gmail.com", userPassword, "Damir", "Dakic", "+3816033333", address1, cottageOwnerRole, true, true, "Da ponudim korisnicima udoban provod u mojim vikendicama");
+        CottageOwner cottageOwner2 = new CottageOwner("isaproject.tim27+4@gmail.com", userPassword, "Lazar", "Lazic", "+3816044444", address1, cottageOwnerRole, true, false, "Da zaradim");
+        BoatOwner boatOwner1 = new BoatOwner("isaproject.tim27+5@gmail.com", userPassword, "Bojan", "Bokic", "+3816055555", address2, boatOwnerRole, true, true, "Da pruzim ljudima dozivljaj brzog glisera");
         userRepository.save(regularUser1);
         userRepository.save(regularUser2);
         userRepository.save(cottageOwner1);
@@ -152,7 +156,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         LocalDateTime dtSpecResStart1 = LocalDateTime.now().plusDays(10);
         LocalDateTime dtValidFrom1 = LocalDateTime.now();
         LocalDateTime dtValidTo1 = dtStart1.plusDays(8);
-        Set<AdditionalService> additionalServices = new HashSet<AdditionalService>();
+        Set<AdditionalService> additionalServices = new HashSet<>();
         additionalServices.add(additionalService1);
         additionalServices.add(additionalService2);
         SpecialReservation specialReservation1 = new SpecialReservation(cottageOwner1, cottage1, dtSpecResStart1, 48, 5, additionalServices, 15000, dtValidFrom1, dtValidTo1);
@@ -208,6 +212,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
             reader.read(bytes);
             img1 = bytes;
         }
+        reader.close();
         return img1;
     }
 }

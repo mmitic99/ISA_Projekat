@@ -23,12 +23,14 @@ public class EmailService {
 
     @Value("${backend_url}")
     private String backendUrl;
+    private String mailAddress;
 
     @Autowired
     public EmailService(JavaMailSender javaMailSender, Environment env, SubscriptionService subscriptionService) {
         this.javaMailSender = javaMailSender;
         this.env = env;
         this.subscriptionService = subscriptionService;
+        mailAddress = env.getProperty("spring.mail.username");
     }
 
     @Async
@@ -39,7 +41,7 @@ public class EmailService {
         MimeMessageHelper mail = new MimeMessageHelper(message);
 
         mail.setTo(user.getMailAddress());
-        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setFrom(mailAddress);
         mail.setSubject("ISA-PROJEKAT Verifikacija email-a");
 
         String url = backendUrl + "/auth/verify/" + user.getId();
@@ -62,7 +64,7 @@ public class EmailService {
         MimeMessageHelper mail = new MimeMessageHelper(message);
 
         mail.setTo(reservation.getUser().getMailAddress());
-        mail.setFrom(env.getProperty("spring.mail.username"));
+        mail.setFrom(mailAddress);
         if (isAction) {
             mail.setSubject("ISA-PROJEKAT Potvrda rezervacije akcije");
         }
@@ -120,7 +122,7 @@ public class EmailService {
             MimeMessageHelper mail = new MimeMessageHelper(message);
 
             mail.setTo(user.getMailAddress());
-            mail.setFrom(env.getProperty("spring.mail.username"));
+            mail.setFrom(mailAddress);
 
             String type = "";
             if (specialReservation.getReservationEntity().getType().equals("cottage")) {

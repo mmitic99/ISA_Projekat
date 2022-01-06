@@ -1,6 +1,5 @@
 package isa.FishingBookingApp.controller;
 
-import isa.FishingBookingApp.dto.RequestForDeletingAccountDTO;
 import isa.FishingBookingApp.dto.ReviewDTO;
 import isa.FishingBookingApp.service.ReviewService;
 import isa.FishingBookingApp.util.TokenUtils;

@@ -1,12 +1,6 @@
 package isa.FishingBookingApp.dto;
 
-import isa.FishingBookingApp.model.Address;
 import isa.FishingBookingApp.model.User;
-
-import javax.persistence.Column;
-import javax.persistence.FetchType;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 public class UserDTO {
     private String mailAddress;

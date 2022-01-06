@@ -45,7 +45,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
 
     @Override
     public ReservationEntities get(Long id) {
-        return reservationEntitiesRepository.findById(id).orElseGet(null);
+        return reservationEntitiesRepository.findReservationEntitiesById(id);
     }
 
     @Override
@@ -63,7 +63,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
         List<Reservation> reservationsOfEntity = reservationRepository.findByReservationEntityIdAndDeletedEquals(id, false);
         LocalDateTime now = LocalDateTime.now();
         for (Reservation reservation : reservationsOfEntity) {
-            LocalDateTime reservationEnd = reservation.getStart().plusHours(Double.valueOf(reservation.getDurationInHours()).longValue());
+            LocalDateTime reservationEnd = reservation.getStart().plusHours((long)reservation.getDurationInHours());
             if ((reservation.getStart().isBefore(now) || reservation.getStart().isEqual(now)) && (reservationEnd.isAfter(now))) {
                 return reservation;
             }

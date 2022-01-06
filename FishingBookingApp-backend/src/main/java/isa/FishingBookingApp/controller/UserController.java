@@ -1,10 +1,8 @@
 package isa.FishingBookingApp.controller;
 
 import isa.FishingBookingApp.dto.RequestForDeletingAccountDTO;
-import isa.FishingBookingApp.dto.SubscriptionDTO;
 import isa.FishingBookingApp.dto.UserDTO;
 import isa.FishingBookingApp.service.RequestForDeletingAccountService;
-import isa.FishingBookingApp.service.SubscriptionService;
 import isa.FishingBookingApp.service.UserService;
 import isa.FishingBookingApp.util.TokenUtils;
 import org.springframework.beans.factory.annotation.Autowired;

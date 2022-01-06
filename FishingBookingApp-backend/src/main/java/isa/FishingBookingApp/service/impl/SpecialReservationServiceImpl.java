@@ -43,7 +43,7 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
         ReservationEntities reservationEntity = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(specialReservationDTO.getReservationEntityId());
         User user = userRepository.findByMailAddress(specialReservationDTO.getMailAddress());
         Set<AdditionalService> additionalServices = getAdditionalServices(specialReservationDTO.getAdditionalServicesId(), reservationEntity.getId());
-        SpecialReservation specialReservation = new SpecialReservation(user, reservationEntity, specialReservationDTO.getStartDateTime(), specialReservationDTO.getDays() * 24, specialReservationDTO.getMaxPeople(), additionalServices, specialReservationDTO.getPrice(), specialReservationDTO.getValidFromDateTime(), specialReservationDTO.getValidToDateTime());
+        SpecialReservation specialReservation = new SpecialReservation(user, reservationEntity, specialReservationDTO.getStartDateTime(), specialReservationDTO.getDays() * 24.0, specialReservationDTO.getMaxPeople(), additionalServices, specialReservationDTO.getPrice(), specialReservationDTO.getValidFromDateTime(), specialReservationDTO.getValidToDateTime());
 
         if (!reservationService.reservationEntityIsAvailable(reservationEntity, specialReservationDTO.getStartDateTime(), specialReservationDTO.getDays())) {
             throw new Exception("Termin koji želite da zakažete nije dostupan.");
@@ -65,13 +65,8 @@ public class SpecialReservationServiceImpl implements SpecialReservationService 
 
         Reservation reservation = new Reservation(user, specialReservation.getReservationEntity(), specialReservation.getStart(), specialReservation.getDurationInHours(), specialReservation.getMaxPeople(), specialReservation.getPrice(), specialReservation.getAdditionalServices());
         Reservation createdReservation = reservationRepository.save(reservation);
-        if (createdReservation != null) {
-            specialReservationRepository.delete(specialReservation);
-            emailService.sendReservationInfo(createdReservation, true);
-        }
-        else {
-            throw new Exception("Neuspešno rezervisanje akcije.");
-        }
+        specialReservationRepository.delete(specialReservation);
+        emailService.sendReservationInfo(createdReservation, true);
 
         return createdReservation;
     }
