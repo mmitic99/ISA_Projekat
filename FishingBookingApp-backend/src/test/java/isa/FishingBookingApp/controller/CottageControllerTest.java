@@ -10,6 +10,7 @@ import java.nio.charset.Charset;
 
 import com.google.gson.Gson;
 import isa.FishingBookingApp.constants.ReservationEntitiesConstants;
+import isa.FishingBookingApp.constants.UserConstants;
 import isa.FishingBookingApp.dto.LoginUser;
 import isa.FishingBookingApp.dto.UserTokenState;
 import isa.FishingBookingApp.util.TestUtil;
@@ -78,14 +79,14 @@ public class CottageControllerTest {
     @Rollback(true)
     public void testGetCottagesOfUser() throws Exception {
         String accressToken = getUserAccressToken();
-        this.mockMvc.perform(get(URL_PREFIX + "/" + "isaproject.tim27+3@gmail.com" + "/allCottages").contentType(contentType).header("Authorization", accressToken))
+        this.mockMvc.perform(get(URL_PREFIX + "/" + UserConstants.DB_COTTAGE_OWNER_MAIL_ADDRESS + "/allCottages").contentType(contentType).header("Authorization", accressToken))
                 .andExpect(status().isOk()).andExpect(jsonPath("$", hasSize(ReservationEntitiesConstants.DB_COTTAGES_OF_OWNER)));
     }
 
     private String getUserAccressToken() throws Exception {
         LoginUser loginUser = new LoginUser();
-        loginUser.setMailAddress("isaproject.tim27+3@gmail.com");
-        loginUser.setPassword("123");
+        loginUser.setMailAddress(UserConstants.DB_COTTAGE_OWNER_MAIL_ADDRESS);
+        loginUser.setPassword(UserConstants.DB_COTTAGE_OWNER_PASSWORD);
 
         String json = TestUtil.json(loginUser);
 

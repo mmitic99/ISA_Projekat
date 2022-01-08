@@ -1,34 +1,36 @@
 package isa.FishingBookingApp.service;
 
-import isa.FishingBookingApp.dto.IncomeFromEntityDTO;
-import isa.FishingBookingApp.model.ReservationEntities;
+import isa.FishingBookingApp.model.RegularUser;
+import isa.FishingBookingApp.model.Reservation;
+import isa.FishingBookingApp.service.impl.BusinessReportServiceImpl;
 import org.junit.Test;
+import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
+import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.junit4.SpringRunner;
 
-import java.util.List;
+import java.time.LocalDateTime;
+import java.util.Arrays;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.Assert.assertEquals;
 
+@RunWith(SpringRunner.class)
+@SpringBootTest
 public class BusinessReportServiceTest {
 
     @InjectMocks
-    private BusinessReportService businessReportService;
-/*
+    private BusinessReportServiceImpl businessReportService;
+
+    // Student 2
     @Test
-    public void testFindAll() {
+    public void testGetIncomesFromCottagesSimple() {
+        Reservation reservation1 = new Reservation(new RegularUser(), null, LocalDateTime.now().plusDays(4), 24, 1, 14000);
+        Reservation reservation2 = new Reservation(new RegularUser(), null, LocalDateTime.now().plusDays(2), 96, 3, 22000);
+        Reservation reservation3 = new Reservation(new RegularUser(), null, LocalDateTime.now().plusDays(9), 96, 3, 9000);
 
-        /*
-        List<IncomeFromEntityDTO> incomes = businessReportService.getIncomeReportForOwnerInTimeRange();
+        double income = businessReportService.calculateIncomeFromReservations(Arrays.asList(reservation1, reservation2, reservation3));
 
-        List<ReservationEntities> re = reservationEntitiesService.getAll();
-        assertThat(re).hasSize(2);
-
-        // 3. Verifikacija: asertacije i/ili verifikacija interakcije sa mock objektima
-        assertThat(students).hasSize(1);
-        assertEquals(students.get(0).getFirstName(), DB_FIRST_NAME.toUpperCase());
-
-
+        assertEquals(income, 45000, 0.5);
     }
 
- */
 }

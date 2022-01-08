@@ -91,7 +91,7 @@ public class BusinessReportServiceImpl implements BusinessReportService {
         return filteredReservations;
     }
 
-    private double calculateIncomeFromReservations(List<Reservation> reservations) {
+    public double calculateIncomeFromReservations(List<Reservation> reservations) {
         double income = 0;
         for (Reservation reservation : reservations) {
             income += reservation.getPrice();
