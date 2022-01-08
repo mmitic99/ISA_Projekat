@@ -55,7 +55,7 @@ public class CottageController {
         if (!authorizedUser(cottageDTO.getCottageOwnerUsername(), request)){
             return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
         }
-
+ 
         Cottage updatedCottage = cottageService.updateTransactional(cottageDTO);
         if (updatedCottage == null) {
             return new ResponseEntity<>(null, HttpStatus.BAD_REQUEST);
