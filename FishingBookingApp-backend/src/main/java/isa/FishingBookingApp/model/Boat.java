@@ -2,7 +2,6 @@ package isa.FishingBookingApp.model;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import java.util.Set;
 
 @Entity
 public class Boat extends ReservationEntities {

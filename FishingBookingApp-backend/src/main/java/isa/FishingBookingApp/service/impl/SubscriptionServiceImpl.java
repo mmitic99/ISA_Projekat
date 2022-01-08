@@ -84,7 +84,7 @@ public class SubscriptionServiceImpl implements SubscriptionService {
         List<Subscription> retVal = new ArrayList<>();
         for (Subscription subscription : getSubscribedByMailAddress(searchFilterSort.getMailAddress())) {
 
-            if (searchFilterSort.getTypes().size() == 0) {
+            if (searchFilterSort.getTypes().isEmpty()) {
                 retVal.add(subscription);
             } else if (searchFilterSort.getTypes().contains(subscription.getReservationEntities().getType())) {
                 retVal.add(subscription);

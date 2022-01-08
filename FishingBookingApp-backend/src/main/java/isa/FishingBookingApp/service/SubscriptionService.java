@@ -2,10 +2,8 @@ package isa.FishingBookingApp.service;
 
 import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.dto.SubscriptionDTO;
-import isa.FishingBookingApp.model.ReservationEntities;
 import isa.FishingBookingApp.model.Subscription;
 import isa.FishingBookingApp.model.User;
-import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 

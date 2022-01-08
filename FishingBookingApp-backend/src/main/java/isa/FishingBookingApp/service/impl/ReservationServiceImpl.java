@@ -112,8 +112,7 @@ public class ReservationServiceImpl implements ReservationService {
 
     @Override
     public List<Reservation> getAllOldReservation(String mailAddress) {
-        List<Reservation> retval = reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
-        return retval;
+        return reservationRepository.findReservationByUserMailAddressAndStartLessThanAndDeletedEquals(mailAddress, LocalDateTime.now(), false);
     }
 
     @Override
@@ -168,7 +167,7 @@ public class ReservationServiceImpl implements ReservationService {
         }
         for (Reservation reservation : reservations) {
 
-            if (searchFilterSort.getTypes().size() == 0) {
+            if (searchFilterSort.getTypes().isEmpty()) {
                 retVal.add(reservation);
             } else if (searchFilterSort.getTypes().contains(reservation.getReservationEntity().getType())) {
                 retVal.add(reservation);
@@ -196,11 +195,11 @@ public class ReservationServiceImpl implements ReservationService {
     }
 
     public boolean reservationEntityIsAvailable(ReservationEntities reservationEntity, LocalDateTime start, int days) {
-        return DateTimeNotInReservations(reservationEntity, start, days) && DateTimeInAvailableAppointment(reservationEntity, start, days)
-                && DateTimeNotInSpecialReservations(reservationEntity, start, days);
+        return dateTimeNotInReservations(reservationEntity, start, days) && dateTimeInAvailableAppointment(reservationEntity, start, days)
+                && dateTimeNotInSpecialReservations(reservationEntity, start, days);
     }
 
-    private boolean DateTimeNotInSpecialReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
+    private boolean dateTimeNotInSpecialReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<SpecialReservation> reservations = specialReservationRepository.findByReservationEntityId(reservationEntity.getId());
 
         LocalDateTime end = start.plusDays(days);
@@ -217,7 +216,7 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
 
-    private boolean DateTimeNotInReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
+    private boolean dateTimeNotInReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<Reservation> reservations = reservationRepository.findByReservationEntityIdAndDeletedEquals(reservationEntity.getId(), false);
 
         LocalDateTime end = start.plusDays(days);
@@ -234,7 +233,7 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
 
-    private boolean DateTimeInAvailableAppointment(ReservationEntities reservationEntity, LocalDateTime start, int days) {
+    private boolean dateTimeInAvailableAppointment(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<AvailableAppointment> availableAppointments = availableAppointmentRepository.findByEntityId(reservationEntity.getId());
 
         LocalDateTime end = start.plusDays(days);

@@ -1,7 +1,6 @@
 package isa.FishingBookingApp.service.impl;
 
 import isa.FishingBookingApp.dto.BoatDTO;
-import isa.FishingBookingApp.dto.CottageDTO;
 import isa.FishingBookingApp.model.Address;
 import isa.FishingBookingApp.model.Boat;
 import isa.FishingBookingApp.model.BoatOwner;
@@ -10,8 +9,6 @@ import isa.FishingBookingApp.repository.*;
 import isa.FishingBookingApp.service.BoatService;
 import isa.FishingBookingApp.service.ReservationEntitiesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 

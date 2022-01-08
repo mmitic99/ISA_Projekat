@@ -17,7 +17,6 @@ import isa.FishingBookingApp.service.ReviewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.*;
 
@@ -96,7 +95,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
         LocalDateTime newEnd = newAvailableAppointment.getToTime();
 
         List<AvailableAppointment> appointmentsOfEntity = availableAppointmentRepository.findByEntityId(id);
-        if (appointmentsOfEntity.size() == 0) return false;
+        if (appointmentsOfEntity.isEmpty()) return false;
 
         for (AvailableAppointment appointment : appointmentsOfEntity) {
             LocalDateTime appointmentStart = appointment.getFromTime();
@@ -118,8 +117,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
             reservationEntities = getAll();
         }
         sort(searchFilterSort, reservationEntities);
-        List<ReservationEntities> usersRetVal = search(searchFilterSort, reservationEntities);
-        return usersRetVal;
+        return search(searchFilterSort, reservationEntities);
     }
 
     @Override
@@ -163,7 +161,7 @@ public class ReservationEntitiesServiceImpl implements ReservationEntitiesServic
         List<ReservationEntities> retVal = new ArrayList<>();
         for (ReservationEntities reservationEntities : getAll()) {
 
-            if (searchFilterSort.getTypes().size() == 0) {
+            if (searchFilterSort.getTypes().isEmpty()) {
                 retVal.add(reservationEntities);
             } else if (searchFilterSort.getTypes().contains(reservationEntities.getType())) {
                 retVal.add(reservationEntities);

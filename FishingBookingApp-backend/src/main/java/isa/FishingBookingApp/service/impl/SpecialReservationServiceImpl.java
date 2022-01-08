@@ -1,7 +1,5 @@
 package isa.FishingBookingApp.service.impl;
 
-import isa.FishingBookingApp.dto.ReservationDTO;
-import isa.FishingBookingApp.dto.SearchFilterSort;
 import isa.FishingBookingApp.dto.SpecialReservationDTO;
 import isa.FishingBookingApp.model.*;
 import isa.FishingBookingApp.repository.*;
@@ -11,7 +9,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;

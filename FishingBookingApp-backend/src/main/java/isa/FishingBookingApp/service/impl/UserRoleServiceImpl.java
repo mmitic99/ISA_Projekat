@@ -5,8 +5,6 @@ import isa.FishingBookingApp.repository.UserRoleRepository;
 import isa.FishingBookingApp.service.UserRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.util.List;
-
 public class UserRoleServiceImpl implements UserRoleService {
 
     private UserRoleRepository userRoleRepository;

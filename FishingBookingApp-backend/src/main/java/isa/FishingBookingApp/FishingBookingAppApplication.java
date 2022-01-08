@@ -205,14 +205,17 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 
     private byte[] readImage(String file) throws IOException {
         byte[] img1 = null;
-        DataInputStream reader = new DataInputStream(new FileInputStream(file));
-        int nBytesToRead = reader.available();
-        if (nBytesToRead > 0) {
-            byte[] bytes = new byte[nBytesToRead];
-            reader.read(bytes);
-            img1 = bytes;
+        try(DataInputStream reader = new DataInputStream(new FileInputStream(file))){
+            int nBytesToRead = reader.available();
+            if (nBytesToRead > 0) {
+                byte[] bytes = new byte[nBytesToRead];
+                int count = 0;
+                while ((count = reader.read(bytes)) > 0) {
+                    img1 = bytes;
+                }
+            }
+            reader.close();
+            return img1;
         }
-        reader.close();
-        return img1;
     }
 }
