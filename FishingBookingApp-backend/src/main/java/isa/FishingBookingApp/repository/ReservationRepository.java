@@ -1,7 +1,6 @@
 package isa.FishingBookingApp.repository;
 
 import isa.FishingBookingApp.model.Reservation;
-import isa.FishingBookingApp.model.ReservationEntities;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import java.time.LocalDateTime;

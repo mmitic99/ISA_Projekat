@@ -27,7 +27,7 @@ public class RequestForDeletingAccountServiceImpl implements RequestForDeletingA
         List<RequestForDeletingAccount> existRequest = requestForDeletingAccountRepository.findByUserMailAddress(requestForDeletingAccountDTO.getMailAddress());
         User user = userRepository.findByMailAddress(requestForDeletingAccountDTO.getMailAddress());
 
-        Boolean everyRequestIsNotApproved = CheckRequests(existRequest);
+        Boolean everyRequestIsNotApproved = checkRequests(existRequest);
 
         if (user != null && (existRequest.size()==0 || (existRequest.size()!=0 && everyRequestIsNotApproved))) {
             RequestForDeletingAccount requestForDeletingAccount = new RequestForDeletingAccount(user, requestForDeletingAccountDTO.getExplanation());
@@ -36,7 +36,7 @@ public class RequestForDeletingAccountServiceImpl implements RequestForDeletingA
         return null;
     }
 
-    private Boolean CheckRequests(List<RequestForDeletingAccount> existRequest) {
+    private Boolean checkRequests(List<RequestForDeletingAccount> existRequest) {
         boolean everyRequestIsNotApproved = true;
 
         for (RequestForDeletingAccount request :

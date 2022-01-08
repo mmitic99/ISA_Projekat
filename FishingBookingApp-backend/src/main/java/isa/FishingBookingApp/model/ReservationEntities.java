@@ -1,7 +1,6 @@
 package isa.FishingBookingApp.model;
 
 import javax.persistence.*;
-import java.util.Set;
 
 @Entity
 @Inheritance(strategy = InheritanceType.JOINED)

@@ -30,7 +30,7 @@ public class EntityImageServiceImpl implements EntityImageService {
     @Override
     public EntityImage getOneImageOfReservationEntity(Long entityId) {
         List<EntityImage> images = getImagesOfReservationEntity(entityId);
-        if (images == null || images.size() == 0) return null;
+        if (images == null || images.isEmpty()) return null;
 
         return images.get(0);
     }

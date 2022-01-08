@@ -1,7 +1,5 @@
 package isa.FishingBookingApp.repository;
 
-import isa.FishingBookingApp.model.Boat;
-import isa.FishingBookingApp.model.Cottage;
 import isa.FishingBookingApp.model.ReservationEntities;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
