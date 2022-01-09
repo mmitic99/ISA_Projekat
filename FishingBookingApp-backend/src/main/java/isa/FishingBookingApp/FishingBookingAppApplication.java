@@ -66,11 +66,11 @@ public class FishingBookingAppApplication implements CommandLineRunner {
 
         // inicijalizacija adresa
         Address address1 = new Address(0, 0, "Glavna ulica", "15", "Beograd", "21100", country_name);
-        Address address2 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", country_name);
-        Address address3 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", country_name);
-        Address address4 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", country_name);
-        Address address5 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", country_name);
-        Address address6 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "23330", country_name);
+        Address address2 = new Address(0, 0, "Zabacena ulica", "16", "Novi Sad", "21000", country_name);
+        Address address3 = new Address(0, 0, "Nepoznata ulica", "26", "Nis", "18000", country_name);
+        Address address4 = new Address(0, 0, "ulica", "96", "Subotica", "29000", country_name);
+        Address address5 = new Address(0, 0, "Zabacena Ulica", "116", "Pirot", "18500", country_name);
+        Address address6 = new Address(0, 0, "Ulica", "52", "Zrenjanin", "23506", country_name);
         Address addressOfCottage1 = new Address(43.71881497806544, 19.69865620896269, "Srebrna pahulja", "5a", "Zlatibor", "24555", country_name);
         Address addressOfCottage2 = new Address(43.28496170828387, 20.804868872788767, "Jovana Cvijića", "15", "Kopaonik", "11100", country_name);
         Address addressOfBoat1 = new Address(44.82340663049456, 20.445556122854804, "Adresa reke", "bb", "Beograd", "88888", country_name);
