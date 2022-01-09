@@ -30,7 +30,7 @@ public class BusinessReportServiceTest {
 
         double income = businessReportService.calculateIncomeFromReservations(Arrays.asList(reservation1, reservation2, reservation3));
 
-        assertEquals(income, 45000, 0.5);
+        assertEquals(45000, income, 0.5);
     }
 
 }
