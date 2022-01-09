@@ -17,7 +17,6 @@ import java.util.Collections;
 import java.util.List;
 
 @Service
-@Transactional(readOnly = true)
 public class ReservationServiceImpl implements ReservationService {
     private ReservationRepository reservationRepository;
     private SpecialReservationRepository specialReservationRepository;

@@ -44,10 +44,17 @@
 <hr>
 <br>
 <div class="container">
-    <h1 class="subtitle">Odaberite dodatne usluge:</h1>
+    <h1 *ngIf="!isSpecial" class="subtitle">Odaberite dodatne usluge:</h1>
+    <h1 *ngIf="isSpecial && reservation.additionalServicesId.length != 0" class="subtitle">Dodatne usluge:</h1>
+    <h1 *ngIf="isSpecial && reservation.additionalServicesId.length == 0" class="subtitle">Bez dodatnih usluga</h1>
     <table class="table is-hoverable is-fullwidth">
         <thead>
-            <tr>
+            <tr *ngIf="!isSpecial" >
+                <th></th>
+                <th>Naziv dodatne usluge</th>
+                <th>Cena po danu[dinara]</th>
+            </tr>
+            <tr *ngIf="isSpecial && reservation.additionalServicesId.length != 0" >
                 <th></th>
                 <th>Naziv dodatne usluge</th>
                 <th>Cena po danu[dinara]</th>

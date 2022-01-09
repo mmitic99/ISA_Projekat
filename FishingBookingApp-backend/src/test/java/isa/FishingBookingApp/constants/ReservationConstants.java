@@ -8,7 +8,7 @@ public class ReservationConstants {
     public static final String TIME_FOR_RESERVATION_SEARCH = dateTime.getHour() + ":" + dateTime.getMinute();
     public static final String DAYS_FOR_RESERVATION_SEARCH = "1";
     public static final String GUESTS_FOR_RESERVATION_SEARCH = "1";
-    public static final int DB_NUMBER_OF_AVAILABLE_RESERVATION_ENTITIES = 2;
+    public static final int DB_NUMBER_OF_AVAILABLE_RESERVATION_ENTITIES = 3;
 
 
     public static final long RESERVATION_ENTITIES_1_ID = 1L;

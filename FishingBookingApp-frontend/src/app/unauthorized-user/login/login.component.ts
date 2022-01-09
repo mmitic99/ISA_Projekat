@@ -36,7 +36,7 @@ export class LoginComponent implements OnInit {
         this.redirectUser();
       },
       (error) => {
-        this.toastr.error(error.message)
+        this.toastr.error(error.error)
       }
     )
   }

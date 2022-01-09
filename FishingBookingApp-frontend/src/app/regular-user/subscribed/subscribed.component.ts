@@ -33,10 +33,10 @@ export class SubscribedComponent implements OnInit {
   unsubscribe(id: any){
     var subscription = new Subscription("", id, false);
     this.subscriptionService.reservationEntitySubscription(subscription).subscribe((data)=>{
-      this.toastr.success("Uspešno se otkazali pretragu")
+      this.toastr.success("Uspešno se otkazali pretplatu")
       this.getAllSubscription()//TODO: add filter
     },(error)=>{
-      this.toastr.error("Niste otkazali pretragu")
+      this.toastr.error("Niste otkazali pretplatu")
     });
   }
 

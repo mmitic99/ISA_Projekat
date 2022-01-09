@@ -55,7 +55,7 @@ public class CottageControllerTest {
         String jsonString = "{\n" +
                 "            \"promotionalDescription\":\"Vikendica na vrhu planine\",\n" +
                 "                \"name\":\"" + ReservationEntitiesConstants.NEW_COTTAGE_NAME + "\",\n" +
-                "                \"cottageOwnerId\":\"3\",\n" +
+                "                \"cottageOwnerId\":\"4\",\n" +
                 "                \"cottageOwnerUsername\":\"isaproject.tim27+3@gmail.com\",\n" +
                 "                \"price\":\"1500\",\n" +
                 "                \"bedsPerRoom\":\"2\",\n" +

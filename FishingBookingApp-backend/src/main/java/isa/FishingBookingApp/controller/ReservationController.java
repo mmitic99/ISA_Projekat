@@ -112,7 +112,7 @@ public class ReservationController {
 
     @PutMapping(value = "/cancelReservation", produces = MediaType.APPLICATION_JSON_VALUE)
     @PreAuthorize("hasRole('USER')")
-    public ResponseEntity<Object> getCurrentReservation(@RequestBody CancelReservationDTO cancelReservationDTO, HttpServletRequest request) {
+    public ResponseEntity<Object> cancelReservation(@RequestBody CancelReservationDTO cancelReservationDTO, HttpServletRequest request) {
         try {
             if (Boolean.FALSE.equals(tokenUtils.isUserAuthorizedAndTokenNotExpired(cancelReservationDTO.getMailAddress(), request))) {
                 return new ResponseEntity<>(null, HttpStatus.UNAUTHORIZED);
