@@ -1,22 +1,19 @@
 package isa.FishingBookingApp.controller;
 
+import static isa.FishingBookingApp.constants.ReservationEntitiesConstants.DB_NUMBER_OF_SEARCHED_RESERVATION_ENTITIES;
+import static isa.FishingBookingApp.constants.ReservationEntitiesConstants.SEARCH_RESERVATION_ENTITIES;
 import static org.hamcrest.Matchers.hasItem;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.nio.charset.Charset;
 
 import isa.FishingBookingApp.constants.ReservationEntitiesConstants;
-import isa.FishingBookingApp.dto.CottageDTO;
-import isa.FishingBookingApp.model.Cottage;
-import isa.FishingBookingApp.util.TestUtil;
-import org.checkerframework.checker.units.qual.C;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -56,5 +53,18 @@ public class ReservationEntitiesControllerTest {
         mockMvc.perform(get(URL_PREFIX + "/additionalServices/" + ReservationEntitiesConstants.DB_ID_RESERVATION_ENTITY_ONE))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(ReservationEntitiesConstants.DB_ADDITIONAL_SERVICES_COUNT_OF_ENTITY_ONE)));
+    }
+
+    // Student 1
+    @Test
+    @Transactional
+    @Rollback(true)
+    public void testSearchReservationEntities() throws Exception {
+        mockMvc.perform(get(URL_PREFIX + "/searchFilterSort")
+                        .param("sort", "")
+                        .param("types", "")
+                        .param("search", SEARCH_RESERVATION_ENTITIES))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(DB_NUMBER_OF_SEARCHED_RESERVATION_ENTITIES)));
     }
 }
