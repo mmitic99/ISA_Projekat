@@ -102,4 +102,9 @@ public class ReviewServiceImpl implements ReviewService {
         }
         return reviewRepository.getAverageMarksByReservationEntitiesId(id);
     }
+
+    @Override
+    public List<Review> getAllForReservationEntities(Long id) {
+        return reviewRepository.findReviewByReservationIdAndApprovedEquals(id, true);
+    }
 }

@@ -51,4 +51,13 @@ public class ReviewController {
         }
     }
 
+    @GetMapping(value = "/getAllForReservationEntities/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getAllForReservationEntities(@PathVariable Long id, HttpServletRequest request) {
+        try {
+            return new ResponseEntity<>(reviewService.getAllForReservationEntities(id), HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+        }
+    }
+
 }

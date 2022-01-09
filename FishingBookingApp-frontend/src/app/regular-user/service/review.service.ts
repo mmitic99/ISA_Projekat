@@ -26,4 +26,8 @@ export class ReviewService {
     review.mailAddress = localStorage.getItem('mailAddress')
     return this.http.post(serverPortApi + "review/createReview", review, header);
   }
+
+  getAllReviews(id: any) {
+    return this.http.get(serverPortApi + "review/getAllForReservationEntities/" + id);
+  }
 }

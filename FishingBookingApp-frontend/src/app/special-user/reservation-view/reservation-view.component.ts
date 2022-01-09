@@ -77,6 +77,10 @@ export class ReservationViewComponent implements OnInit {
   }
 
   createReport() {
+    if(this.report.type == "good"){
+      this.report.requestForPenalty = false;
+      this.report.customerAppeared = true;
+    }
     this.reservationService.createReportForReservation(this.report).subscribe(
       (data) => {
         if (this.report.requestForPenalty && this.report.customerAppeared) {

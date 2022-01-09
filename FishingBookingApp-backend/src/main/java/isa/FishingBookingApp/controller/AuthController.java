@@ -51,7 +51,7 @@ public class AuthController {
             return ResponseEntity.ok(new UserTokenState(jwt, expiresIn, user.getRole().getName(), user.getMailAddress(), user.getId()));
         }
         catch (Exception e){
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email ili lozinka nisu tačni", HttpStatus.BAD_REQUEST);
         }
 
 

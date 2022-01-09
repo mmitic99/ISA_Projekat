@@ -17,4 +17,6 @@ public interface ReviewRepository extends JpaRepository<Review, Long> {
 
     @Query("select count(r.mark) from Review r where r.reservation.reservationEntity.id = ?1")
     int getNumberOfMarksByReservationEntitiesId(Long id);
+
+    List<Review> findReviewByReservationIdAndApprovedEquals(Long id, boolean approved);
 }

@@ -16,6 +16,7 @@ import TileLayer from 'ol/layer/Tile';
 import OSM, { ATTRIBUTION } from 'ol/source/OSM';
 import Point from 'ol/geom/Point';
 import VectorSource from 'ol/source/Vector';
+import { ReviewService } from 'src/app/regular-user/service/review.service';
 
 @Component({
   selector: 'app-reservation-entity',
@@ -30,6 +31,7 @@ export class ReservationEntityComponent implements OnInit {
   imageObject: Array<object> = [];
   subscription: any;
   specialReservations: any;
+  reviews: any;
 
   constructor(private route: ActivatedRoute,
     private reservationEntitiesService: ReservationEntitiesService,
@@ -38,7 +40,8 @@ export class ReservationEntityComponent implements OnInit {
     private toastr: ToastrService,
     private specialReservationService: SpecialReservationService,
     private router: Router,
-    private datePipe: DatePipe
+    private datePipe: DatePipe,
+    private reviewService: ReviewService
   ) { }
 
   ngOnInit(): void {
@@ -51,6 +54,21 @@ export class ReservationEntityComponent implements OnInit {
     if (this.authService.getRole() == "ROLE_USER") {
       this.getAllSpecialReservation();
     }
+    this.getReviews();
+  }
+  getReviews() {
+    this.reviewService.getAllReviews(this.id).subscribe(
+      (data)=>{
+        this.reviews = data
+        for (let review of this.reviews) {
+          let dateTime = review.creationDateTime
+          review.creationDateTime = new Date(dateTime[0], dateTime[1] - 1, dateTime[2], dateTime[3], dateTime[4])
+        }
+      },
+      (error)=>{
+        this.reviews = []
+      }
+    )
   }
 
   getAllSpecialReservation() {
