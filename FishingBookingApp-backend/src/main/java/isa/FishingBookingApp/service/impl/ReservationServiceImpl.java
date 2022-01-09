@@ -216,7 +216,7 @@ public class ReservationServiceImpl implements ReservationService {
         return true;
     }
 
-    private boolean dateTimeNotInReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
+    public boolean dateTimeNotInReservations(ReservationEntities reservationEntity, LocalDateTime start, int days) {
         List<Reservation> reservations = reservationRepository.findByReservationEntityIdAndDeletedEquals(reservationEntity.getId(), false);
 
         LocalDateTime end = start.plusDays(days);
