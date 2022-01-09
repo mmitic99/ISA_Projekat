@@ -44,8 +44,8 @@ public class SubscriptionServiceImpl implements SubscriptionService {
     @Override
     @Transactional(readOnly = false)
     public Subscription subscribe(SubscriptionDTO subscriptionDTO) {
-        User user = userRepository.findByMailAddressTransactional(subscriptionDTO.getMailAddress());
-        ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesById(subscriptionDTO.getReservationEntityId());
+        User user = userRepository.findByMailAddress(subscriptionDTO.getMailAddress());
+        ReservationEntities reservationEntities = reservationEntitiesRepository.findReservationEntitiesByIdTransactional(subscriptionDTO.getReservationEntityId());
         return subscriptionRepository.save(new Subscription(user, reservationEntities));
     }
 
