@@ -62,11 +62,11 @@ public class AuthController {
 
         User existUser = this.userService.findByMailAddress(userDTO.getMailAddress());
         if (existUser != null) {
-            return new ResponseEntity<>("Email address already exists", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Email već postoji, unesite drugi email", HttpStatus.BAD_REQUEST);
         }
 
         if (!userDTO.getPassword1().equals(userDTO.getPassword2())) {
-            return new ResponseEntity<>("Passwords not match", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Lozinke se ne poklapaju", HttpStatus.BAD_REQUEST);
         }
 
         User newUser = null;

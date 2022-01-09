@@ -83,11 +83,13 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         // inicijalizacija korisnika (LOZINKA ZA SVE: 123)
         RegularUser regularUser1 = new RegularUser("isaproject.tim27+1@gmail.com", userPassword, "Pero", "Peric", "+3816011111", address1, regUserRole, true, false);
         RegularUser regularUser2 = new RegularUser("isaproject.tim27+2@gmail.com", userPassword, "Milica", "Miletic", "+3816022222", address2, regUserRole, true, true);
+        RegularUser regularUser3 = new RegularUser("isaproject.tim27+6@gmail.com", userPassword, "Mika", "Mikic", "+38160221252", address2, regUserRole, true, true);
         CottageOwner cottageOwner1 = new CottageOwner("isaproject.tim27+3@gmail.com", userPassword, "Damir", "Dakic", "+3816033333", address1, cottageOwnerRole, true, true, "Da ponudim korisnicima udoban provod u mojim vikendicama");
         CottageOwner cottageOwner2 = new CottageOwner("isaproject.tim27+4@gmail.com", userPassword, "Lazar", "Lazic", "+3816044444", address1, cottageOwnerRole, true, false, "Da zaradim");
         BoatOwner boatOwner1 = new BoatOwner("isaproject.tim27+5@gmail.com", userPassword, "Bojan", "Bokic", "+3816055555", address2, boatOwnerRole, true, true, "Da pruzim ljudima dozivljaj brzog glisera");
         userRepository.save(regularUser1);
         userRepository.save(regularUser2);
+        userRepository.save(regularUser3);
         userRepository.save(cottageOwner1);
         userRepository.save(cottageOwner2);
         userRepository.save(boatOwner1);
@@ -127,12 +129,12 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         subscriptionRepository.save(subscription3);
 
         // zahtev za brisanje naloga
-        RequestForDeletingAccount requestForDeletingAccount1 = new RequestForDeletingAccount(regularUser1, "adasdasdadsad");
+        RequestForDeletingAccount requestForDeletingAccount1 = new RequestForDeletingAccount(regularUser1, "Ne svidja mi se aplikacija");
         requestForDeletingAccountRepository.save(requestForDeletingAccount1);
 
         // dostupni termini za rezervaciju entiteta
         LocalDateTime dtStart1 = LocalDateTime.now();
-        LocalDateTime dtEnd1 = dtStart1.plusDays(10);
+        LocalDateTime dtEnd1 = dtStart1.plusDays(40);
         AvailableAppointment appointment1 = new AvailableAppointment(cottage1, dtStart1, dtEnd1);
         AvailableAppointment appointment2 = new AvailableAppointment(cottage2, dtStart1, dtEnd1);
         LocalDateTime dtStart2 = LocalDateTime.now().minusDays(10);
@@ -147,24 +149,49 @@ public class FishingBookingAppApplication implements CommandLineRunner {
         availableAppointmentRepository.save(appointment4);
 
         // rezervacije
-        Reservation reservation1 = new Reservation(regularUser2, cottage1, LocalDateTime.now().minusDays(5), 24, 1, 1000);
-        Reservation reservation2 = new Reservation(regularUser2, cottage2, LocalDateTime.now().minusDays(2), 96, 3, 22000);
+        Reservation reservation1 = new Reservation(regularUser2, cottage1, LocalDateTime.now().minusDays(5), 24, 1, 10000);
+        Reservation reservation2 = new Reservation(regularUser2, cottage2, LocalDateTime.now().minusDays(3), 96, 3, 22000);
+        Reservation reservation3 = new Reservation(regularUser3, cottage1, LocalDateTime.now(), 48, 3, 27000);
+        Reservation reservation4 = new Reservation(regularUser2, cottage1, LocalDateTime.now().plusDays(19), 72, 3, 30000);
+        Reservation reservation5 = new Reservation(regularUser3, boat1, LocalDateTime.now().plusDays(5), 48, 3, 27000);
+        Reservation reservation6 = new Reservation(regularUser2, boat2, LocalDateTime.now().plusDays(15), 72, 3, 30000);
+        Reservation reservation7 = new Reservation(regularUser2, cottage1, LocalDateTime.now().minusDays(15), 24, 1, 13549);
+        Reservation reservation8 = new Reservation(regularUser2, cottage2, LocalDateTime.now().plusDays(2), 24, 1, 9586);
+        Reservation reservation9 = new Reservation(regularUser2, cottage2, LocalDateTime.now().minusDays(50), 24, 1, 29456);
         reservationRepository.save(reservation1);
         reservationRepository.save(reservation2);
+        reservationRepository.save(reservation3);
+        reservationRepository.save(reservation4);
+        reservationRepository.save(reservation5);
+        reservationRepository.save(reservation6);
+        reservationRepository.save(reservation7);
+        reservationRepository.save(reservation8);
+        reservationRepository.save(reservation9);
 
         // brze rezevacije(akcije)
         LocalDateTime dtSpecResStart1 = LocalDateTime.now().plusDays(10);
         LocalDateTime dtValidFrom1 = LocalDateTime.now();
         LocalDateTime dtValidTo1 = dtStart1.plusDays(8);
-        Set<AdditionalService> additionalServices = new HashSet<>();
-        additionalServices.add(additionalService1);
-        additionalServices.add(additionalService2);
-        SpecialReservation specialReservation1 = new SpecialReservation(cottageOwner1, cottage1, dtSpecResStart1, 48, 5, additionalServices, 15000, dtValidFrom1, dtValidTo1);
+
+        Set<AdditionalService> additionalServices1 = new HashSet<>();
+        additionalServices1.add(additionalService1);
+        additionalServices1.add(additionalService2);
+        SpecialReservation specialReservation1 = new SpecialReservation(cottageOwner1, cottage1, dtSpecResStart1, 48, 5, additionalServices1, 15000, dtValidFrom1, dtValidTo1);
+
+        Set<AdditionalService> additionalServices2 = new HashSet<>();
+        additionalServices2.add(additionalServiceForBoat1);
+        SpecialReservation specialReservation2 = new SpecialReservation(boatOwner1, boat1, dtSpecResStart1, 72, 5, additionalServices2, 1000, dtValidFrom1, dtValidTo1);
+
         specialReservationRepository.save(specialReservation1);
+        specialReservationRepository.save(specialReservation2);
 
         // ocene
-        Review review = new Review("najbolja vikendica", LocalDateTime.now().plusDays(15), 10, reservation1);
-        reviewRepository.save(review);
+        Review review1 = new Review("najbolja vikendica", LocalDateTime.now().plusDays(15), 10, reservation1);
+        Review review2 = new Review("super", LocalDateTime.now().plusDays(10), 7, reservation7);
+        Review review3 = new Review("odlicno", LocalDateTime.now().plusDays(25), 9, reservation2);
+        reviewRepository.save(review1);
+        reviewRepository.save(review2);
+        reviewRepository.save(review3);
 
         // Ucitavanje slika
         String file1 = "src/main/resources/static/images/imgCottage1.jpg";
@@ -199,7 +226,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
             EntityImage entityImage5 = new EntityImage(boat2, boatImg3, "Brod2");
             entityImageRepository.save(entityImage5);
         } catch (Exception e) {
-
+            e.printStackTrace();
         }
     }
 
@@ -209,8 +236,7 @@ public class FishingBookingAppApplication implements CommandLineRunner {
             int nBytesToRead = reader.available();
             if (nBytesToRead > 0) {
                 byte[] bytes = new byte[nBytesToRead];
-                int count = 0;
-                while ((count = reader.read(bytes)) > 0) {
+                while (reader.read(bytes) > 0) {
                     img1 = bytes;
                 }
             }
