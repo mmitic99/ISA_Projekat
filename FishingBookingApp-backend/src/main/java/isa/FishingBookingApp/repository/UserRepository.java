@@ -16,9 +16,4 @@ public interface UserRepository extends JpaRepository<User, Long> {
     CottageOwner findCottageOwnerById(Long id);
     BoatOwner findBoatOwnerById(Long id);
     User findUserById(Long id);
-
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
-    @Query("select u from User u where u.mailAddress = :mailAddress")
-    @QueryHints({@QueryHint(name = "javax.persistence.lock.timeout", value ="0")})
-    User findByMailAddressTransactional(String mailAddress);
 }
