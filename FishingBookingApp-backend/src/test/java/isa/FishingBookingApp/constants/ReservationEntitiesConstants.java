@@ -10,4 +10,8 @@ public class ReservationEntitiesConstants {
     public static final String NEW_ADDITIONAL_SERVICE_NAME = "Testna usluga";
     public static final String NEW_ADDITIONAL_SERVICE_DESCRIPTION = "opis";
     public static final double NEW_ADDITIONAL_SERVICE_PRICE = 2000;
+    public static final int DB_NUMBER_OF_RESERVATION_ENTITIES = 4;
+
+    public static final String SEARCH_RESERVATION_ENTITIES = "dolina";
+    public static final int DB_NUMBER_OF_SEARCHED_RESERVATION_ENTITIES = 1;
 }
