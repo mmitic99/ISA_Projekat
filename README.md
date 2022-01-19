@@ -18,11 +18,14 @@
 
 ### Backend
 - preporučuje se pokretanje aplikacije iz InteliJ IDEA
-- pokrenuti FishingBookingAppApplication.java kao java aplikaciju
-- ukoliko se koristi Eclipse IDE, desni klik na projekat Maven -> UpdateProject
+- importovati projekat
 - nakon toga ubaciti Environment variable u Intelij, klikom na Run -> Edit Configurations, u polju Environment variables ubaciti: **POSTGRES_DB=FishingBooking;POSTGRES_HOST=localhost;POSTGRES_PASSWORD=root;POSTGRES_USERNAME=postgres;BACKEND_URL=http://localhost:8080**
 - zatim pokrenuti FishingBookingAppApplication.java kao java aplikaciju
 - aplikacije će se pokrenuti na portu 8080
+
+- ukoliko se koristi Eclipse IDE, nakon importa maven projekta, desni klik na projekat Maven -> UpdateProject
+- ubaciti Environment variable, desni klik na FishingBookingAppApplication.java -> Properties -> Run/Debug settings -> New -> Java Application -> OK -> u tabu Environment dodati sve Environment variable
+- pokrenuti aplikaciju FishingBookingAppApplication.java -> Run as -> Java Application
 
 ## Aplikacija je dostupna i na Heroku platformi:
 - frontend: https://isa-projekat-tim27.herokuapp.com
