@@ -33,3 +33,13 @@
 
 ### Napomena:
 - pre korišćenja aplikacije, da bi slanje mejla radilo, ulogovati se na mejl, ići na sledeći [link](https://accounts.google.com/DisplayUnlockCaptcha) i kliknuti na dugme Nastavi.
+
+### Podaci za prijavljivanje u aplikaciju:
+
+| Tip korisnika| Email | Lozinka |
+|--|--|--|
+| Običan korisnik | isaproject.tim27+2@gmail.com | 123 |
+| Običan korisnik | isaproject.tim27+6@gmail.com | 123 |
+| Vlasnik vikendice | isaproject.tim27+3@gmail.com | 123 |
+| Vlasnik broda | isaproject.tim27+5@gmail.com | 123 |
+
